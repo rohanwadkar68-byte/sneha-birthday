@@ -1,0 +1,233 @@
+================================================================================
+ BIRTHDAY SITE FOR SNEHA — CHARACTERS, CONTENT & PROJECT OVERVIEW
+================================================================================
+Location   : C:\Users\XSENSEI\Pictures\Happy Birthday\birthday-site
+Built with : Vite + React + Framer Motion + canvas-confetti + lottie-web
+Live at    : http://localhost:4173   (python no-store server, pid served from /dist)
+Made by    : (him)  →  for  →  (Sneha)
+Date       : Aug 2026
+================================================================================
+TABLE OF CONTENTS
+  1. What we are building
+  2. HIS character (the one making this)
+  3. SNEHA's character (the birthday girl)
+  4. How they talk (the vibe / register)
+  5. The full scene-by-scene flow
+  6. All the copy (Hinglish content)
+  7. Asset / sticker inventory — where everything lives
+  8. How to edit & rebuild
+================================================================================
+
+
+================================================================================
+1. WHAT WE ARE BUILDING
+================================================================================
+A single-page, premium-cute, animated birthday surprise website for Sneha.
+It is NOT a boring static greeting — it is a full 16-scene interactive journey:
+
+ - Starts with a FAKE loading screen, then a FAKE system-error dialog
+   (modern teasing, not old-fashioned).
+ - Walks through a runaway button, a fake/empty gift, a dreamy reveal,
+   an Explorer "collect the props" game, compliment cards, a scrapbook
+   of memories, a love letter, a blow-the-candles cake, a confetti finale,
+   and a circular 'the end?' bonus ending.
+ - A hidden easter egg: click the "mujhe mat dabao" button 5+ times to
+   unlock a SECRET REWARD overlay.
+ - Uses real animated stickers everywhere: a teddy, "pookie" stickers,
+   and emoji webm stickers, all rendered as inline <video>/<img>.
+
+Vibe: modern glassmorphism + animated gradient background + soft candy
+colors (rose #f76a99, lavender #b79cff, sky #6db5ff) + handwritten font.
+
+Tone of ALL text: playful Hinglish, affectionate, teasing, flirty-but-
+respectful, and spoken in the formal-romantic "aap" register.
+
+
+================================================================================
+2. HIS CHARACTER  (the person gifting this)
+================================================================================
+Personality: warm, goofy, secretly a softie. Loves to tease but is a big
+mush inside. Slightly over-the-top dramatic for comedy. Affectionate to
+the point of being a little embarrassing, and he knows it.
+
+How he shows love:
+ - Teases her constantly ("nahi, tu nahi... aap", "jeet gayi aap").
+ - Uses nicknames: calls her "mommy", "dora", "baccha" — but ONE nickname
+   at a time, wherever it fits, never all dumped together.
+ - Teases the "mommy" angle — playful couple-style nagging that is cute,
+   not rude ("mommy, aaj party aap ho", "mommy bas ek 'hmm' bolo aur mera
+   poora din set").
+ - Speaks to her formally with "aap/aapke/aapki" (respectful-romantic),
+   even while joking.
+ - Makes self-deprecating jokes (his "cool factor" disappears around her,
+   he's "aapka favourite headache", "theek hai main bhi sharma gaya").
+ - Flirty but classy — lines meant to make her BLUSH, with a light naughty
+   teasing edge, never cheap or cringe.
+
+His voice signature phrases:
+ - "main kya karu" / "kya batau" / "samjha nahi jaata yeh"
+ - "mommy / dora / baccha"
+ - Exaggerated Hindi-English mixing (Hinglish).
+
+He treats this site as a love letter + roast + party all in one: the copy
+roasts her gently AND flatters her hard.
+
+
+================================================================================
+3. SNEHA'S CHARACTER  (the birthday girl)
+================================================================================
+Personality (as written in the site): cute, a self-proclaimed (or lovingly
+called) "mommy", a certified "chaos gremlin" — chaotic but in the adorable
+way. Has a soft, funny vibe that makes the whole world lighter just by
+existing. Remembers tiny details about people. Turns even a normal day
+into a festival.
+
+Nicks he calls her: mommy / dora / baccha.
+
+Her known quirks referenced in the site:
+ - "bas 5 minute" phone calls that stretch into 3 AM ((midnight chats).
+ - Legendary midnight snack reviews (5 stars).
+ - Falls / trips a lot ("har 'watch this' ke baad aap gir jaati thin").
+ - Has 90% of his camera roll as cursed screenshots.
+ - Never listens / never obeys the "don't press" warning (that's how the
+   secret easter egg makes sense).
+ - Innocent-looking, but "aapka asli innocent... bilkul bharam hai" (playfully
+   called out as secretly cheeky).
+
+The site treats her as: the best person, the party, the reason everything
+exists ("yahan sab kuch exists karta hai kyunki aap exists karti hain").
+Her official title in the site: "aapka apna, sirf aapka" and "aap meri
+best cheez ho".
+
+
+================================================================================
+4. HOW THEY TALK  (the vibe / register)
+================================================================================
+ - REGISTER: Formal-romantic "aap" (aapne/aapke/aapki). NOT "tu".
+   Feminine verb endings: "aap karti hain", "aap hoti hain", "jeet gayi aap".
+ - LANGUAGE: Hinglish (Hindi words in English script, mixed with English).
+ - NICKNAMES: used ONE at a time, placed where they fit:
+     mommy → teasing/nagging/couple jokes
+     dora  → soft, affectionate moments
+     baccha → fond, little-one moments ("baccha toh ho hi aap")
+   NEVER all together in one line (that was an earlier mistake, fixed).
+ - TEASING: playful roasting that always flips into a compliment.
+ - FLIRT: blush-worthy, light-naughty but classy pickup lines — NOT the
+   generic "r/seducingstrangers" cringe. Lines are warm and specific.
+
+Example signature lines:
+ - Compliment: "mommy, aap normal din bhi latka festival bana deti hain.
+   party aap ho — baaki sab toh bas log hain"
+ - Flirt: "aap hasaati hain aur mera dimag full system-shutdown ho jaata
+   hai. koi engineer ise theek nahi kar sakta"
+ - Tease: "jeet gayi aap. ab hamesha jeetna, main kya karu"
+ - Secret line: "innocent lagti hain, par aapko lagta hai main woh nahi
+   dekh raha jo aap chhupaate ho. dekhta hoon, mommy. sab dekhta hoon"
+
+
+================================================================================
+5. THE FULL SCENE-BY-SCENE FLOW
+================================================================================
+All scene wiring lives in src/App.jsx. Index constants:
+  LOADING=0  FAKE_ERROR=1  WELCOME=2  RUN_AWAY=3  FAKE_GIFT=4  DREAM=5
+  cat1=6  EXPLORE=7  COMPLIMENTS=8  SCRAPBOOK=9  cat2=10  LETTER=11
+  cat3=12  CAKE=13  FINALE=14  FAKE_END=15  TRUE_END=16
+
+ 0  FakeLoading   — fake progress bar ("Compiling birthday.exe", "load kar
+                    raha hoon… bas ek second bharosa rakhiye").
+ 1  FakeErrorScene — fake SYSTEM ERROR dialogs that "fix" into a compliment
+                    ("system aapke bina chalta hi nahi").
+ 2  Welcome       — "hey Sneha, aaja!! 👋" + wave teddy + "kuch banaya hai
+                    aapke liye ✨" + "shuru karte hain".
+ 3  RunawayScene  — a "continue →" button that RUNS AWAY from the cursor;
+                    teasing taunts on each dodge, then it surrenders.
+ 4  FakeGiftScene — tap the gift → it opens → EMPTY?! 😦 → "RUK JAA!! asli
+                    gift ko dramatic entry chahiye thi".
+ 5  DreamReveal   — confetti + "welcome to AAPKA din 🎉" + pookie sticker row
+                    + "explore karein".
+ 6  cat1          — "cute" cat lottie break.
+ 7  ExplorerScene — 8 collectible props (star, flower, cloud, sparkle,
+                    balloon, note, moon, hidden heart). When all 8 found →
+                    shows a random pickup line + "sab mil gaye! mast 🔥".
+                    (FIXED: teddy used to overlap the 8th "heart" so it
+                     couldn't be clicked; teddy is now pointer-events:none.)
+ 8  ComplimentDeck— flip cards "kyun special hain aap 💝" — 10 reasons incl.
+                    mommy teases + flirty lines, with a CutenessMeter.
+ 9  ScrapbookScene— polaroid memories ("humari scrapbook 📔").
+10  cat2          — "smug" cat break.
+11  LetterScene   — "aapke naam ek chitthi" — typewriter love letter, ends
+                    "— aapka apna, sirf aapka 🥺" + "ps: mommy, aaj aap bas
+                    party karo. baaki main sambhalunga. 💙".
+12  cat3          — "sleepy" cat break.
+13  CakeScene     — 3 candles; blow via microphone OR hold-button; "wish ho
+                    gayi 🌠".
+14  FinaleScene   — "HAPPY BIRTHDAY" letter burst + confetti + dance teddy.
+                    bonus variant: "…AUR EK AUR CHEEZ!!".
+15  FinalMessage  — "khatam? 🤔" button. First press → bonus finale (go 14);
+                    after bonus, next press → TrueEnd (16). (circular flow)
+16  TrueEnd       — "ab hum sach me done hain 💖" + "mommy, ek aur baar —
+                    happy birthday. aap meri best cheez ho" + replay.
+
+EASTER EGG: the floating "mujhe mat dabao" button in the HUD. Click 5+
+times → SECRET_REWARD overlay ("SECRET UNLOCKED 🔓" + love teddy).
+
+
+================================================================================
+6. ALL THE COPY  (source of truth)
+================================================================================
+Every line of text lives in ONE file:
+    src\utils\content.js
+Edit there and the whole site updates. Sections:
+    GIRL, NICKNAMES,
+    FAKE_LOADING_STEPS, FAKE_ERRORS, FAKE_ERROR_FIX,
+    TAUNTS, COMPLIMENTS, PICKUP_LINES, COMPLIMENT_GRADIENTS,
+    MEMORIES, LETTER_LINES, CAT_BREAKS, EXPLORER_PROPS,
+    FINALE_LETTERS, FINAL_MESSAGE, SECRET_REWARD.
+A few short strings are hardcoded inside scene files (e.g. button labels),
+but 95% of copy is centralized in content.js.
+
+
+================================================================================
+7. ASSET / STICKER INVENTORY — WHERE EVERYTHING LIVES
+================================================================================
+USED BY THE SITE (imported via src\utils\assets.js):
+    birthday-site\public\assets\
+       cats\         (8)  lottie cat animations (cute, smug, sleepy, ...)
+       emoji\        (74) animated emoji webm stickers
+       misc\         (13) misc deco images
+       pookie-jpeg\  (58) pookie sticker jpegs
+       pookie-webp\  (58) pookie sticker webps
+       teddy\        (17) teddy webp emotions (0-15)
+       teddy-webm\   (82) teddy animated webm stickers
+   These are the files the running site actually loads.
+
+RAW SOURCE / DOWNLOADS SAVED HERE (the Telegram stuff):
+    birthday-site\downloads\telegram-sticker-zips\
+       Pookie977_batch_jpeg.zip . webp . (1).webp
+       video5522604641_by_Mikasa_Ackr_bot_batch_jpeg/png/tgs/webm/webp...
+       JOIN_a639f_by_TgEmodziBot_batch_webm.zip   (emoji pack)
+       animation_0_8_Cat_batch_tgs.zip            (cat pack)
+       tportable-x64.7.0.5.zip                    (Telegram portable)
+    birthday-site\downloads\birthday-world\       (earlier project version)
+
+TEDDY emotion→webp map (semantic guess since model can't view frames —
+swap via the source gallery if a sticker looks off):
+    0 wave / 1 idle / 2 happy / 3 excited / 4 blush / 5 sad / 6 sleepy /
+    7 dance / 8 angry / 9 curious / 10 love / 11 shocked / 12 giggle /
+    13 think / 14 party / 15 hug
+VISUAL REFERENCE for swapping/mapping stickers:
+    C:\Users\XSENSEI\Pictures\Happy Birthday\stickers\gallery.html
+
+
+================================================================================
+8. HOW TO EDIT & REBUILD
+================================================================================
+ - Edit text   : open src\utils\content.js, save.
+ - Swap stickers: edit src\utils\assets.js path maps, or replace file in
+                  public\assets\...
+ - Rebuild     : in the birthday-site folder run:  npm run build
+ - The live server reads /dist on every request (no-store), so after a
+   build just hard-refresh the browser (Ctrl+F5) at http://localhost:4173
+================================================================================
+END OF DOC
+================================================================================
