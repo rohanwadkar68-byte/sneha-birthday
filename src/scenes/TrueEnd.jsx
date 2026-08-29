@@ -28,10 +28,10 @@ export default function TrueEnd({ onReplay }) {
         {/* Pass Top Badge */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--rose-deep)', letterSpacing: '0.06em' }}>
-            👑 PASS ID: MOMMY-AGE-23
+            👑 PASS ID: FOREVER-MOMMY
           </span>
           <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--gold)' }}>
-            ★ TURNING 23 ★
+            ★ FOR MY QUEEN ★
           </span>
         </div>
 
@@ -40,7 +40,7 @@ export default function TrueEnd({ onReplay }) {
         </h2>
 
         <div style={{ fontSize: '0.86rem', color: 'var(--rose-deep)', fontWeight: 800, marginBottom: 6 }}>
-          Ab 23 Saal Ki Hone Wali Queen • Expiry: Forever Yours
+          Meri Sabse Pyaari Queen • Expiry: Hamesha Ke Liye
         </div>
 
         <p className="subtitle" style={{ margin: '4px 0', fontSize: '0.96rem', color: 'var(--ink)', lineHeight: 1.4 }}>

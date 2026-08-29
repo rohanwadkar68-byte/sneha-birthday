@@ -164,7 +164,7 @@ export default function EarthAgeDashboard() {
                 display: 'inline-block'
               }}
             >
-              👑 Ab <b>23 Saal Ki Hone Wali</b> Meri Sabse Pyaari Mommy! 💖
+              👑 Duniya Ki <b>Sabse Pyaari & Gorgeous</b> Mommy! 💖
             </div>
           </motion.div>
         ) : (

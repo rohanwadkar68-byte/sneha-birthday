@@ -45,8 +45,8 @@ export const TAUNTS = [
 export const COMPLIMENTS = [
   {
     emoji: '👑',
-    title: 'Ab 23 Ki Ho Gayi Ho Aap',
-    text: 'Is saal aap 23 ki ho rahi hain, par sach bolu toh har din aap pehle se aur zyada pyari lagti ho. Aapse baat karke jo sukoon milta hai na, wo kisi aur cheez me nahi hai 👑💖',
+    title: 'Meri Sabse Pyaari Queen',
+    text: 'Sach bolu toh aap har din pehle se aur zyada pyari aur gorgeous lagti ho. Aapse baat karke jo sukoon milta hai na, wo kisi aur cheez me nahi hai 👑💖',
     teddyWebm: 0,
     gradient: 'linear-gradient(135deg, #fff0f5 0%, #ffe0ef 100%)'
   },
@@ -109,7 +109,7 @@ export const COMPLIMENTS = [
   {
     emoji: '🎂',
     title: 'Happy Birthday Meri Baccha',
-    text: 'HAPPY BIRTHDAY, Sneha!! 23 ki ho gayi ho, par mere liye hamesha wahi cute si baccha rahogi. Hamesha aise hi khush aur hasti rehna 🎉❤️',
+    text: 'HAPPY BIRTHDAY, Sneha!! Mere liye aap hamesha wahi sabse cute aur special baccha rahogi. Hamesha aise hi khush aur hasti rehna 🎉❤️',
     teddyWebm: 4,
     gradient: 'linear-gradient(135deg, #ffd9e8 0%, #e6dbff 100%)'
   }
@@ -140,13 +140,13 @@ export const MEMORIES = [
     tape: '#ffd3e2',
     rot: -3,
     emoji: '👑',
-    title: 'Ab 23 Saal Ki Hone Wali Ho',
-    text: 'Aaj meri sabse pyari mommy apne 23rd year me step in kar rahi hain! 🎂✨',
+    title: 'Aapka Sabse Khaas Din',
+    text: 'Aaj ka poora din sirf aur sirf aapko special feel karwane ke liye hai! 🎂✨',
     secretNote: 'Secret: Sneha, aap sach me meri life ka sabse pyara hissa ho. Hamesha aise hi muskuraate rehna ❤️',
     deco: 'star',
     customSticker: 'assets/kisses/milk_mocha_kiss_1.webm',
     pookieIdx: 1,
-    tag: 'Turning 23'
+    tag: 'Queen Sneha'
   },
   {
     tape: '#d9ecff',
@@ -245,7 +245,7 @@ export const LETTER_LINES = [
   '',
   'HAPPY BIRTHDAY!! 🎂✨',
   '',
-  'Aaj aap 23 saal ki ho gayi ho. Pata hai, jab hum pehli baar game lobby me mile the, maine kabhi nahi socha tha ki ek random teammate aage chalke meri life ka sabse khaas insaan ban jayega.',
+  'Pata hai, jab hum pehli baar game lobby me mile the, maine kabhi nahi socha tha ki ek random teammate aage chalke meri life ka sabse khaas insaan ban jayega.',
   '',
   'Aapka mujhe choti-choti baaton par daantna, mera phone charge na hone par gussa karna, raat ko ghanto tak akele me baatein karna, aur bina aapki aawaz sune bhi sirf aapke texts dekh kar dil ka khush ho jaana — yeh sab mere liye duniya ka sabse pyara ehsaas hai.',
   '',
@@ -253,7 +253,7 @@ export const LETTER_LINES = [
   '',
   'Aur haan, jab bhi hum pehli baar milenge na, main bina sharmaye pehle aapke dono gaal kheenchunga, aapko tight hug dunga aur itna tang karunga ki aap bas sharmaati reh jaogi 🙈💖',
   '',
-  'Thank you hamesha mere saath rehne ke liye, meri baatein sunne ke liye aur mujhe itna special feel karwane ke liye. Aap 23 ki ho gayi ho par mere liye hamesha wahi meri pyari si baccha rahogi.',
+  'Thank you hamesha mere saath rehne ke liye, meri baatein sunne ke liye aur mujhe itna special feel karwane ke liye. Mere liye aap hamesha wahi meri sabse pyari si baccha rahogi.',
   '',
   '— sirf aapka apna, hamesha ke liye 🥺❤️',
   '',
@@ -262,7 +262,7 @@ export const LETTER_LINES = [
 
 // --- Cat reaction breaks -------------------------------------
 export const CAT_BREAKS = [
-  { cat: 'cute', caption: 'meow break! ab 23 age ki hone wali world ki sabse cute mommy aayi hain 🐾💖' },
+  { cat: 'cute', caption: 'meow break! world ki sabse cute mommy ke liye chota sa pause 🐾💖' },
   { cat: 'smug', caption: 'pata hai, pata hai. aap world ki sabse cute ladki hain 🐱😏' },
   { cat: 'sleepy', caption: 'itni der raat tak chat karoge toh billi bhi so jayegi zzz~ 😴' },
   { cat: 'dramatic', caption: 'ab jo aage aane wala hai, ready ho mommy? 👀' }
@@ -284,7 +284,7 @@ export const FINALE_LETTERS = ['HAPPY', 'BIRTHDAY']
 
 export const FINAL_MESSAGE = [
   'Toh… meri jaan. 💖',
-  'Aaj aap 23 ki ho gayi ho, aur sach bolu toh aap meri life ka sabse khoobsurat hissa ho.',
+  'Aap meri life ka sabse pyara aur sabse khoobsurat hissa ho.',
   'Game lobby se shuru hui humari baatein aaj mere dil ka sabse bada sukoon hain.',
   'Dher saare hugs, gaal squishes aur care hamesha sirf aapke liye reserved hai 🙈',
   'Happy Birthday, meri mommy, meri dora, mera baccha! ❤️🎂'
@@ -301,9 +301,9 @@ export const SECRET_REWARD = {
 // ============================================================
 
 export const WELCOME_CONTENT = {
-  crownBadge: '👑 AB 23 SAAL KI HONE WALI MERI GORGEOUS MOMMY 👑',
+  crownBadge: '👑 SPECIAL SURPRISE FOR MY QUEEN SNEHA 👑',
   title: 'Hey Mommy, Aao Dekho! 👋💖',
-  subtitle: 'Ab 23 saal ki hone wali meri sabse pyari ladki ke liye ek magical door wait kar raha hai…',
+  subtitle: 'Aapke liye ek pyaara sa magical door wait kar raha hai…',
   doorClosed: 'Magic Door Kholo 🔑',
   doorClosedSub: 'Tap to unlock your surprise',
   doorOpen: 'Door Khul Raha Hai… 🌟',
@@ -351,8 +351,8 @@ export const SCRATCH_UI = {
 }
 
 export const SCRAPBOOK_UI = {
-  heading: 'Live Age & Cute Memories ⏳',
-  subtitle: 'Ab 23 saal ki hone wali meri mommy ka live safar',
+  heading: 'Live Moments & Cute Memories ⏳',
+  subtitle: 'Meri sabse pyaari mommy ka pyara sa safar',
   flipHint: 'Tap polaroid to reveal secret handwritten back note 💌',
   nextBtn: 'Khaas Handwritten Letter Padhein 💌✨'
 }
@@ -365,7 +365,7 @@ export const LETTER_UI = {
 
 export const CAKE_UI = {
   badge: 'SPECIAL BIRTHDAY CAKE FOR MY QUEEN',
-  plaque: '👑 QUEEN SNEHA • TURNING 23 👑',
+  plaque: '👑 QUEEN SNEHA 👑',
   blowTapBtn: '💨 Tap To Blow Candle',
   blowMicBtn: 'Mic Se Phooko 🎤',
   cutBtn: '🔪 Golden Knife Se Cake Cut Karein ✨',
@@ -376,8 +376,8 @@ export const CAKE_UI = {
 }
 
 export const FINALE_UI = {
-  heading: 'HAPPY 23RD BIRTHDAY QUEEN SNEHA! 👑🎉',
-  subtitle: 'Ab 23 Saal Ki Hone Wali Meri Pyaari Mommy • The Most Beautiful Soul',
+  heading: 'HAPPY BIRTHDAY QUEEN SNEHA! 👑🎉',
+  subtitle: 'Meri Zindagi Ka Sabse Pyaara Sukoon • The Most Beautiful Soul',
   replayBtn: 'Surprise Phir Se Dekhein ↺',
   finalLove: 'Forever & Always Your Player 2 ❤️'
 }
