@@ -45,8 +45,8 @@ export const TAUNTS = [
 export const COMPLIMENTS = [
   {
     emoji: '👑',
-    title: 'Meri Sabse Pyaari Queen',
-    text: 'Sach bolu toh aap har din pehle se aur zyada pyari aur gorgeous lagti ho. Aapse baat karke jo sukoon milta hai na, wo kisi aur cheez me nahi hai 👑💖',
+    title: 'Turning 23 With Pure Charm',
+    text: 'Aaj aap 23 ki ho rahi hain, aur sach bataun toh har saal ke sath aap aur zyada pyari, gorgeous aur mature hoti ja rahi ho. Aapse baat karke jo sukoon milta hai na, wo kisi aur cheez me nahi hai 👑💖',
     teddyWebm: 0,
     gradient: 'linear-gradient(135deg, #fff0f5 0%, #ffe0ef 100%)'
   },
@@ -140,13 +140,13 @@ export const MEMORIES = [
     tape: '#ffd3e2',
     rot: -3,
     emoji: '👑',
-    title: 'Aapka Sabse Khaas Din',
-    text: 'Aaj ka poora din sirf aur sirf aapko special feel karwane ke liye hai! 🎂✨',
-    secretNote: 'Secret: Sneha, aap sach me meri life ka sabse pyara hissa ho. Hamesha aise hi muskuraate rehna ❤️',
+    title: 'Welcome to 23, Queen',
+    text: 'Aaj meri sabse pyari mommy officially apne 23rd year me step kar rahi hain! 🎂✨',
+    secretNote: 'Secret: Sneha, 23 ki ho gayi ho par mere liye hamesha wahi cute si baccha rahogi. Hamesha aise hi muskuraate rehna ❤️',
     deco: 'star',
     customSticker: 'assets/kisses/milk_mocha_kiss_1.webm',
     pookieIdx: 1,
-    tag: 'Queen Sneha'
+    tag: 'Turning 23'
   },
   {
     tape: '#d9ecff',
@@ -243,9 +243,9 @@ export const LOVE_COUPONS = [
 export const LETTER_LINES = [
   'Dear Sneha (meri sabse pyari mommy, mera baccha),',
   '',
-  'HAPPY BIRTHDAY!! 🎂✨',
+  'HAPPY 23RD BIRTHDAY!! 🎂✨',
   '',
-  'Pata hai, jab hum pehli baar game lobby me mile the, maine kabhi nahi socha tha ki ek random teammate aage chalke meri life ka sabse khaas insaan ban jayega.',
+  'Aaj aap officially 23 ki ho gayi ho. Pata hai, jab hum pehli baar game lobby me mile the, maine kabhi nahi socha tha ki ek random teammate aage chalke meri life ka sabse khaas insaan ban jayega.',
   '',
   'Aapka mujhe choti-choti baaton par daantna, mera phone charge na hone par gussa karna, raat ko ghanto tak akele me baatein karna, aur bina aapki aawaz sune bhi sirf aapke texts dekh kar dil ka khush ho jaana — yeh sab mere liye duniya ka sabse pyara ehsaas hai.',
   '',
@@ -253,7 +253,7 @@ export const LETTER_LINES = [
   '',
   'Aur haan, jab bhi hum pehli baar milenge na, main bina sharmaye pehle aapke dono gaal kheenchunga, aapko tight hug dunga aur itna tang karunga ki aap bas sharmaati reh jaogi 🙈💖',
   '',
-  'Thank you hamesha mere saath rehne ke liye, meri baatein sunne ke liye aur mujhe itna special feel karwane ke liye. Mere liye aap hamesha wahi meri sabse pyari si baccha rahogi.',
+  'Thank you hamesha mere saath rehne ke liye, meri baatein sunne ke liye aur mujhe itna special feel karwane ke liye. 23 ki ho gayi ho par mere liye hamesha wahi meri pyari si baccha rahogi.',
   '',
   '— sirf aapka apna, hamesha ke liye 🥺❤️',
   '',
@@ -301,9 +301,9 @@ export const SECRET_REWARD = {
 // ============================================================
 
 export const WELCOME_CONTENT = {
-  crownBadge: '👑 SPECIAL SURPRISE FOR MY QUEEN SNEHA 👑',
+  crownBadge: '👑 HAPPY 23RD BIRTHDAY MOMMY 👑',
   title: 'Hey Mommy, Aao Dekho! 👋💖',
-  subtitle: 'Aapke liye ek pyaara sa magical door wait kar raha hai…',
+  subtitle: 'Ab 23 ki hone wali meri sabse pyari ladki ke liye ek magical door wait kar raha hai…',
   doorClosed: 'Magic Door Kholo 🔑',
   doorClosedSub: 'Tap to unlock your surprise',
   doorOpen: 'Door Khul Raha Hai… 🌟',
@@ -364,8 +364,8 @@ export const LETTER_UI = {
 }
 
 export const CAKE_UI = {
-  badge: 'SPECIAL BIRTHDAY CAKE FOR MY QUEEN',
-  plaque: '👑 QUEEN SNEHA 👑',
+  badge: 'SPECIAL 23RD BIRTHDAY CAKE FOR MY QUEEN',
+  plaque: '👑 QUEEN SNEHA • 23 👑',
   blowTapBtn: '💨 Tap To Blow Candle',
   blowMicBtn: 'Mic Se Phooko 🎤',
   cutBtn: '🔪 Golden Knife Se Cake Cut Karein ✨',
@@ -376,7 +376,7 @@ export const CAKE_UI = {
 }
 
 export const FINALE_UI = {
-  heading: 'HAPPY BIRTHDAY QUEEN SNEHA! 👑🎉',
+  heading: 'HAPPY 23RD BIRTHDAY QUEEN SNEHA! 👑🎉',
   subtitle: 'Meri Zindagi Ka Sabse Pyaara Sukoon • The Most Beautiful Soul',
   replayBtn: 'Surprise Phir Se Dekhein ↺',
   finalLove: 'Forever & Always Your Player 2 ❤️'
