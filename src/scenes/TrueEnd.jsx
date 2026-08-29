@@ -28,19 +28,19 @@ export default function TrueEnd({ onReplay }) {
         {/* Pass Top Badge */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--rose-deep)', letterSpacing: '0.06em' }}>
-            👑 PASS ID: MOMMY-23-QUEEN
+            👑 ALL-ACCESS VIP PASS
           </span>
           <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--gold)' }}>
-            ★ 23RD BIRTHDAY VIP PASS ★
+            ★ SNEHA SPECIAL ★
           </span>
         </div>
 
         <h2 className="title-xl" style={{ margin: '2px 0 4px', fontSize: 'clamp(1.65rem, 6vw, 2.3rem)' }}>
-          Happy 23rd Birthday, {GIRL}! 💖
+          Happy Birthday, {GIRL}! 💖
         </h2>
 
         <div style={{ fontSize: '0.86rem', color: 'var(--rose-deep)', fontWeight: 800, marginBottom: 6 }}>
-          23rd Birthday Edition • Expiry: Hamesha Ke Liye
+          Official 23rd Year Edition • Expiry: Hamesha Ke Liye
         </div>
 
         <p className="subtitle" style={{ margin: '4px 0', fontSize: '0.96rem', color: 'var(--ink)', lineHeight: 1.4 }}>
