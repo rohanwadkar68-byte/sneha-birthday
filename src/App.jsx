@@ -37,21 +37,6 @@ export default function App() {
   const [dontClicks, setDontClicks] = useState(0)
   const [secretOpen, setSecretOpen] = useState(false)
   const [started, setStarted] = useState(false)
-  const [trail, setTrail] = useState([])
-
-  const addSparkle = (e) => {
-    if (Math.random() > 0.35) return
-    const x = e.clientX || (e.touches && e.touches[0]?.clientX)
-    const y = e.clientY || (e.touches && e.touches[0]?.clientY)
-    if (!x || !y) return
-    const id = Date.now() + Math.random()
-    const emojis = ['✨', '🌸', '💖', '⭐', '🫧']
-    const emoji = emojis[Math.floor(Math.random() * emojis.length)]
-    setTrail((prev) => [...prev.slice(-12), { id, x, y, emoji }])
-    setTimeout(() => {
-      setTrail((prev) => prev.filter((p) => p.id !== id))
-    }, 850)
-  }
 
   const go = (i) => setSceneIndex(i)
   const next = () => setSceneIndex((i) => i + 1)
@@ -114,27 +99,8 @@ export default function App() {
   const showHUD = started && sceneIndex > 2 && sceneIndex !== scenes.length - 1
 
   return (
-    <div onPointerMove={addSparkle} onTouchMove={addSparkle} style={{ width: '100vw', height: '100vh', position: 'relative' }}>
+    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <AnimatePresence mode="wait">{scenes[sceneIndex]}</AnimatePresence>
-
-      {/* 🌸 Korean Interactive Pastel Sparkle Trail */}
-      {trail.map((t) => (
-        <motion.div
-          key={t.id}
-          initial={{ opacity: 1, scale: 0.6, x: t.x - 10, y: t.y - 10 }}
-          animate={{ opacity: 0, scale: 1.3, y: t.y - 45 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          style={{
-            position: 'fixed',
-            pointerEvents: 'none',
-            zIndex: 9999,
-            fontSize: 18,
-            filter: 'drop-shadow(0 2px 6px rgba(244, 114, 182, 0.4))'
-          }}
-        >
-          {t.emoji}
-        </motion.div>
-      ))}
 
       {showHUD && (
         <>
