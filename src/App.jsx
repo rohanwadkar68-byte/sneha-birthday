@@ -8,6 +8,7 @@ import FakeGiftScene from './scenes/FakeGiftScene.jsx'
 import DreamReveal from './scenes/DreamReveal.jsx'
 import CatBreakScene from './scenes/CatBreakScene.jsx'
 import ExplorerScene from './scenes/ExplorerScene.jsx'
+import LittleWorldScene from './scenes/LittleWorldScene.jsx'
 import ComplimentDeck from './scenes/ComplimentDeck.jsx'
 import KissCeremonyScene from './scenes/KissCeremonyScene.jsx'
 import ScratchCardScene from './scenes/ScratchCardScene.jsx'
@@ -85,6 +86,7 @@ export default function App() {
     <DreamReveal key="dream" onNext={next} />,
     <CatBreakScene key="cat1" {...CAT_BREAKS[0]} cat={CATS[CAT_BREAKS[0].cat]} onNext={next} />,
     <ExplorerScene key="explore" onNext={next} />,
+    <LittleWorldScene key="littleworld" onNext={next} />,
     <ComplimentDeck key="compliments" onNext={next} />,
     <KissCeremonyScene key="kissceremony" onNext={next} />,
     <ScratchCardScene key="scratch" onNext={next} />,

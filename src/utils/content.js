@@ -369,3 +369,78 @@ export const FINALE_UI = {
 export const HUD_UI = {
   dontClick: '🤫 mujhe mat dabao'
 }
+
+// -------------------------------------------------------------------------
+// 🧸 [SECTION 14] SCENE 8: OUR LITTLE WORLD (2-Teddy Virtual Room)
+// -------------------------------------------------------------------------
+export const LITTLE_WORLD_CONTENT = {
+  intro: {
+    badge: '🧸 OUR LITTLE WORLD 🌙',
+    title: 'Ek Chhoti Si Pyaari Jagah…',
+    subtitle: 'Jahan bas Player 1 aur Player 2 hain ✨',
+    btn: 'Enter Little World →'
+  },
+  clockMilestones: [
+    { time: '11:59 PM', label: 'Player 1 waiting in room…' },
+    { time: '12:00 AM', label: 'Player 2 (Sneha) aa gayi! 🌸' },
+    { time: '12:03 AM', label: 'Game lobby on… 🎮' },
+    { time: '12:12 AM', label: 'Game se zyada bakbak mode! 💬' },
+    { time: '01:18 AM', label: 'Late night treat time 🍦' },
+    { time: '02:04 AM', label: 'Dono sleepy mode me… 🥱' },
+    { time: '02:36 AM', label: '“Bas last 5 minute aur…” 🙈' },
+    { time: '03:01 AM', label: 'Signature cozy 3 AM cuddle 🫂🌙' }
+  ],
+  storyDialogues: {
+    waiting: 'Player 1 sofa par wait kar raha hai…',
+    enter: { p1: 'Aa gayi? 👀', p2: 'Haan… 😌' },
+    gameOffer: { p1: 'Game khelein? 🎮', p2: 'Rehne do… aaj bas baatein karte hain 💬' },
+    gameCancelBanner: 'GAME: ❌  BAKBAK: ✅',
+    chatMessages: [
+      { time: '12:03 AM', from: 'p1', text: 'Aap kya kar rahi hain?' },
+      { time: '12:08 AM', from: 'p2', text: 'Bas…' },
+      { time: '12:09 AM', from: 'p1', text: 'Bas kya? 😂' },
+      { time: '12:11 AM', from: 'p2', text: 'Baitho na chupchap 🙈' }
+    ],
+    muhPhulana: {
+      p2Action: '😤',
+      p1: 'Acha ji? Itna muh kyu phulaya hai? 😏',
+      p2: 'Hmph… baat nahi karni 🙄',
+      p1Gift: 'Yeh lo pillow aur treat… ab smile karo na 🥺',
+      system: 'muh_phulana.exe has stopped responding 😂'
+    },
+    cuddle3am: {
+      p1: 'Bas… ab jaa rahe hain? 🥺',
+      p2: 'haan… 🥱',
+      p1Again: 'bas 5 minute aur… 🧸',
+      p2Accept: 'haan, bas 5 minute aur… 💖'
+    }
+  },
+  petControls: {
+    feed: [
+      'Mmm… aur milega? 🥺🍰',
+      'Aap mujhe bigaad rahe ho 😂',
+      'Bas… ab pet full ho gaya 😋💖'
+    ],
+    cuddle: [
+      'Idhar aaiye na… 🧸',
+      'Bas 5 minute cuddle time 🙈💖',
+      'Aap sabse soft aur cozy ho 🥺❤️'
+    ],
+    gift: [
+      'Aapke liye ek chhota sa birthday surprise 🎁',
+      'Aww… itna cute gift! 😭💖',
+      'Bas accha hai? — Haan, bohot zyada! 🙈✨'
+    ],
+    sleep: {
+      dialogue: [
+        'Jaa rahi hain?',
+        'Haan.',
+        'Achaaa…',
+        'Waise…',
+        'Haan bolo.'
+      ],
+      systemNote: 'Sleep cancelled. Bakbak continues. 😂🌙'
+    }
+  },
+  nextBtn: 'Ab Cute Compliments Khologe? 🃏✨'
+}
