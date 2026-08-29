@@ -11,6 +11,7 @@ export default function KissCeremonyScene({ onNext }) {
   const [step, setStep] = useState(1) // 1 | 2 | 3 | 4 | 5
   const [selectedOption, setSelectedOption] = useState(null)
   const [hearts, setHearts] = useState([])
+  const [screenKiss, setScreenKiss] = useState(null) // 'left' | 'right' | 'forehead' | null
 
   const spawnHearts = (e) => {
     const rect = e?.target?.getBoundingClientRect()
@@ -25,22 +26,34 @@ export default function KissCeremonyScene({ onNext }) {
 
   const handleStep1 = (e) => {
     playKissSound('cheek')
-    setTimeout(() => playKissSound('nibble'), 180)
+    setTimeout(() => playKissSound('nibble'), 200)
     spawnHearts(e)
-    setStep(2)
+    setScreenKiss('left')
+    setTimeout(() => {
+      setScreenKiss(null)
+      setStep(2)
+    }, 1600)
   }
 
   const handleStep2 = (e) => {
     playKissSound('cheek')
     setTimeout(() => playKissSound('cheek'), 220)
     spawnHearts(e)
-    setStep(3)
+    setScreenKiss('right')
+    setTimeout(() => {
+      setScreenKiss(null)
+      setStep(3)
+    }, 1600)
   }
 
   const handleStep3 = (e) => {
     playKissSound('forehead')
     spawnHearts(e)
-    setStep(4)
+    setScreenKiss('forehead')
+    setTimeout(() => {
+      setScreenKiss(null)
+      setStep(4)
+    }, 1600)
   }
 
   const handleSelectOption = (opt) => {
@@ -63,6 +76,89 @@ export default function KissCeremonyScene({ onNext }) {
       <div className="hand-note" style={{ marginBottom: 2 }}>
         {KISS_CEREMONY_CONTENT.title}
       </div>
+
+      {/* FULL-SCREEN SCREEN-SMOOCH TEDDY OVERLAY */}
+      <AnimatePresence>
+        {screenKiss && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 99999,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: screenKiss === 'left' ? 'flex-start' : screenKiss === 'right' ? 'flex-end' : 'center',
+              justifyContent: 'center',
+              padding: screenKiss === 'left' ? '0 0 0 10vw' : screenKiss === 'right' ? '0 10vw 0 0' : '0',
+              background: 'rgba(255, 182, 193, 0.45)',
+              backdropFilter: 'blur(8px)',
+              pointerEvents: 'none'
+            }}
+          >
+            {/* Big Zoom-In Kissing Teddy coming right onto the screen */}
+            <motion.div
+              initial={{ scale: 0.2, rotate: screenKiss === 'left' ? -25 : screenKiss === 'right' ? 25 : 0, y: screenKiss === 'forehead' ? -80 : 0 }}
+              animate={{ scale: [0.2, 1.45, 1.25], rotate: 0, y: 0 }}
+              exit={{ scale: 0.2, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 18 }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                filter: 'drop-shadow(0 16px 36px rgba(225, 29, 72, 0.5))'
+              }}
+            >
+              <img
+                src={
+                  screenKiss === 'left'
+                    ? KISS_ANIMATIONS[0]
+                    : screenKiss === 'right'
+                    ? KISS_ANIMATIONS[4]
+                    : KISS_ANIMATIONS[1]
+                }
+                alt="Screen Kiss Teddy"
+                style={{
+                  width: 'clamp(210px, 45vw, 290px)',
+                  height: 'clamp(210px, 45vw, 290px)',
+                  objectFit: 'contain',
+                  borderRadius: 24
+                }}
+              />
+
+              {/* Big Kiss Mark Stamp on Screen */}
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.4, 1], opacity: 1 }}
+                transition={{ delay: 0.15, type: 'spring' }}
+                style={{
+                  marginTop: -20,
+                  background: 'rgba(255, 255, 255, 0.95)',
+                  padding: '8px 20px',
+                  borderRadius: 30,
+                  border: '2px solid var(--rose)',
+                  boxShadow: '0 8px 24px rgba(225, 29, 72, 0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8
+                }}
+              >
+                <span style={{ fontSize: '1.6rem' }}>💋</span>
+                <span style={{ fontSize: '1.1rem', fontWeight: 900, color: 'var(--rose-deep)' }}>
+                  {screenKiss === 'left'
+                    ? 'LEFT GAAL PE MWAHHH! 🫦'
+                    : screenKiss === 'right'
+                    ? 'RIGHT GAAL PE SMOOCH! 😋💖'
+                    : 'FOREHEAD SWEET KISS! 🥺✨'}
+                </span>
+                <span style={{ fontSize: '1.6rem' }}>💖</span>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Floating Kiss Heart Particles */}
       <AnimatePresence>
