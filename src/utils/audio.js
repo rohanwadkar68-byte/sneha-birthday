@@ -1,109 +1,52 @@
-let ctx = null
-let master = null
-let delayNode = null
-let timer = null
-let step = 0
+const BASE = import.meta.env.BASE_URL
+const BGM_SRC = `${BASE}assets/audio/bgm.mp3`
 
-// Romantic Music Box Melody
-const PATTERN = [
-  [523.25, 0], [659.25, 1], [783.99, 2], [659.25, 1],
-  [587.33, 0], [783.99, 2], [880.0, 3], [1046.5, 4],
-  [783.99, 2], [659.25, 1], [523.25, 0], [587.33, 1],
-  [659.25, 0], [783.99, 1], [987.77, 2], [1046.5, 3]
-]
+let bgmAudio = null
 
-function ensureCtx() {
-  if (!ctx) {
-    const AudioCtx = window.AudioContext || window.webkitAudioContext
-    if (!AudioCtx) return null
-    ctx = new AudioCtx()
-    master = ctx.createGain()
-    master.gain.value = 0
-    delayNode = ctx.createDelay(1)
-    delayNode.delayTime.value = 0.34
-    const fb = ctx.createGain()
-    fb.gain.value = 0.28
-    const wet = ctx.createGain()
-    wet.gain.value = 0.22
-    delayNode.connect(fb)
-    fb.connect(delayNode)
-    master.connect(ctx.destination)
-    master.connect(wet)
-    wet.connect(delayNode)
-    delayNode.connect(ctx.destination)
+function getBgm() {
+  if (!bgmAudio) {
+    bgmAudio = new Audio(BGM_SRC)
+    bgmAudio.loop = true
+    bgmAudio.volume = 0.75
   }
-  return ctx
-}
-
-function pluck(freq, when, vel, type = 'triangle') {
-  if (!ctx) return
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = type
-  osc.frequency.value = freq
-  gain.gain.setValueAtTime(0, when)
-  gain.gain.linearRampToValueAtTime(vel, when + 0.015)
-  gain.gain.exponentialRampToValueAtTime(0.0001, when + 1.4)
-  osc.connect(gain)
-  gain.connect(master)
-  osc.start(when)
-  osc.stop(when + 1.5)
-}
-
-function tick() {
-  if (!ctx || ctx.state === 'suspended') return
-  const [freq, beat] = PATTERN[step % PATTERN.length]
-  pluck(freq, ctx.currentTime + beat * 0.14, 0.16)
-  if (step % 4 === 0) pluck(freq / 2, ctx.currentTime, 0.08, 'sine')
-  step += 1
+  return bgmAudio
 }
 
 export function startMusic() {
-  ensureCtx()
-  if (!ctx) return
-  if (ctx.state === 'suspended') ctx.resume()
-  master.gain.cancelScheduledValues(ctx.currentTime)
-  master.gain.setTargetAtTime(0.85, ctx.currentTime, 0.6)
-  if (!timer) timer = setInterval(tick, 520)
+  const bgm = getBgm()
+  bgm.loop = true
+  bgm.play().catch(() => {})
 }
 
 export function stopMusic() {
-  if (ctx && master) master.gain.setTargetAtTime(0, ctx.currentTime, 0.25)
-  if (timer) { clearInterval(timer); timer = null }
+  if (bgmAudio) {
+    bgmAudio.pause()
+  }
 }
 
-export function blip(base = 660) {
-  ensureCtx()
-  if (!ctx || ctx.state === 'suspended') return
-  const t = ctx.currentTime
-  ;[base, base * 1.25].forEach((f, i) => pluck(f, t + i * 0.08, 0.12, 'sine'))
+export function pauseBGM() {
+  if (bgmAudio) {
+    bgmAudio.pause()
+  }
+}
+
+export function resumeBGM() {
+  if (bgmAudio) {
+    bgmAudio.loop = true
+    bgmAudio.play().catch(() => {})
+  }
+}
+
+export function blip() {
+  // Silent on button clicks as requested
 }
 
 export function playSparkle() {
-  ensureCtx()
-  if (!ctx || ctx.state === 'suspended') return
-  const t = ctx.currentTime
-  const notes = [880, 1108.73, 1318.51, 1760]
-  notes.forEach((freq, idx) => {
-    pluck(freq, t + idx * 0.06, 0.1, 'sine')
-  })
+  // Silent on button clicks
 }
 
 export function playPop() {
-  ensureCtx()
-  if (!ctx || ctx.state === 'suspended') return
-  const t = ctx.currentTime
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = 'sine'
-  osc.frequency.setValueAtTime(400, t)
-  osc.frequency.exponentialRampToValueAtTime(880, t + 0.08)
-  gain.gain.setValueAtTime(0.2, t)
-  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1)
-  osc.connect(gain)
-  gain.connect(ctx.destination)
-  osc.start(t)
-  osc.stop(t + 0.12)
+  // Silent on button clicks as requested
 }
 
 export function playCandleBlow() {

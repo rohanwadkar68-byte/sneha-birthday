@@ -11,7 +11,7 @@ import {
   LETTER_2_LYRICS,
   LETTER_UI
 } from '../utils/content.js'
-import { playSparkle, playPop } from '../utils/audio.js'
+import { playSparkle, playPop, pauseBGM, resumeBGM } from '../utils/audio.js'
 
 const BASE = import.meta.env.BASE_URL
 const SONG_1_VILEN = `${BASE}assets/audio/song-1-vilen.mp3`
@@ -54,6 +54,7 @@ export default function LetterScene({ onNext }) {
         audioRef.current.pause()
         audioRef.current = null
       }
+      resumeBGM()
     }
   }, [])
 
@@ -73,6 +74,8 @@ export default function LetterScene({ onNext }) {
       audioRef.current.pause()
       audioRef.current = null
     }
+
+    pauseBGM() // Automatically stop background BGM during vocal songs
 
     const audio = new Audio(src)
     audio.volume = 1.0 // Full 100% crystal-clear immersive volume
@@ -117,6 +120,7 @@ export default function LetterScene({ onNext }) {
 
   // Stage 1 -> 2: Go to Song 1 Listening Room (Chidiya)
   const handleStartSong1 = () => {
+    pauseBGM()
     playSparkle()
     setStage(2)
     setActiveLyricIdx(0)
@@ -131,6 +135,7 @@ export default function LetterScene({ onNext }) {
       audioRef.current.pause()
       audioRef.current = null
     }
+    resumeBGM()
     setStage(3)
   }
 
@@ -145,6 +150,7 @@ export default function LetterScene({ onNext }) {
 
   // Stage 4 -> 5: Go to Song 2 Listening Room (Vilen)
   const handleStartSong2 = () => {
+    pauseBGM()
     playSparkle()
     setStage(5)
     setActiveLyricIdx(0)
@@ -159,6 +165,7 @@ export default function LetterScene({ onNext }) {
       audioRef.current.pause()
       audioRef.current = null
     }
+    resumeBGM()
     onNext()
   }
 
