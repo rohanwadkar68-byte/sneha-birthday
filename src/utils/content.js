@@ -242,15 +242,15 @@ export const LETTER_LINES = [
 
 export const LETTER_1_LYRICS = [
   { text: 'Oo Re Panchi 🩶', time: 0.0 },
-  { text: 'Kyu Humesha 🤍', time: 4.2 },
-  { text: 'Baithi Muh Latkaaye Re 🤍', time: 7.8 },
-  { text: 'Teri. Ankhon Jo Nam Hai 🤍', time: 12.2 },
-  { text: 'Inme mai Jo Gham Hai 🤍', time: 16.5 },
-  { text: 'Chor Ke Subha Pe 🤍', time: 20.8 },
-  { text: 'Kar yakeen 🤍', time: 25.0 },
-  { text: 'Ho Ye Jhumta Savan Hai 🤍', time: 29.2 },
-  { text: 'Meethi jo Pavan Hai 🤍', time: 34.0 },
-  { text: 'Teri Hi Muskan Se Bani 🤍', time: 39.5 }
+  { text: 'Kyu Humesha 🤍', time: 3.6 },
+  { text: 'Baithi Muh Latkaaye Re 🤍', time: 7.0 },
+  { text: 'Teri. Ankhon Jo Nam Hai 🤍', time: 10.8 },
+  { text: 'Inme mai Jo Gham Hai 🤍', time: 14.2 },
+  { text: 'Chor Ke Subha Pe 🤍', time: 17.5 },
+  { text: 'Kar yakeen 🤍', time: 21.2 },
+  { text: 'Ho Ye Jhumta Savan Hai 🤍', time: 25.5 },
+  { text: 'Meethi jo Pavan Hai 🤍', time: 30.2 },
+  { text: 'Teri Hi Muskan Se Bani 🤍', time: 35.0 }
 ]
 
 export const LETTER_TRANSITION = {
@@ -279,11 +279,11 @@ export const LETTER_2_LINES = [
 
 export const LETTER_2_LYRICS = [
   { text: '..Aaj mil gyi....', time: 0.0 },
-  { text: 'Ye Zamana Beshrm hai 🩶', time: 3.8 },
-  { text: 'Na isska dharam hai 🩶', time: 7.2 },
-  { text: 'Kyu dhoonde hai tu isme bandhagi 🩶', time: 10.5 },
-  { text: 'Oo tere sath tera man hai. Dil ki dhadkan hai 🩶', time: 14.5 },
-  { text: 'Age badhke jile zindagi 🩶', time: 18.2 }
+  { text: 'Ye Zamana Beshrm hai 🩶', time: 3.2 },
+  { text: 'Na isska dharam hai 🩶', time: 6.5 },
+  { text: 'Kyu dhoonde hai tu isme bandhagi 🩶', time: 9.8 },
+  { text: 'Oo tere sath tera man hai. Dil ki dhadkan hai 🩶', time: 13.5 },
+  { text: 'Age badhke jile zindagi 🩶', time: 17.2 }
 ]
 export const CAT_BREAKS = [
   { cat: 'cute', caption: 'meow break! mommy ko itna cute dekhke billi bhi thoda blush kar rahi hai 🐾🎀' },
