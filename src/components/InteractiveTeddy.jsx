@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, useSpring, useMotionValue } from 'framer-motion'
-import confetti from 'canvas-confetti'
 import { playPop, playSparkle } from '../utils/audio.js'
+import { triggerRosePetals } from '../utils/assets.js'
 
 export default function InteractiveTeddy({
   size = 180,
@@ -64,15 +64,10 @@ export default function InteractiveTeddy({
     playPop()
     setIsTickled(true)
     setTimeout(() => setIsTickled(false), 600)
-    confetti({
-      particleCount: 16,
-      spread: 45,
-      origin: { y: 0.6 },
-      colors: ['#f43f5e', '#fda4af', '#ffe4e6'],
-      scalar: 1.2,
-      gravity: 0.5,
-      drift: 0.2,
-      ticks: 260
+    triggerRosePetals({
+      particleCount: 18,
+      origin: { x: 0.5, y: 0.6 },
+      burst: true
     })
   }
 

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import confetti from 'canvas-confetti'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
 import useBlowDetection from '../hooks/useBlowDetection.js'
 import { playCandleBlow, playFanfare, playSparkle, playPop } from '../utils/audio.js'
-import { TEDDY_WEBM } from '../utils/assets.js'
+import { TEDDY_WEBM, triggerRosePetals } from '../utils/assets.js'
 import { CAKE_UI } from '../utils/content.js'
 
 const CANDLE_COUNT = 3
@@ -26,6 +25,7 @@ export default function CakeScene({ onNext }) {
         if (!next.includes(true)) {
           setTimeout(() => {
             playSparkle()
+            triggerRosePetals({ particleCount: 30, origin: { x: 0.5, y: 0.45 } })
             setCutStep('ready_to_cut')
           }, 600)
         }
@@ -45,15 +45,10 @@ export default function CakeScene({ onNext }) {
       playFanfare()
       playSparkle()
       setCutStep('sliced')
-      confetti({
-        particleCount: 45,
-        spread: 90,
-        origin: { y: 0.52 },
-        colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6', '#fff1f2'],
-        scalar: 1.35,
-        gravity: 0.5,
-        drift: 0.25,
-        ticks: 340
+      triggerRosePetals({
+        particleCount: 70,
+        origin: { x: 0.5, y: 0.52 },
+        burst: true
       })
     }, 1000)
   }
@@ -61,15 +56,10 @@ export default function CakeScene({ onNext }) {
   const handleBite = () => {
     playSparkle()
     setBiteCount((b) => b + 1)
-    confetti({
-      particleCount: 22,
-      spread: 60,
-      origin: { y: 0.62 },
-      colors: ['#f43f5e', '#fda4af', '#ffe4e6'],
-      scalar: 1.25,
-      gravity: 0.5,
-      drift: 0.2,
-      ticks: 280
+    triggerRosePetals({
+      particleCount: 25,
+      origin: { x: 0.5, y: 0.62 },
+      burst: true
     })
   }
 

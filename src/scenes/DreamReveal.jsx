@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import confetti from 'canvas-confetti'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
 import Sticker from '../components/Sticker.jsx'
-import { TEDDY_WEBM, POOKIE } from '../utils/assets.js'
+import { TEDDY_WEBM, POOKIE, triggerRosePetals } from '../utils/assets.js'
 import { playSparkle, playFanfare } from '../utils/audio.js'
 
 const FLOATERS = ['💖', '⭐', '☁️', '🌸', '🫧', '🌟', '💗', '✨', '🎈', '🍬']
@@ -27,15 +26,10 @@ export default function DreamReveal({ onNext }) {
     const t = setTimeout(() => {
       playSparkle()
       playFanfare()
-      confetti({
-        particleCount: 40,
-        spread: 80,
-        origin: { y: 0.55 },
-        colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6'],
-        scalar: 1.3,
-        gravity: 0.5,
-        drift: 0.2,
-        ticks: 300
+      triggerRosePetals({
+        particleCount: 50,
+        origin: { x: 0.5, y: 0.55 },
+        burst: true
       })
     }, 400)
     return () => clearTimeout(t)

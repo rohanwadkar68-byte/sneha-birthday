@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import confetti from 'canvas-confetti'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
-import { TEDDY_WEBM } from '../utils/assets.js'
+import { TEDDY_WEBM, triggerRosePetals } from '../utils/assets.js'
 import { WELCOME_CONTENT } from '../utils/content.js'
 import { startMusic } from '../utils/audio.js'
 
@@ -14,15 +13,10 @@ export default function Welcome({ onNext }) {
     if (doorOpen) return
     startMusic() // Immediately unlock and start continuous MP3 BGM on user gesture!
     setDoorOpen(true)
-    confetti({
-      particleCount: 40,
-      spread: 75,
-      origin: { y: 0.6 },
-      colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6', '#fff1f2'],
-      scalar: 1.3,
-      gravity: 0.5,
-      drift: 0.2,
-      ticks: 300
+    triggerRosePetals({
+      particleCount: 55,
+      origin: { x: 0.5, y: 0.6 },
+      burst: true
     })
     setTimeout(() => {
       onNext()

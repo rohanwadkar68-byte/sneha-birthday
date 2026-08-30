@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import confetti from 'canvas-confetti'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
 import { LOVE_COUPONS, SCRATCH_UI } from '../utils/content.js'
-import { TEDDY_WEBM } from '../utils/assets.js'
+import { TEDDY_WEBM, triggerRosePetals } from '../utils/assets.js'
 import { playSparkle, playPop } from '../utils/audio.js'
 
 export default function ScratchCardScene({ onNext }) {
@@ -14,15 +13,10 @@ export default function ScratchCardScene({ onNext }) {
     if (!unlocked[id]) {
       playPop()
       playSparkle()
-      confetti({
-        particleCount: 28,
-        spread: 65,
-        origin: { y: 0.6 },
-        colors: ['#f43f5e', '#fb7185', '#fda4af', '#ffe4e6'],
-        scalar: 1.3,
-        gravity: 0.5,
-        drift: 0.2,
-        ticks: 280
+      triggerRosePetals({
+        particleCount: 30,
+        origin: { x: 0.5, y: 0.6 },
+        burst: true
       })
       setUnlocked((prev) => ({ ...prev, [id]: true }))
     }
