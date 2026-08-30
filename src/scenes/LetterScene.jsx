@@ -368,96 +368,152 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 2: SONG 1 LISTENING ROOM (Chidiya - Real-Time Sync)  */}
+        {/* STAGE 2: FULL-SCREEN IMMERSIVE LOFI ROOM (Chidiya)        */}
         {/* ========================================================= */}
         {stage === 2 && (
           <motion.div
             key="song1room"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={SPRING}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
             style={{
+              position: 'fixed',
+              inset: 0,
+              width: '100vw',
+              height: '100vh',
+              zIndex: 99999,
+              background: 'radial-gradient(ellipse at 50% 25%, #1f0f35 0%, #0c071a 55%, #040209 100%)',
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'space-between',
               alignItems: 'center',
+              padding: 'clamp(14px, 3vh, 24px) clamp(16px, 4vw, 28px)',
               textAlign: 'center',
-              width: '100%',
-              maxWidth: 500,
-              margin: '0 auto',
-              padding: '12px 14px'
+              overflow: 'hidden'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 8 }}>
-              🎧 Close Your Eyes & Feel The Soul 🕊️🩶
-            </div>
-
-            {/* Cinematic Lo-Fi Music Card with Real-Time Synced Lyrics */}
+            {/* Ambient Moon & Twinkling Stars */}
             <div
               style={{
-                width: '100%',
-                background: 'linear-gradient(155deg, #100a26 0%, #1f1238 60%, #301444 100%)',
-                borderRadius: 32,
-                padding: '24px 20px',
-                border: '2px solid rgba(255, 117, 151, 0.35)',
-                boxShadow: '0 25px 60px rgba(10, 6, 25, 0.75), inset 0 1px 0 rgba(255,255,255,0.15)',
-                color: '#fff',
+                position: 'absolute',
+                top: 24,
+                right: 28,
+                width: 64,
+                height: 64,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at 35% 35%, #fffde8 0%, #ffd580 50%, rgba(255,213,128,0) 80%)',
+                boxShadow: '0 0 45px rgba(255, 235, 160, 0.75)',
+                opacity: 0.92,
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Glowing Aurora Orbs */}
+            <motion.div
+              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.45, 0.25] }}
+              transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute',
+                top: '15%',
+                left: '8%',
+                width: 320,
+                height: 320,
+                borderRadius: '50%',
+                background: 'rgba(255, 107, 147, 0.2)',
+                filter: 'blur(75px)',
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Header Lofi Pill */}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: 30,
+                padding: '6px 20px',
+                color: '#ffe4ec',
+                fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)',
+                fontWeight: 800,
+                letterSpacing: '0.04em',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
+                zIndex: 2
+              }}
+            >
+              <span>🎧 Earphones Recommended</span>
+              <span>•</span>
+              <span style={{ color: '#ffd54f' }}>Feel Every Word 🕊️</span>
+            </motion.div>
+
+            {/* Central Animated Lo-Fi Cassette Visual */}
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              style={{
+                position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 14
+                zIndex: 2,
+                margin: 'auto 0 6px'
               }}
             >
-              {/* Header: Rotating Vinyl + Equalizer + Track Info */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
-                <motion.div
-                  animate={{ rotate: isPlaying ? 360 : 0 }}
-                  transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
-                  style={{
-                    width: 'clamp(110px, 25vw, 140px)',
-                    height: 'clamp(110px, 25vw, 140px)',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, #4a1942 30%, #130a22 65%, #ff7597 100%)',
-                    boxShadow: '0 0 40px rgba(255, 117, 151, 0.45), inset 0 0 20px rgba(0,0,0,0.8)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 8
-                  }}
-                >
-                  <img
-                    src={TEDDY_CUDDLE}
-                    alt="Listening Teddies"
-                    style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
+              <motion.div
+                animate={{ rotate: isPlaying ? 360 : 0 }}
+                transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
+                style={{
+                  width: 'clamp(130px, 30vw, 175px)',
+                  height: 'clamp(130px, 30vw, 175px)',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, #4a1942 25%, #130a22 65%, #ff7597 100%)',
+                  boxShadow: '0 0 50px rgba(255, 117, 151, 0.55), inset 0 0 25px rgba(0,0,0,0.85)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 8
+                }}
+              >
+                <img
+                  src={TEDDY_CUDDLE}
+                  alt="Listening Teddies"
+                  style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
+                />
+              </motion.div>
+
+              {/* Lo-Fi Frequency Equalizer Bar */}
+              <div style={{ display: 'flex', gap: 4, height: 18, alignItems: 'flex-end', marginTop: 12 }}>
+                {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
+                  <motion.span
+                    key={idx}
+                    animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                    transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
+                    style={{
+                      width: 3.5,
+                      borderRadius: 2,
+                      background: idx % 2 === 0 ? '#ff7597' : '#ffd54f',
+                      boxShadow: '0 0 8px rgba(255, 117, 151, 0.8)'
+                    }}
                   />
-                </motion.div>
+                ))}
+              </div>
 
-                {/* Lo-Fi Frequency Equalizer Bar */}
-                <div style={{ display: 'flex', gap: 3.5, height: 16, alignItems: 'flex-end', marginTop: 4 }}>
-                  {[10, 18, 14, 24, 16, 12, 22, 15, 20, 13].map((h, idx) => (
-                    <motion.span
-                      key={idx}
-                      animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
-                      transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
-                      style={{
-                        width: 3.5,
-                        borderRadius: 2,
-                        background: idx % 2 === 0 ? '#ff7597' : '#ffd54f',
-                        boxShadow: '0 0 8px rgba(255, 117, 151, 0.8)'
-                      }}
-                    />
-                  ))}
+              <div style={{ textAlign: 'center', marginTop: 4 }}>
+                <div style={{ fontSize: 'clamp(1rem, 3.2vw, 1.25rem)', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
+                  🕊️ Chidiya • Special Lofi Track
                 </div>
-
-                <div style={{ textAlign: 'center', marginTop: 2 }}>
-                  <div style={{ fontSize: '1.12rem', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
-                    🕊️ Chidiya • Special Lofi Track
-                  </div>
-                  <div style={{ fontSize: '0.84rem', color: '#ffd54f', fontWeight: 700 }}>
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </div>
+                <div style={{ fontSize: '0.86rem', color: '#ffd54f', fontWeight: 800 }}>
+                  {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
+            </motion.div>
 
               {/* Real-Time Synced Scrollable Lyrics List */}
               <div
@@ -579,7 +635,6 @@ export default function LetterScene({ onNext }) {
                   <span>Aage Chalein? 😏→</span>
                 </button>
               </div>
-            </div>
           </motion.div>
         )}
 
@@ -745,96 +800,152 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 5: SONG 2 LISTENING ROOM (Vilen - Real-Time Sync)    */}
+        {/* STAGE 5: FULL-SCREEN IMMERSIVE LOFI ROOM (Vilen)          */}
         {/* ========================================================= */}
         {stage === 5 && (
           <motion.div
             key="song2room"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={SPRING}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
             style={{
+              position: 'fixed',
+              inset: 0,
+              width: '100vw',
+              height: '100vh',
+              zIndex: 99999,
+              background: 'radial-gradient(ellipse at 50% 25%, #2a0e44 0%, #0e051a 55%, #04010a 100%)',
               display: 'flex',
               flexDirection: 'column',
+              justifyContent: 'space-between',
               alignItems: 'center',
+              padding: 'clamp(14px, 3vh, 24px) clamp(16px, 4vw, 28px)',
               textAlign: 'center',
-              width: '100%',
-              maxWidth: 500,
-              margin: '0 auto',
-              padding: '12px 14px'
+              overflow: 'hidden'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 8 }}>
-              🎶 Deep Violet Night • Feel Every Word ✨🩶
-            </div>
-
-            {/* Cinematic Lo-Fi Music Card with Real-Time Synced Lyrics */}
+            {/* Ambient Moon & Twinkling Stars */}
             <div
               style={{
-                width: '100%',
-                background: 'linear-gradient(155deg, #120924 0%, #221038 60%, #3d144d 100%)',
-                borderRadius: 32,
-                padding: '24px 20px',
-                border: '2px solid rgba(192, 132, 252, 0.35)',
-                boxShadow: '0 25px 60px rgba(10, 5, 25, 0.75), inset 0 1px 0 rgba(255,255,255,0.15)',
-                color: '#fff',
+                position: 'absolute',
+                top: 24,
+                right: 28,
+                width: 64,
+                height: 64,
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at 35% 35%, #fffde8 0%, #d8b4fe 50%, rgba(216,180,254,0) 80%)',
+                boxShadow: '0 0 45px rgba(216, 180, 254, 0.75)',
+                opacity: 0.92,
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Glowing Aurora Orbs */}
+            <motion.div
+              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.45, 0.25] }}
+              transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+              style={{
+                position: 'absolute',
+                top: '15%',
+                left: '8%',
+                width: 320,
+                height: 320,
+                borderRadius: '50%',
+                background: 'rgba(168, 85, 247, 0.22)',
+                filter: 'blur(75px)',
+                pointerEvents: 'none'
+              }}
+            />
+
+            {/* Header Lofi Pill */}
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: 30,
+                padding: '6px 20px',
+                color: '#f3e8ff',
+                fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)',
+                fontWeight: 800,
+                letterSpacing: '0.04em',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
+                zIndex: 2
+              }}
+            >
+              <span>🎶 Deep Violet Night</span>
+              <span>•</span>
+              <span style={{ color: '#c084fc' }}>Ji Le Zindagi ✨</span>
+            </motion.div>
+
+            {/* Central Animated Lo-Fi Cassette Visual */}
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              style={{
+                position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 14
+                zIndex: 2,
+                margin: 'auto 0 6px'
               }}
             >
-              {/* Header: Rotating Vinyl + Equalizer + Track Info */}
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
-                <motion.div
-                  animate={{ rotate: isPlaying ? 360 : 0 }}
-                  transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
-                  style={{
-                    width: 'clamp(110px, 25vw, 140px)',
-                    height: 'clamp(110px, 25vw, 140px)',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, #5b21b6 30%, #150928 65%, #c084fc 100%)',
-                    boxShadow: '0 0 40px rgba(192, 132, 252, 0.45), inset 0 0 20px rgba(0,0,0,0.8)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: 8
-                  }}
-                >
-                  <img
-                    src={TEDDY_CUDDLE}
-                    alt="Listening Teddies"
-                    style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
+              <motion.div
+                animate={{ rotate: isPlaying ? 360 : 0 }}
+                transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
+                style={{
+                  width: 'clamp(130px, 30vw, 175px)',
+                  height: 'clamp(130px, 30vw, 175px)',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(circle, #5b21b6 25%, #150928 65%, #c084fc 100%)',
+                  boxShadow: '0 0 50px rgba(192, 132, 252, 0.55), inset 0 0 25px rgba(0,0,0,0.85)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 8
+                }}
+              >
+                <img
+                  src={TEDDY_CUDDLE}
+                  alt="Listening Teddies"
+                  style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
+                />
+              </motion.div>
+
+              {/* Lo-Fi Frequency Equalizer Bar */}
+              <div style={{ display: 'flex', gap: 4, height: 18, alignItems: 'flex-end', marginTop: 12 }}>
+                {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
+                  <motion.span
+                    key={idx}
+                    animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                    transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
+                    style={{
+                      width: 3.5,
+                      borderRadius: 2,
+                      background: idx % 2 === 0 ? '#c084fc' : '#ffd54f',
+                      boxShadow: '0 0 8px rgba(192, 132, 252, 0.8)'
+                    }}
                   />
-                </motion.div>
+                ))}
+              </div>
 
-                {/* Lo-Fi Frequency Equalizer Bar */}
-                <div style={{ display: 'flex', gap: 3.5, height: 16, alignItems: 'flex-end', marginTop: 4 }}>
-                  {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
-                    <motion.span
-                      key={idx}
-                      animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
-                      transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
-                      style={{
-                        width: 3.5,
-                        borderRadius: 2,
-                        background: idx % 2 === 0 ? '#c084fc' : '#ffd54f',
-                        boxShadow: '0 0 8px rgba(192, 132, 252, 0.8)'
-                      }}
-                    />
-                  ))}
+              <div style={{ textAlign: 'center', marginTop: 4 }}>
+                <div style={{ fontSize: 'clamp(1rem, 3.2vw, 1.25rem)', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
+                  ✨ Vilen • Ji Le Zindagi
                 </div>
-
-                <div style={{ textAlign: 'center', marginTop: 2 }}>
-                  <div style={{ fontSize: '1.12rem', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
-                    ✨ Vilen • Ji Le Zindagi
-                  </div>
-                  <div style={{ fontSize: '0.84rem', color: '#ffd54f', fontWeight: 700 }}>
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </div>
+                <div style={{ fontSize: '0.86rem', color: '#ffd54f', fontWeight: 800 }}>
+                  {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
+            </motion.div>
 
               {/* Real-Time Synced Scrollable Lyrics List */}
               <div
@@ -956,7 +1067,6 @@ export default function LetterScene({ onNext }) {
                   <span>Cake Par Chalein 🎂✨</span>
                 </button>
               </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
