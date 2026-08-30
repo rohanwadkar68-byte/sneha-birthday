@@ -48,7 +48,16 @@ export default function CatBreakScene({ onNext, caption }) {
           🐾 SPECIAL PAW-SE MOMENT 🐾
         </div>
 
-        <Teddy src={TEDDY_WEBM.curious[0]} size={170} glow delay={0.2} />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+          <Teddy src={TEDDY_WEBM.curious[0]} size={160} glow delay={0.2} />
+          <motion.img
+            src="assets/memes/cat_jam.gif"
+            alt="Cat Jam Meme"
+            style={{ width: 68, height: 68, borderRadius: 16, boxShadow: '0 4px 14px rgba(0,0,0,0.1)' }}
+            animate={{ rotate: [-4, 4, -4] }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: 'easeInOut' }}
+          />
+        </div>
 
         <motion.div
           className="bubble"

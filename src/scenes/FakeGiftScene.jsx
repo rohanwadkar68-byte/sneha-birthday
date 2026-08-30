@@ -193,7 +193,14 @@ export default function FakeGiftScene({ onNext }) {
             transition={SPRING}
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginTop: 10 }}
           >
-            <div className="hand-note" style={{ fontSize: '1.45rem' }}>…Khaali hai?! 😦</div>
+            <div className="hand-note" style={{ fontSize: '1.45rem', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span>…Khaali hai?! 😦</span>
+              <img
+                src="assets/memes/confused_huh_cat.gif"
+                alt="Huh Cat"
+                style={{ width: 44, height: 44, borderRadius: 8 }}
+              />
+            </div>
             <Teddy src={TEDDY_WEBM.curious[0]} size={140} float={false} />
           </motion.div>
         )}

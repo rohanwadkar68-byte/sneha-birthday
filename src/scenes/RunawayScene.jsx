@@ -92,11 +92,29 @@ export default function RunawayScene({ onNext }) {
           <motion.div
             key={dodges}
             className="hand-note"
-            style={{ position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%) rotate(-3deg)', fontSize: '1.4rem' }}
+            style={{
+              position: 'absolute',
+              top: 6,
+              left: '50%',
+              transform: 'translateX(-50%) rotate(-3deg)',
+              fontSize: '1.35rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              background: 'rgba(255, 255, 255, 0.9)',
+              padding: '4px 14px',
+              borderRadius: 999,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.08)'
+            }}
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            {TAUNTS[dodges]}
+            <span>{TAUNTS[dodges]}</span>
+            <img
+              src={dodges % 2 === 0 ? 'assets/memes/cool_doge.gif' : 'assets/memes/dance_doggo.gif'}
+              alt="Meme Reaction"
+              style={{ width: 32, height: 32, objectFit: 'contain' }}
+            />
           </motion.div>
         )}
       </div>

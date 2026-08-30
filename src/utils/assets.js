@@ -161,3 +161,21 @@ export const EMOJI_3D = {
     get3dEmoji('fire')
   ]
 }
+
+// 🎭 Viral & Relatable Trending Chat Meme Stickers
+export const getMeme = (name) => `${base}assets/memes/${name}`
+
+export const MEME_STICKERS = {
+  catJam: getMeme('cat_jam.gif'),
+  huhCat: getMeme('confused_huh_cat.gif'),
+  angryCat: getMeme('angry_cat.png'),
+  sadCat: getMeme('sad_cat.png'),
+  gaspCat: getMeme('gasp_cat.gif'),
+  coolDoge: getMeme('cool_doge.gif'),
+  danceDoggo: getMeme('dance_doggo.gif'),
+  dogJam: getMeme('dog_jam.gif'),
+  typingCat: getMeme('typing_cat.gif'),
+  tryNotToCry: getMeme('try_not_to_cry.gif'),
+  cheems: getMeme('cheems.png'),
+  pikachu: getMeme('surprised_pikachu.png')
+}

@@ -37,10 +37,17 @@ export default function FakeErrorScene({ onNext }) {
             <span style={{ fontSize: 22 }}>⚠️</span>
             <span>SYSTEM ERROR 0x420</span>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '8px 0 4px' }}>
+            <img
+              src="assets/memes/sad_cat.png"
+              alt="Sad Cat Meme"
+              style={{ width: 80, height: 80, objectFit: 'contain', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.15))' }}
+            />
+          </div>
           <div className="err-body">{FAKE_ERRORS[index].replace('{name}', GIRL)}</div>
           <div className="err-foot">
             <button className="err-ok" onClick={handleRetry}>
-              Retry 🔄
+              Retry 🔄 (Please Maan Jao)
             </button>
           </div>
         </motion.div>
