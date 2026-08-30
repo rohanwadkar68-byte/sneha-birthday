@@ -34,10 +34,33 @@ const DREAM = 5
 export default function App() {
   const [sceneIndex, setSceneIndex] = useState(LOADING)
   const [bonusFinale, setBonusFinale] = useState(false)
-  const [muted, setMuted] = useState(true)
+  const [muted, setMuted] = useState(false)
   const [dontClicks, setDontClicks] = useState(0)
   const [secretOpen, setSecretOpen] = useState(false)
   const [started, setStarted] = useState(false)
+
+  // Start BGM immediately on website load + first touch unlock
+  useEffect(() => {
+    startMusic()
+    setMuted(false)
+
+    const handleFirstTouch = () => {
+      startMusic()
+      window.removeEventListener('pointerdown', handleFirstTouch)
+      window.removeEventListener('touchstart', handleFirstTouch)
+      window.removeEventListener('click', handleFirstTouch)
+    }
+
+    window.addEventListener('pointerdown', handleFirstTouch, { once: true })
+    window.addEventListener('touchstart', handleFirstTouch, { once: true })
+    window.addEventListener('click', handleFirstTouch, { once: true })
+
+    return () => {
+      window.removeEventListener('pointerdown', handleFirstTouch)
+      window.removeEventListener('touchstart', handleFirstTouch)
+      window.removeEventListener('click', handleFirstTouch)
+    }
+  }, [])
 
   const go = (i) => setSceneIndex(i)
   const next = () => setSceneIndex((i) => i + 1)
@@ -46,7 +69,6 @@ export default function App() {
     setStarted(true)
     startMusic()
     setMuted(false)
-    playSparkle()
     next()
   }
 
