@@ -24,71 +24,85 @@ export default function LetterScene({ onNext }) {
   // STAGES:
   // 0: Overthinking Reassurance
   // 1: Letter 1 (Pure Reading - No Music/No Overlays)
-  // 2: Song 1 Dedicated Listening Room (Chidiya + Lyrics + Feelings)
+  // 2: Song 1 Dedicated Listening Room (Chidiya + Real-Time Synced Lyrics)
   // 3: Surprise Transition ("Baccha... ruko. Ek aur hai.")
   // 4: Letter 2 (Pure Reading - No Music/No Overlays)
-  // 5: Song 2 Dedicated Listening Room (Vilen + Lyrics + Feelings)
+  // 5: Song 2 Dedicated Listening Room (Vilen + Real-Time Synced Lyrics)
   const [stage, setStage] = useState(0)
   const [opened1, setOpened1] = useState(false)
   const [opened2, setOpened2] = useState(false)
-  const [lyricIdx1, setLyricIdx1] = useState(0)
-  const [lyricIdx2, setLyricIdx2] = useState(0)
+
+  // Audio Playback & Real-Time Time Sync
+  const [activeLyricIdx, setActiveLyricIdx] = useState(0)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(1)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  const audioRef1 = useRef(null)
-  const audioRef2 = useRef(null)
+  const audioRef = useRef(null)
   const scrollRef1 = useRef(null)
   const scrollRef2 = useRef(null)
+  const lyricsContainerRef = useRef(null)
 
   // Typewriter hooks for clean letters
   const { output: output1, done: done1 } = useTypewriter(opened1 ? LETTER_LINES : [], 22)
   const { output: output2, done: done2 } = useTypewriter(opened2 ? LETTER_2_LINES : [], 22)
 
-  // Cleanup audio on unmount
+  // Cleanup audio on unmount or stage change
   useEffect(() => {
     return () => {
-      if (audioRef1.current) {
-        audioRef1.current.pause()
-        audioRef1.current = null
-      }
-      if (audioRef2.current) {
-        audioRef2.current.pause()
-        audioRef2.current = null
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
       }
     }
   }, [])
 
-  // Lyrics timeline for Song 1 (Chidiya) in Stage 2
+  // Auto-scroll active lyric into center view
   useEffect(() => {
-    if (stage !== 2) return
-    setLyricIdx1(0)
-    let idx = 0
-    const interval = setInterval(() => {
-      idx++
-      if (idx < LETTER_1_LYRICS.length) {
-        setLyricIdx1(idx)
-      } else {
-        clearInterval(interval)
+    if (lyricsContainerRef.current) {
+      const activeEl = lyricsContainerRef.current.querySelector('.active-lyric')
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
-    }, 4200)
-    return () => clearInterval(interval)
-  }, [stage])
+    }
+  }, [activeLyricIdx])
 
-  // Lyrics timeline for Song 2 (Vilen) in Stage 5
-  useEffect(() => {
-    if (stage !== 5) return
-    setLyricIdx2(0)
-    let idx = 0
-    const interval = setInterval(() => {
-      idx++
-      if (idx < LETTER_2_LYRICS.length) {
-        setLyricIdx2(idx)
-      } else {
-        clearInterval(interval)
+  // Real-time audio time listener
+  const setupAudio = (src, cues) => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
+
+    const audio = new Audio(src)
+    audio.volume = 0.85
+    audioRef.current = audio
+
+    audio.ontimeupdate = () => {
+      const cur = audio.currentTime
+      setCurrentTime(cur)
+      setDuration(audio.duration || 1)
+
+      // Find current active lyric
+      for (let i = cues.length - 1; i >= 0; i--) {
+        if (cur >= cues[i].time - 0.25) {
+          setActiveLyricIdx(i)
+          break
+        }
       }
-    }, 4500)
-    return () => clearInterval(interval)
-  }, [stage])
+    }
+
+    audio.onended = () => {
+      setIsPlaying(false)
+    }
+
+    audio.onplay = () => setIsPlaying(true)
+    audio.onpause = () => setIsPlaying(false)
+
+    audio.play().catch(() => {
+      setIsPlaying(false)
+    })
+  }
 
   // STAGE HANDLERS
 
@@ -105,27 +119,17 @@ export default function LetterScene({ onNext }) {
   const handleStartSong1 = () => {
     playSparkle()
     setStage(2)
-    setIsPlaying(true)
-
-    try {
-      if (audioRef2.current) {
-        audioRef2.current.currentTime = 0
-        audioRef2.current.play()
-      } else {
-        const a = new Audio(SONG_2_CHIDIYA)
-        a.volume = 0.75
-        a.play().catch(() => {})
-        audioRef2.current = a
-        a.onended = () => setIsPlaying(false)
-      }
-    } catch (e) {}
+    setActiveLyricIdx(0)
+    setCurrentTime(0)
+    setupAudio(SONG_2_CHIDIYA, LETTER_1_LYRICS)
   }
 
   // Stage 2 -> 3: Go to Surprise Transition
   const handleFinishSong1 = () => {
     playPop()
-    if (audioRef2.current) {
-      audioRef2.current.pause()
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
     }
     setStage(3)
   }
@@ -143,29 +147,50 @@ export default function LetterScene({ onNext }) {
   const handleStartSong2 = () => {
     playSparkle()
     setStage(5)
-    setIsPlaying(true)
-
-    try {
-      if (audioRef1.current) {
-        audioRef1.current.currentTime = 0
-        audioRef1.current.play()
-      } else {
-        const a = new Audio(SONG_1_VILEN)
-        a.volume = 0.75
-        a.play().catch(() => {})
-        audioRef1.current = a
-        a.onended = () => setIsPlaying(false)
-      }
-    } catch (e) {}
+    setActiveLyricIdx(0)
+    setCurrentTime(0)
+    setupAudio(SONG_1_VILEN, LETTER_2_LYRICS)
   }
 
   // Stage 5 -> Finish
   const handleFinishAll = () => {
     playSparkle()
-    if (audioRef1.current) {
-      audioRef1.current.pause()
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
     }
     onNext()
+  }
+
+  // Audio Controls
+  const togglePlayPause = () => {
+    if (!audioRef.current) return
+    if (isPlaying) {
+      audioRef.current.pause()
+    } else {
+      audioRef.current.play().catch(() => {})
+    }
+  }
+
+  const handleReplay = (cues) => {
+    playSparkle()
+    if (!audioRef.current) return
+    audioRef.current.currentTime = 0
+    setActiveLyricIdx(0)
+    audioRef.current.play().catch(() => {})
+  }
+
+  const handleSeekLyric = (cueTime) => {
+    if (!audioRef.current) return
+    playPop()
+    audioRef.current.currentTime = cueTime
+    audioRef.current.play().catch(() => {})
+  }
+
+  const formatTime = (secs) => {
+    const m = Math.floor(secs / 60)
+    const s = Math.floor(secs % 60)
+    return `${m}:${s < 10 ? '0' : ''}${s}`
   }
 
   return (
@@ -280,7 +305,6 @@ export default function LetterScene({ onNext }) {
                 position: 'relative'
               }}
             >
-              {/* Soft stamp */}
               <div
                 style={{
                   position: 'absolute',
@@ -344,7 +368,7 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 2: SONG 1 LISTENING ROOM (Chidiya Track & Feelings)  */}
+        {/* STAGE 2: SONG 1 LISTENING ROOM (Chidiya - Real-Time Sync)  */}
         {/* ========================================================= */}
         {stage === 2 && (
           <motion.div
@@ -361,121 +385,183 @@ export default function LetterScene({ onNext }) {
               width: '100%',
               maxWidth: 500,
               margin: '0 auto',
-              padding: '16px 14px'
+              padding: '12px 14px'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 8 }}>
+            <div className="hand-note" style={{ marginBottom: 6 }}>
               🎧 Close Your Eyes & Feel The Music 🕊️🩶
             </div>
 
-            {/* Cinematic Music Card */}
+            {/* Cinematic Music Card with Real-Time Synced Lyrics */}
             <div
               style={{
                 width: '100%',
-                background: 'linear-gradient(145deg, #1b1638, #2a1f4a)',
+                background: 'linear-gradient(145deg, #18122f, #271b44)',
                 borderRadius: 28,
-                padding: '24px 20px',
+                padding: '20px 18px',
                 border: '2px solid rgba(255, 215, 230, 0.3)',
-                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.5)',
+                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.55)',
                 color: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 16
+                gap: 12
               }}
             >
-              {/* Spinning / Glowing Teddy Vinyl Visual */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 18, ease: 'linear' }}
+              {/* Header: Teddy + Song Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, width: '100%', justifyContent: 'center' }}>
+                <motion.div
+                  animate={{ rotate: isPlaying ? 360 : 0 }}
+                  transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
+                  style={{
+                    width: 68,
+                    height: 68,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, #3d2f66 35%, #18122b 70%, #ff85a8 100%)',
+                    boxShadow: '0 0 20px rgba(255, 133, 168, 0.4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}
+                >
+                  <img
+                    src={TEDDY_CUDDLE}
+                    alt="Listening Teddies"
+                    style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: '50%' }}
+                  />
+                </motion.div>
+
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffb3cd' }}>
+                    Chidiya • Special Track
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-Time Synced Scrollable Lyrics List */}
+              <div
+                ref={lyricsContainerRef}
                 style={{
-                  width: 140,
-                  height: 140,
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, #3d2f66 35%, #18122b 70%, #ff85a8 100%)',
-                  boxShadow: '0 0 30px rgba(255, 133, 168, 0.45)',
+                  width: '100%',
+                  height: 'clamp(180px, 28vh, 230px)',
+                  overflowY: 'auto',
+                  background: 'rgba(0, 0, 0, 0.35)',
+                  borderRadius: 18,
+                  padding: '16px 12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative'
+                  flexDirection: 'column',
+                  gap: 10,
+                  scrollBehavior: 'smooth'
                 }}
               >
-                <img
-                  src={TEDDY_CUDDLE}
-                  alt="Listening Teddies"
+                {LETTER_1_LYRICS.map((cue, idx) => {
+                  const isActive = activeLyricIdx === idx
+                  return (
+                    <motion.div
+                      key={idx}
+                      onClick={() => handleSeekLyric(cue.time)}
+                      className={isActive ? 'active-lyric' : ''}
+                      animate={{
+                        scale: isActive ? 1.05 : 0.96,
+                        opacity: isActive ? 1 : 0.42
+                      }}
+                      style={{
+                        padding: '8px 12px',
+                        borderRadius: 14,
+                        background: isActive ? 'rgba(255, 117, 151, 0.22)' : 'transparent',
+                        border: isActive ? '1px solid rgba(255, 117, 151, 0.45)' : '1px solid transparent',
+                        color: isActive ? '#ffd54f' : '#f0e6ff',
+                        fontWeight: isActive ? 900 : 600,
+                        fontSize: isActive ? '1.15rem' : '0.94rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.25s ease',
+                        textShadow: isActive ? '0 0 14px rgba(255, 213, 79, 0.5)' : 'none'
+                      }}
+                    >
+                      {cue.text}
+                    </motion.div>
+                  )
+                })}
+              </div>
+
+              {/* Progress Slider */}
+              <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input
+                  type="range"
+                  min={0}
+                  max={duration || 1}
+                  step={0.1}
+                  value={currentTime}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value)
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = val
+                    }
+                  }}
                   style={{
-                    width: 96,
-                    height: 96,
-                    objectFit: 'contain',
-                    borderRadius: '50%',
-                    filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))'
+                    flex: 1,
+                    accentColor: '#ff7597',
+                    cursor: 'pointer',
+                    height: 5
                   }}
                 />
-              </motion.div>
-
-              {/* Dynamic Floating Lyric Display */}
-              <div
-                style={{
-                  minHeight: 64,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  padding: '4px 10px'
-                }}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={lyricIdx1}
-                    initial={{ opacity: 0, y: 12, scale: 0.94 }}
-                    animate={{ opacity: 1, y: 0, scale: 1.05 }}
-                    exit={{ opacity: 0, y: -12, scale: 0.94 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                    style={{
-                      fontSize: 'clamp(1.15rem, 4.2vw, 1.45rem)',
-                      fontWeight: 800,
-                      color: lyricIdx1 === LETTER_1_LYRICS.length - 1 ? '#ffd54f' : '#ffe4ec',
-                      textShadow: '0 0 16px rgba(255, 182, 193, 0.65)',
-                      letterSpacing: '0.03em'
-                    }}
-                  >
-                    "{LETTER_1_LYRICS[lyricIdx1]?.text}"
-                  </motion.div>
-                </AnimatePresence>
               </div>
 
-              {/* Progress dots */}
-              <div style={{ display: 'flex', gap: 5 }}>
-                {LETTER_1_LYRICS.map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: lyricIdx1 === i ? 18 : 6,
-                      height: 6,
-                      borderRadius: 3,
-                      background: lyricIdx1 === i ? '#ff7597' : 'rgba(255,255,255,0.25)',
-                      transition: 'all 0.3s ease'
-                    }}
-                  />
-                ))}
-              </div>
+              {/* Controls Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, width: '100%' }}>
+                <button
+                  onClick={() => handleReplay(LETTER_1_LYRICS)}
+                  style={{
+                    background: 'rgba(255,255,255,0.15)',
+                    border: 'none',
+                    borderRadius: 20,
+                    color: '#fff',
+                    padding: '6px 14px',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔄 Replay
+                </button>
 
-              {/* Continue button */}
-              <motion.button
-                className="btn-primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleFinishSong1}
-                style={{
-                  width: '100%',
-                  marginTop: 6,
-                  padding: '13px 20px',
-                  background: 'linear-gradient(135deg, #ff85a8 0%, #ff4b72 100%)',
-                  border: 'none'
-                }}
-              >
-                <span>Aage Chalein? 😏→</span>
-              </motion.button>
+                <button
+                  onClick={togglePlayPause}
+                  style={{
+                    background: 'linear-gradient(135deg, #ff7597, #ff4b72)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: 44,
+                    height: 44,
+                    color: '#fff',
+                    fontSize: '1.1rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 14px rgba(255, 75, 114, 0.4)'
+                  }}
+                >
+                  {isPlaying ? '⏸' : '▶'}
+                </button>
+
+                <button
+                  onClick={handleFinishSong1}
+                  className="btn-primary"
+                  style={{
+                    padding: '8px 18px',
+                    fontSize: '0.9rem',
+                    background: 'linear-gradient(135deg, #ff85a8 0%, #ff4b72 100%)'
+                  }}
+                >
+                  <span>Aage Chalein? 😏→</span>
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
@@ -579,7 +665,6 @@ export default function LetterScene({ onNext }) {
                 position: 'relative'
               }}
             >
-              {/* Soft stamp */}
               <div
                 style={{
                   position: 'absolute',
@@ -643,7 +728,7 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 5: SONG 2 LISTENING ROOM (Vilen Track & Feelings)    */}
+        {/* STAGE 5: SONG 2 LISTENING ROOM (Vilen - Real-Time Sync)    */}
         {/* ========================================================= */}
         {stage === 5 && (
           <motion.div
@@ -660,121 +745,183 @@ export default function LetterScene({ onNext }) {
               width: '100%',
               maxWidth: 500,
               margin: '0 auto',
-              padding: '16px 14px'
+              padding: '12px 14px'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 8 }}>
+            <div className="hand-note" style={{ marginBottom: 6 }}>
               🎶 Feel The Soul & The Meaning ✨🩶
             </div>
 
-            {/* Cinematic Music Card 2 */}
+            {/* Cinematic Music Card with Real-Time Synced Lyrics */}
             <div
               style={{
                 width: '100%',
-                background: 'linear-gradient(145deg, #201438, #3b1845)',
+                background: 'linear-gradient(145deg, #1c1032, #341540)',
                 borderRadius: 28,
-                padding: '24px 20px',
+                padding: '20px 18px',
                 border: '2px solid rgba(255, 200, 240, 0.3)',
-                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.5)',
+                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.55)',
                 color: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 16
+                gap: 12
               }}
             >
-              {/* Spinning / Glowing Teddy Vinyl Visual */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 18, ease: 'linear' }}
+              {/* Header: Teddy + Song Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, width: '100%', justifyContent: 'center' }}>
+                <motion.div
+                  animate={{ rotate: isPlaying ? 360 : 0 }}
+                  transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
+                  style={{
+                    width: 68,
+                    height: 68,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, #5b21b6 35%, #1e1138 70%, #c084fc 100%)',
+                    boxShadow: '0 0 20px rgba(192, 132, 252, 0.4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}
+                >
+                  <img
+                    src={TEDDY_CUDDLE}
+                    alt="Vilen Song Teddies"
+                    style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: '50%' }}
+                  />
+                </motion.div>
+
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#e9d5ff' }}>
+                    Vilen • Ji Le Zindagi
+                  </div>
+                  <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>
+                    {formatTime(currentTime)} / {formatTime(duration)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Real-Time Synced Scrollable Lyrics List */}
+              <div
+                ref={lyricsContainerRef}
                 style={{
-                  width: 140,
-                  height: 140,
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, #5b21b6 35%, #1e1138 70%, #c084fc 100%)',
-                  boxShadow: '0 0 30px rgba(192, 132, 252, 0.45)',
+                  width: '100%',
+                  height: 'clamp(180px, 28vh, 230px)',
+                  overflowY: 'auto',
+                  background: 'rgba(0, 0, 0, 0.35)',
+                  borderRadius: 18,
+                  padding: '16px 12px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative'
+                  flexDirection: 'column',
+                  gap: 10,
+                  scrollBehavior: 'smooth'
                 }}
               >
-                <img
-                  src={TEDDY_CUDDLE}
-                  alt="Vilen Song Teddies"
+                {LETTER_2_LYRICS.map((cue, idx) => {
+                  const isActive = activeLyricIdx === idx
+                  return (
+                    <motion.div
+                      key={idx}
+                      onClick={() => handleSeekLyric(cue.time)}
+                      className={isActive ? 'active-lyric' : ''}
+                      animate={{
+                        scale: isActive ? 1.05 : 0.96,
+                        opacity: isActive ? 1 : 0.42
+                      }}
+                      style={{
+                        padding: '8px 12px',
+                        borderRadius: 14,
+                        background: isActive ? 'rgba(192, 132, 252, 0.22)' : 'transparent',
+                        border: isActive ? '1px solid rgba(192, 132, 252, 0.45)' : '1px solid transparent',
+                        color: isActive ? '#ffd54f' : '#f0e6ff',
+                        fontWeight: isActive ? 900 : 600,
+                        fontSize: isActive ? '1.15rem' : '0.94rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.25s ease',
+                        textShadow: isActive ? '0 0 14px rgba(255, 213, 79, 0.5)' : 'none'
+                      }}
+                    >
+                      {cue.text}
+                    </motion.div>
+                  )
+                })}
+              </div>
+
+              {/* Progress Slider */}
+              <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <input
+                  type="range"
+                  min={0}
+                  max={duration || 1}
+                  step={0.1}
+                  value={currentTime}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value)
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = val
+                    }
+                  }}
                   style={{
-                    width: 96,
-                    height: 96,
-                    objectFit: 'contain',
-                    borderRadius: '50%',
-                    filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))'
+                    flex: 1,
+                    accentColor: '#c084fc',
+                    cursor: 'pointer',
+                    height: 5
                   }}
                 />
-              </motion.div>
-
-              {/* Dynamic Floating Lyric Display */}
-              <div
-                style={{
-                  minHeight: 64,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  padding: '4px 10px'
-                }}
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={lyricIdx2}
-                    initial={{ opacity: 0, y: 12, scale: 0.94 }}
-                    animate={{ opacity: 1, y: 0, scale: 1.05 }}
-                    exit={{ opacity: 0, y: -12, scale: 0.94 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                    style={{
-                      fontSize: 'clamp(1.15rem, 4.2vw, 1.45rem)',
-                      fontWeight: 800,
-                      color: lyricIdx2 === LETTER_2_LYRICS.length - 1 ? '#ffd54f' : '#f3e8ff',
-                      textShadow: '0 0 16px rgba(192, 132, 252, 0.65)',
-                      letterSpacing: '0.03em'
-                    }}
-                  >
-                    "{LETTER_2_LYRICS[lyricIdx2]?.text}"
-                  </motion.div>
-                </AnimatePresence>
               </div>
 
-              {/* Progress dots */}
-              <div style={{ display: 'flex', gap: 5 }}>
-                {LETTER_2_LYRICS.map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: lyricIdx2 === i ? 18 : 6,
-                      height: 6,
-                      borderRadius: 3,
-                      background: lyricIdx2 === i ? '#c084fc' : 'rgba(255,255,255,0.25)',
-                      transition: 'all 0.3s ease'
-                    }}
-                  />
-                ))}
-              </div>
+              {/* Controls Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, width: '100%' }}>
+                <button
+                  onClick={() => handleReplay(LETTER_2_LYRICS)}
+                  style={{
+                    background: 'rgba(255,255,255,0.15)',
+                    border: 'none',
+                    borderRadius: 20,
+                    color: '#fff',
+                    padding: '6px 14px',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔄 Replay
+                </button>
 
-              {/* Next Cake Button */}
-              <motion.button
-                className="btn-primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleFinishAll}
-                style={{
-                  width: '100%',
-                  marginTop: 6,
-                  padding: '13px 20px',
-                  background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
-                  border: 'none'
-                }}
-              >
-                <span>Bas ab cake ka number hai 🎂✨</span>
-              </motion.button>
+                <button
+                  onClick={togglePlayPause}
+                  style={{
+                    background: 'linear-gradient(135deg, #c084fc, #7e22ce)',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: 44,
+                    height: 44,
+                    color: '#fff',
+                    fontSize: '1.1rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 4px 14px rgba(126, 34, 206, 0.4)'
+                  }}
+                >
+                  {isPlaying ? '⏸' : '▶'}
+                </button>
+
+                <button
+                  onClick={handleFinishAll}
+                  className="btn-primary"
+                  style={{
+                    padding: '8px 18px',
+                    fontSize: '0.9rem',
+                    background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)'
+                  }}
+                >
+                  <span>Cake Par Chalein 🎂✨</span>
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
