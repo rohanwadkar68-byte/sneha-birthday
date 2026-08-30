@@ -1,21 +1,29 @@
-const BASE = import.meta.env.BASE_URL
+const BASE = import.meta.env.BASE_URL || '/'
 const BGM_SRC = `${BASE}assets/audio/bgm.mp3`
 
 let bgmAudio = null
 
-function getBgm() {
+export function initBGM() {
   if (!bgmAudio) {
     bgmAudio = new Audio(BGM_SRC)
     bgmAudio.loop = true
-    bgmAudio.volume = 0.75
+    bgmAudio.volume = 0.8
+    bgmAudio.preload = 'auto'
   }
   return bgmAudio
 }
 
 export function startMusic() {
-  const bgm = getBgm()
-  bgm.loop = true
-  bgm.play().catch(() => {})
+  try {
+    const bgm = initBGM()
+    bgm.loop = true
+    const p = bgm.play()
+    if (p && p.catch) {
+      p.catch(() => {})
+    }
+  } catch (err) {
+    console.warn('startMusic error:', err)
+  }
 }
 
 export function stopMusic() {
@@ -31,9 +39,15 @@ export function pauseBGM() {
 }
 
 export function resumeBGM() {
-  if (bgmAudio) {
-    bgmAudio.loop = true
-    bgmAudio.play().catch(() => {})
+  try {
+    const bgm = initBGM()
+    bgm.loop = true
+    const p = bgm.play()
+    if (p && p.catch) {
+      p.catch(() => {})
+    }
+  } catch (err) {
+    console.warn('resumeBGM error:', err)
   }
 }
 

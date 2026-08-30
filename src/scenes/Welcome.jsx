@@ -5,15 +5,14 @@ import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
 import { TEDDY_WEBM } from '../utils/assets.js'
 import { WELCOME_CONTENT } from '../utils/content.js'
-import { playSparkle, playPop } from '../utils/audio.js'
+import { startMusic } from '../utils/audio.js'
 
 export default function Welcome({ onNext }) {
   const [doorOpen, setDoorOpen] = useState(false)
 
   const handleOpenDoor = () => {
     if (doorOpen) return
-    playPop()
-    playSparkle()
+    startMusic() // Immediately unlock and start continuous MP3 BGM on user gesture!
     setDoorOpen(true)
     confetti({
       particleCount: 80,
