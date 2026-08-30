@@ -1,5 +1,6 @@
-const BASE = import.meta.env.BASE_URL || '/'
-const BGM_SRC = `${BASE}assets/audio/bgm.mp3`
+const base = import.meta.env.BASE_URL || './'
+const cleanBase = base.endsWith('/') ? base : `${base}/`
+const BGM_SRC = `${cleanBase}assets/audio/bgm.mp3`
 
 let bgmAudio = null
 

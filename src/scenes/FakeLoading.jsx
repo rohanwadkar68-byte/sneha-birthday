@@ -4,13 +4,14 @@ import SceneShell from '../components/SceneShell.jsx'
 import { FAKE_LOADING_STEPS, GIRL } from '../utils/content.js'
 import Teddy from '../components/Teddy.jsx'
 import { TEDDY_WEBM } from '../utils/assets.js'
-import { blip, playSparkle } from '../utils/audio.js'
+import { blip, playSparkle, startMusic } from '../utils/audio.js'
 
 export default function FakeLoading({ onDone, duration = 4000 }) {
   const total = FAKE_LOADING_STEPS.length
   const [step, setStep] = useState(0)
 
   useEffect(() => {
+    startMusic() // Attempt autoplay on mount
     const timer = setInterval(() => {
       setStep((s) => {
         if (s + 1 >= total) {
@@ -30,7 +31,11 @@ export default function FakeLoading({ onDone, duration = 4000 }) {
 
   return (
     <SceneShell>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: 460 }}>
+      <div
+        onClick={startMusic}
+        onTouchStart={startMusic}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: 460, cursor: 'pointer' }}
+      >
         <Teddy
           src={step >= total - 2 ? TEDDY_WEBM.happy[0] : TEDDY_WEBM.curious[0]}
           size={160}

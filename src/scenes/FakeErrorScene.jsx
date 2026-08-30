@@ -5,7 +5,7 @@ import { FAKE_ERRORS, FAKE_ERROR_FIX, GIRL } from '../utils/content.js'
 import Sticker from '../components/Sticker.jsx'
 import Teddy from '../components/Teddy.jsx'
 import { POOKIE, TEDDY_WEBM } from '../utils/assets.js'
-import { playPop, playSparkle } from '../utils/audio.js'
+import { playPop, playSparkle, startMusic } from '../utils/audio.js'
 
 export default function FakeErrorScene({ onNext }) {
   const [index, setIndex] = useState(0)
@@ -13,12 +13,12 @@ export default function FakeErrorScene({ onNext }) {
   const fix = FAKE_ERROR_FIX[Math.min(index, FAKE_ERROR_FIX.length - 1)]
 
   const handleRetry = () => {
-    playPop()
+    startMusic()
     setIndex((i) => i + 1)
   }
 
   const handleDone = () => {
-    playSparkle()
+    startMusic()
     onNext()
   }
 

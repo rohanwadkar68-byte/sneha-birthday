@@ -433,15 +433,15 @@ export default function LetterScene({ onNext }) {
               }}
             />
 
-            {/* TOP HEADER: Earphones Badge + PERMANENT FLOATING NEXT BUTTON */}
+            {/* TOP HEADER: Earphones Badge + PERMANENT FLOATING NEXT BUTTON IN OPEN CANVAS */}
             <div
               style={{
                 width: '100%',
-                maxWidth: 620,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 8,
+                gap: 12,
+                padding: '0 clamp(8px, 3vw, 24px)',
                 zIndex: 10,
                 marginTop: 2
               }}
@@ -1019,15 +1019,15 @@ export default function LetterScene({ onNext }) {
               }}
             />
 
-            {/* TOP HEADER: Song Badge + PERMANENT FLOATING CAKE BUTTON */}
+            {/* TOP HEADER: Song Badge + PERMANENT FLOATING CAKE BUTTON IN OPEN CANVAS */}
             <div
               style={{
                 width: '100%',
-                maxWidth: 620,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 8,
+                gap: 12,
+                padding: '0 clamp(8px, 3vw, 24px)',
                 zIndex: 10,
                 marginTop: 2
               }}
