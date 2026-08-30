@@ -1,4 +1,4 @@
-﻿import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import useTypewriter from '../hooks/useTypewriter.js'
@@ -75,7 +75,7 @@ export default function LetterScene({ onNext }) {
     }
 
     const audio = new Audio(src)
-    audio.volume = 0.85
+    audio.volume = 1.0 // Full 100% crystal-clear immersive volume
     audioRef.current = audio
 
     audio.ontimeupdate = () => {
@@ -388,55 +388,72 @@ export default function LetterScene({ onNext }) {
               padding: '12px 14px'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 6 }}>
-              🎧 Close Your Eyes & Feel The Music 🕊️🩶
+            <div className="hand-note" style={{ marginBottom: 8 }}>
+              🎧 Close Your Eyes & Feel The Soul 🕊️🩶
             </div>
 
-            {/* Cinematic Music Card with Real-Time Synced Lyrics */}
+            {/* Cinematic Lo-Fi Music Card with Real-Time Synced Lyrics */}
             <div
               style={{
                 width: '100%',
-                background: 'linear-gradient(145deg, #18122f, #271b44)',
-                borderRadius: 28,
-                padding: '20px 18px',
-                border: '2px solid rgba(255, 215, 230, 0.3)',
-                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.55)',
+                background: 'linear-gradient(155deg, #100a26 0%, #1f1238 60%, #301444 100%)',
+                borderRadius: 32,
+                padding: '24px 20px',
+                border: '2px solid rgba(255, 117, 151, 0.35)',
+                boxShadow: '0 25px 60px rgba(10, 6, 25, 0.75), inset 0 1px 0 rgba(255,255,255,0.15)',
                 color: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 12
+                gap: 14
               }}
             >
-              {/* Header: Teddy + Song Info */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, width: '100%', justifyContent: 'center' }}>
+              {/* Header: Rotating Vinyl + Equalizer + Track Info */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
                 <motion.div
                   animate={{ rotate: isPlaying ? 360 : 0 }}
-                  transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
+                  transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
                   style={{
-                    width: 68,
-                    height: 68,
+                    width: 'clamp(110px, 25vw, 140px)',
+                    height: 'clamp(110px, 25vw, 140px)',
                     borderRadius: '50%',
-                    background: 'radial-gradient(circle, #3d2f66 35%, #18122b 70%, #ff85a8 100%)',
-                    boxShadow: '0 0 20px rgba(255, 133, 168, 0.4)',
+                    background: 'radial-gradient(circle, #4a1942 30%, #130a22 65%, #ff7597 100%)',
+                    boxShadow: '0 0 40px rgba(255, 117, 151, 0.45), inset 0 0 20px rgba(0,0,0,0.8)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexShrink: 0
+                    padding: 8
                   }}
                 >
                   <img
                     src={TEDDY_CUDDLE}
                     alt="Listening Teddies"
-                    style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: '50%' }}
+                    style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
                   />
                 </motion.div>
 
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffb3cd' }}>
-                    Chidiya • Special Track
+                {/* Lo-Fi Frequency Equalizer Bar */}
+                <div style={{ display: 'flex', gap: 3.5, height: 16, alignItems: 'flex-end', marginTop: 4 }}>
+                  {[10, 18, 14, 24, 16, 12, 22, 15, 20, 13].map((h, idx) => (
+                    <motion.span
+                      key={idx}
+                      animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                      transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
+                      style={{
+                        width: 3.5,
+                        borderRadius: 2,
+                        background: idx % 2 === 0 ? '#ff7597' : '#ffd54f',
+                        boxShadow: '0 0 8px rgba(255, 117, 151, 0.8)'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div style={{ textAlign: 'center', marginTop: 2 }}>
+                  <div style={{ fontSize: '1.12rem', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
+                    🕊️ Chidiya • Special Lofi Track
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>
+                  <div style={{ fontSize: '0.84rem', color: '#ffd54f', fontWeight: 700 }}>
                     {formatTime(currentTime)} / {formatTime(duration)}
                   </div>
                 </div>
@@ -748,55 +765,72 @@ export default function LetterScene({ onNext }) {
               padding: '12px 14px'
             }}
           >
-            <div className="hand-note" style={{ marginBottom: 6 }}>
-              🎶 Feel The Soul & The Meaning ✨🩶
+            <div className="hand-note" style={{ marginBottom: 8 }}>
+              🎶 Deep Violet Night • Feel Every Word ✨🩶
             </div>
 
-            {/* Cinematic Music Card with Real-Time Synced Lyrics */}
+            {/* Cinematic Lo-Fi Music Card with Real-Time Synced Lyrics */}
             <div
               style={{
                 width: '100%',
-                background: 'linear-gradient(145deg, #1c1032, #341540)',
-                borderRadius: 28,
-                padding: '20px 18px',
-                border: '2px solid rgba(255, 200, 240, 0.3)',
-                boxShadow: '0 20px 50px rgba(18, 14, 40, 0.55)',
+                background: 'linear-gradient(155deg, #120924 0%, #221038 60%, #3d144d 100%)',
+                borderRadius: 32,
+                padding: '24px 20px',
+                border: '2px solid rgba(192, 132, 252, 0.35)',
+                boxShadow: '0 25px 60px rgba(10, 5, 25, 0.75), inset 0 1px 0 rgba(255,255,255,0.15)',
                 color: '#fff',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 12
+                gap: 14
               }}
             >
-              {/* Header: Teddy + Song Info */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, width: '100%', justifyContent: 'center' }}>
+              {/* Header: Rotating Vinyl + Equalizer + Track Info */}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, width: '100%' }}>
                 <motion.div
                   animate={{ rotate: isPlaying ? 360 : 0 }}
-                  transition={{ repeat: Infinity, duration: 16, ease: 'linear' }}
+                  transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
                   style={{
-                    width: 68,
-                    height: 68,
+                    width: 'clamp(110px, 25vw, 140px)',
+                    height: 'clamp(110px, 25vw, 140px)',
                     borderRadius: '50%',
-                    background: 'radial-gradient(circle, #5b21b6 35%, #1e1138 70%, #c084fc 100%)',
-                    boxShadow: '0 0 20px rgba(192, 132, 252, 0.4)',
+                    background: 'radial-gradient(circle, #5b21b6 30%, #150928 65%, #c084fc 100%)',
+                    boxShadow: '0 0 40px rgba(192, 132, 252, 0.45), inset 0 0 20px rgba(0,0,0,0.8)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flexShrink: 0
+                    padding: 8
                   }}
                 >
                   <img
                     src={TEDDY_CUDDLE}
-                    alt="Vilen Song Teddies"
-                    style={{ width: 48, height: 48, objectFit: 'contain', borderRadius: '50%' }}
+                    alt="Listening Teddies"
+                    style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
                   />
                 </motion.div>
 
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#e9d5ff' }}>
-                    Vilen • Ji Le Zindagi
+                {/* Lo-Fi Frequency Equalizer Bar */}
+                <div style={{ display: 'flex', gap: 3.5, height: 16, alignItems: 'flex-end', marginTop: 4 }}>
+                  {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
+                    <motion.span
+                      key={idx}
+                      animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                      transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
+                      style={{
+                        width: 3.5,
+                        borderRadius: 2,
+                        background: idx % 2 === 0 ? '#c084fc' : '#ffd54f',
+                        boxShadow: '0 0 8px rgba(192, 132, 252, 0.8)'
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div style={{ textAlign: 'center', marginTop: 2 }}>
+                  <div style={{ fontSize: '1.12rem', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
+                    ✨ Vilen • Ji Le Zindagi
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.7)' }}>
+                  <div style={{ fontSize: '0.84rem', color: '#ffd54f', fontWeight: 700 }}>
                     {formatTime(currentTime)} / {formatTime(duration)}
                   </div>
                 </div>
