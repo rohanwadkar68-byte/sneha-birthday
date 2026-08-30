@@ -8,14 +8,23 @@ import { FINALE_LETTERS, GIRL, FINALE_UI } from '../utils/content.js'
 import { TEDDY_WEBM, POOKIE, DECOS } from '../utils/assets.js'
 import { playFanfare, playSparkle } from '../utils/audio.js'
 
-const CONFETTI_COLORS = ['#ff8fb1', '#ffd9e8', '#e6dbff', '#cde8ff', '#ffd166', '#ff4d6d']
+const CONFETTI_COLORS = ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6', '#fff1f2', '#e11d48']
 
 export default function FinaleScene({ onNext, bonus = false }) {
   useEffect(() => {
     playFanfare()
-    const burst = (origin, count = 100) => {
+    const burst = (origin, count = 45) => {
       playSparkle()
-      confetti({ particleCount: count, spread: 100, origin, colors: CONFETTI_COLORS })
+      confetti({
+        particleCount: count,
+        spread: 80,
+        origin,
+        colors: CONFETTI_COLORS,
+        scalar: 1.35,
+        gravity: 0.5,
+        drift: 0.25,
+        ticks: 320
+      })
     }
 
     burst({ x: 0.2, y: 0.55 })

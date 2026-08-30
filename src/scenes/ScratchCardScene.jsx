@@ -15,10 +15,14 @@ export default function ScratchCardScene({ onNext }) {
       playPop()
       playSparkle()
       confetti({
-        particleCount: 50,
-        spread: 60,
+        particleCount: 28,
+        spread: 65,
         origin: { y: 0.6 },
-        colors: ['#ff8fb1', '#ffd166', '#a855f7', '#fff']
+        colors: ['#f43f5e', '#fb7185', '#fda4af', '#ffe4e6'],
+        scalar: 1.3,
+        gravity: 0.5,
+        drift: 0.2,
+        ticks: 280
       })
       setUnlocked((prev) => ({ ...prev, [id]: true }))
     }

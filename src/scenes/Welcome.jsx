@@ -15,10 +15,14 @@ export default function Welcome({ onNext }) {
     startMusic() // Immediately unlock and start continuous MP3 BGM on user gesture!
     setDoorOpen(true)
     confetti({
-      particleCount: 80,
-      spread: 80,
+      particleCount: 40,
+      spread: 75,
       origin: { y: 0.6 },
-      colors: ['#ffd700', '#ff8fb1', '#ffd9e8', '#e6dbff', '#ffffff']
+      colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6', '#fff1f2'],
+      scalar: 1.3,
+      gravity: 0.5,
+      drift: 0.2,
+      ticks: 300
     })
     setTimeout(() => {
       onNext()

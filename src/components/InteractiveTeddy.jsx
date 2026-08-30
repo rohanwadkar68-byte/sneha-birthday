@@ -65,10 +65,14 @@ export default function InteractiveTeddy({
     setIsTickled(true)
     setTimeout(() => setIsTickled(false), 600)
     confetti({
-      particleCount: 25,
-      spread: 50,
+      particleCount: 16,
+      spread: 45,
       origin: { y: 0.6 },
-      colors: ['#ff8fb1', '#ffd166', '#ffffff']
+      colors: ['#f43f5e', '#fda4af', '#ffe4e6'],
+      scalar: 1.2,
+      gravity: 0.5,
+      drift: 0.2,
+      ticks: 260
     })
   }
 

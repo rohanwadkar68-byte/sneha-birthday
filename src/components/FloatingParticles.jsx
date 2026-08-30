@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const PARTICLE_EMOJIS = ['✦', '♡', '✧', '˚', '·', '❋', '✿', '💖', '✨']
-const SOFT_COLORS = ['#ff8fb1', '#e6dbff', '#cde8ff', '#ffd9e8', '#ffc4d8', '#ffd166']
-const TRAIL_EMOJIS = ['💖', '✨', '🌸', '💫', '💕', '⭐']
+const PARTICLE_EMOJIS = ['🌸', '🌹', '🍃', '🤍', '✨', '💖', ' petal ']
+const SOFT_COLORS = ['#ff8fb1', '#f43f5e', '#fda4af', '#f472b6', '#ffe4e6', '#fb7185']
+const TRAIL_EMOJIS = ['🌸', '✨', '🌹', '💖', '🍃', '🤍']
 
 export default function FloatingParticles({ count = 22, style }) {
   const [trail, setTrail] = useState([])
@@ -12,14 +12,14 @@ export default function FloatingParticles({ count = 22, style }) {
     () =>
       Array.from({ length: count }, (_, i) => ({
         id: i,
-        emoji: PARTICLE_EMOJIS[i % PARTICLE_EMOJIS.length],
+        emoji: i % 4 === 0 ? '🌸' : i % 4 === 1 ? '🌹' : i % 4 === 2 ? '✨' : '🍃',
         color: SOFT_COLORS[i % SOFT_COLORS.length],
         x: `${(i * 59 + 13) % 96 + 2}%`,
         y: `${(i * 43 + 7) % 92 + 2}%`,
-        size: 11 + ((i * 7) % 15),
-        dur: 4.5 + (i % 5),
-        delay: (i * 0.25) % 3,
-        drift: 10 + ((i * 5) % 22)
+        size: 14 + ((i * 7) % 14),
+        dur: 6 + (i % 6),
+        delay: (i * 0.3) % 4,
+        drift: 20 + ((i * 7) % 25)
       })),
     [count]
   )
@@ -103,7 +103,7 @@ export default function FloatingParticles({ count = 22, style }) {
         }}
       />
 
-      {/* Floating Sparkle Symbols */}
+      {/* Floating Rose & Sakura Petals */}
       {particles.map((p) => (
         <motion.span
           key={p.id}
@@ -112,14 +112,15 @@ export default function FloatingParticles({ count = 22, style }) {
             left: p.x,
             top: p.y,
             fontSize: p.size,
-            color: p.color,
+            filter: 'drop-shadow(0 2px 8px rgba(251, 113, 133, 0.35))',
             willChange: 'transform'
           }}
           animate={{
-            y: [0, -p.drift, 0],
-            x: [0, p.drift * 0.4, 0],
-            opacity: [0.2, 0.75, 0.2],
-            rotate: [0, 180, 360]
+            y: [0, p.drift * 1.6, p.drift * 3.2],
+            x: [0, Math.sin(p.id) * 25, Math.cos(p.id) * 35],
+            opacity: [0, 0.85, 0],
+            rotate: [0, 180, 360],
+            scale: [0.8, 1.1, 0.8]
           }}
           transition={{
             repeat: Infinity,

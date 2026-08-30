@@ -51,10 +51,14 @@ export default function ExplorerScene({ onNext }) {
     playPop()
     setBalloonAlive(false)
     confetti({
-      particleCount: 70,
-      spread: 85,
+      particleCount: 30,
+      spread: 70,
       origin: { y: 0.55 },
-      colors: ['#ff8fb1', '#ffd9e8', '#e6dbff', '#ffd166', '#ff4d6d']
+      colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6'],
+      scalar: 1.3,
+      gravity: 0.5,
+      drift: 0.2,
+      ticks: 300
     })
     setTimeout(() => setBalloonAlive(true), 1400)
     discover('balloon')
@@ -79,10 +83,14 @@ export default function ExplorerScene({ onNext }) {
   const tapHeart = () => {
     discover('heart')
     confetti({
-      particleCount: 50,
-      spread: 65,
+      particleCount: 25,
+      spread: 60,
       origin: { y: 0.65 },
-      colors: ['#ff8fb1', '#ffd9e8', '#ff4d6d']
+      colors: ['#f43f5e', '#fda4af', '#ffe4e6'],
+      scalar: 1.25,
+      gravity: 0.5,
+      drift: 0.2,
+      ticks: 260
     })
   }
 

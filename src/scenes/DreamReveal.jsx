@@ -28,10 +28,14 @@ export default function DreamReveal({ onNext }) {
       playSparkle()
       playFanfare()
       confetti({
-        particleCount: 140,
-        spread: 110,
+        particleCount: 40,
+        spread: 80,
         origin: { y: 0.55 },
-        colors: ['#ff8fb1', '#ffd9e8', '#e6dbff', '#cde8ff', '#ffd166']
+        colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6'],
+        scalar: 1.3,
+        gravity: 0.5,
+        drift: 0.2,
+        ticks: 300
       })
     }, 400)
     return () => clearTimeout(t)

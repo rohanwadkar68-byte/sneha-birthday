@@ -46,10 +46,14 @@ export default function CakeScene({ onNext }) {
       playSparkle()
       setCutStep('sliced')
       confetti({
-        particleCount: 140,
-        spread: 100,
+        particleCount: 45,
+        spread: 90,
         origin: { y: 0.52 },
-        colors: ['#ffd700', '#f59e0b', '#fb7185', '#fda4af', '#ffffff']
+        colors: ['#f43f5e', '#fb7185', '#fda4af', '#f472b6', '#ffe4e6', '#fff1f2'],
+        scalar: 1.35,
+        gravity: 0.5,
+        drift: 0.25,
+        ticks: 340
       })
     }, 1000)
   }
@@ -58,10 +62,14 @@ export default function CakeScene({ onNext }) {
     playSparkle()
     setBiteCount((b) => b + 1)
     confetti({
-      particleCount: 50,
-      spread: 70,
+      particleCount: 22,
+      spread: 60,
       origin: { y: 0.62 },
-      colors: ['#ffd700', '#ff85a8', '#ffffff']
+      colors: ['#f43f5e', '#fda4af', '#ffe4e6'],
+      scalar: 1.25,
+      gravity: 0.5,
+      drift: 0.2,
+      ticks: 280
     })
   }
 
