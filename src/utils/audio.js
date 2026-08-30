@@ -51,6 +51,32 @@ export function resumeBGM() {
   }
 }
 
+let ctx = null
+
+function ensureCtx() {
+  if (!ctx) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext
+    if (!AudioCtx) return null
+    ctx = new AudioCtx()
+  }
+  return ctx
+}
+
+function pluck(freq, when, vel, type = 'triangle') {
+  if (!ctx) return
+  const osc = ctx.createOscillator()
+  const gain = ctx.createGain()
+  osc.type = type
+  osc.frequency.value = freq
+  gain.gain.setValueAtTime(0, when)
+  gain.gain.linearRampToValueAtTime(vel, when + 0.015)
+  gain.gain.exponentialRampToValueAtTime(0.0001, when + 1.4)
+  osc.connect(gain)
+  gain.connect(ctx.destination)
+  osc.start(when)
+  osc.stop(when + 1.5)
+}
+
 export function blip() {
   // Silent on button clicks as requested
 }
