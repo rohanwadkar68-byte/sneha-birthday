@@ -207,6 +207,13 @@ export const LOVE_COUPONS = [
     color: 'linear-gradient(135deg, #e6dbff 0%, #a855f7 100%)'
   }
 ]
+export const LETTER_REASSURANCE = {
+  title: 'Kisi bhi cheez ki overthinking nahi karni, baccha. 🧸',
+  subtitle: 'Bas jo ab aane wala hai na… araam se padhna.',
+  tease: 'Zyada sochna mana hai 😤',
+  openBtn: '💌 Pehla Letter Kholo'
+}
+
 export const LETTER_LINES = [
   'Dear Sneha (meri mommy, meri Dora, mera baccha),',
   '',
@@ -231,6 +238,52 @@ export const LETTER_LINES = [
   '— aapka permanent bakbak partner 😌',
   '',
   'P.S. Agar ye padhke aap blush kar rahi ho na… haan, wahi toh chahiye tha mujhe. 😏🎀'
+]
+
+export const LETTER_1_LYRICS = [
+  { text: 'Oo Re Panchi 🩶', duration: 4.5 },
+  { text: 'Kyu Humesha 🤍', duration: 3.5 },
+  { text: 'Baithi Muh Latkaaye Re 🤍', duration: 4.0 },
+  { text: 'Teri. Ankhon Jo Nam Hai 🤍', duration: 4.0 },
+  { text: 'Inme mai Jo Gham Hai 🤍', duration: 3.8 },
+  { text: 'Chor Ke Subha Pe 🤍', duration: 3.5 },
+  { text: 'Kar yakeen 🤍', duration: 3.2 },
+  { text: 'Ho Ye Jhumta Savan Hai 🤍', duration: 4.2 },
+  { text: 'Meethi jo Pavan Hai 🤍', duration: 4.0 },
+  { text: 'Teri Hi Muskan Se Bani 🤍', duration: 6.0 }
+]
+
+export const LETTER_TRANSITION = {
+  line1: 'Baccha… ruko.',
+  line2: 'Abhi ek aur hai. 😏',
+  line3: 'Ek aur hai aapke liye…',
+  openBtn: '💌 Kholiye'
+}
+
+export const LETTER_2_LINES = [
+  'Waise ek aur baat bolun madam? 😏',
+  '',
+  'Aapko lagta hai aap bohot innocent ho na? “Maine kya kiya?” bolke jo cute face banati ho na aap… mujhe sab pata hai aap kitni badi tease ho! 😂',
+  '',
+  'Game me akele aage bhaag jana, fir knock hone ke baad mujhe daantna ki “bachaya kyu nahi?”, raat ko “good night” bolke 20 minute aur bakbak karna, aur fir subah bolna “neend nahi poori hui” — ye sab aapki signature tricks hain.',
+  '',
+  'Lekin sach bolu toh, aapki yehi saari masti, aapka wo mommy mode daantna aur aapke nakhre hi meri din bhar ki thakan mita dete hain.',
+  '',
+  'First meeting ka rule yaad hai na? 10 minute non-stop gaal squish aur hug pending hai… complaint baad me sununga 😤🧸',
+  '',
+  'Chalo ab smile karo… mast wali 😌',
+  'Aaj ka poora din aapka hai. 23 ka level mast se enjoy karo!',
+  '',
+  'HAPPY BIRTHDAY, SNEHA!! 🧸🎂💖'
+]
+
+export const LETTER_2_LYRICS = [
+  { text: '..Aaj mil gyi....', duration: 4.5 },
+  { text: 'Ye Zamana Beshrm hai 🩶', duration: 4.0 },
+  { text: 'Na isska dharam hai 🩶', duration: 3.8 },
+  { text: 'Kyu dhoonde hai tu isme bandhagi 🩶', duration: 4.5 },
+  { text: 'Oo tere sath tera man hai. Dil ki dhadkan hai 🩶', duration: 5.2 },
+  { text: 'Age badhke jile zindagi 🩶', duration: 6.5 }
 ]
 export const CAT_BREAKS = [
   { cat: 'cute', caption: 'meow break! mommy ko itna cute dekhke billi bhi thoda blush kar rahi hai 🐾🎀' },
