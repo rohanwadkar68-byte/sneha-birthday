@@ -248,9 +248,9 @@ export const LETTER_1_LYRICS = [
   { text: 'Inme mai Jo Gham Hai 🤍', time: 14.2 },
   { text: 'Chor Ke Subha Pe 🤍', time: 17.5 },
   { text: 'Kar yakeen 🤍', time: 21.2 },
-  { text: 'Ho Ye Jhumta Savan Hai 🤍', time: 25.5 },
-  { text: 'Meethi jo Pavan Hai 🤍', time: 30.2 },
-  { text: 'Teri Hi Muskan Se Bani 🤍', time: 35.0 }
+  { text: 'Ho Ye Jhumta Savan Hai 🤍', time: 24.0 },
+  { text: 'Meethi jo Pavan Hai 🤍', time: 28.8 },
+  { text: 'Teri Hi Muskan Se Bani 🤍', time: 33.5 }
 ]
 
 export const LETTER_TRANSITION = {
