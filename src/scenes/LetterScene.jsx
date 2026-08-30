@@ -200,1139 +200,223 @@ export default function LetterScene({ onNext }) {
     return `${m}:${s < 10 ? '0' : ''}${s}`
   }
 
+  if (stage === 2) {
+    return (
+      <motion.div
+        key="song1room"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100dvh',
+          zIndex: 999999,
+          background: 'radial-gradient(circle at 50% 10%, #520f3e 0%, #200626 45%, #08010f 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '16px',
+          textAlign: 'center',
+          overflow: 'hidden'
+        }}
+      >
+        <div style={{ position: 'absolute', top: '5%', left: '8%', width: 280, height: 280, borderRadius: '50%', background: 'rgba(255, 75, 130, 0.28)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', right: '8%', width: 320, height: 320, borderRadius: '50%', background: 'rgba(255, 213, 79, 0.18)', filter: 'blur(90px)', pointerEvents: 'none' }} />
+
+        <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} style={{ position: 'fixed', top: 'max(16px, env(safe-area-inset-top, 16px))', left: 'max(16px, env(safe-area-inset-left, 16px))', zIndex: 1000000, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(20px)', border: '1.5px solid rgba(255, 117, 151, 0.55)', borderRadius: 24, padding: '8px 18px', color: '#ffe4ec', fontSize: 'clamp(0.78rem, 2.2vw, 0.92rem)', fontWeight: 800, boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
+          <span>🎧 Earphones Recommended • Feel Every Word 🕊️</span>
+        </motion.div>
+
+        <motion.button onClick={handleFinishSong1} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1, scale: [1, 1.06, 1] }} transition={{ scale: { repeat: Infinity, duration: 2, ease: 'easeInOut' }, delay: 0.2 }} whileHover={{ scale: 1.12 }} whileTap={{ scale: 0.92 }} style={{ position: 'fixed', top: 'max(14px, env(safe-area-inset-top, 14px))', right: 'max(16px, env(safe-area-inset-right, 16px))', zIndex: 1000000, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg, #ff3366 0%, #ff6699 100%)', border: '2px solid rgba(255, 255, 255, 0.85)', borderRadius: 28, padding: '10px 22px', color: '#fff', fontSize: 'clamp(0.88rem, 2.5vw, 1.05rem)', fontWeight: 900, boxShadow: '0 0 28px rgba(255, 51, 102, 0.85)', cursor: 'pointer' }}>
+          <span>Aage Chalein 😏 ➔</span>
+        </motion.button>
+
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ position: 'fixed', bottom: 'max(16px, env(safe-area-inset-bottom, 16px))', left: 'max(16px, env(safe-area-inset-left, 16px))', zIndex: 1000000, display: 'flex', alignItems: 'flex-end', gap: 12, maxWidth: 'min(380px, 85vw)', pointerEvents: 'none' }}>
+          <img src={TEDDY_BLUSH} alt="Bubu Smiling" style={{ width: 64, height: 64, objectFit: 'contain', filter: 'drop-shadow(0 4px 16px rgba(255,107,147,0.9))', flexShrink: 0 }} />
+          <div style={{ background: 'rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(20px)', border: '1.5px solid rgba(255, 213, 79, 0.75)', borderRadius: '20px 20px 20px 4px', padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', textAlign: 'left' }}>
+            <div style={{ fontSize: '0.74rem', color: '#ffd54f', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em' }}>🧸 Bubu's Message:</div>
+            <div style={{ fontSize: 'clamp(0.82rem, 2.3vw, 0.92rem)', color: '#fff', fontWeight: 800, lineHeight: 1.35 }}>"Aise muh mat latkao baccha... <span style={{ color: '#ffd54f' }}>'Teri Hi Muskaan Se Bani Hai'</span> 🤍 toh ab mst cute si smile karo! 🥺💖"</div>
+          </div>
+        </motion.div>
+
+        <div style={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, zIndex: 2, margin: 'auto 0' }}>
+          <motion.div animate={{ rotate: isPlaying ? 360 : 0 }} transition={{ repeat: Infinity, duration: 14, ease: 'linear' }} style={{ width: 'clamp(110px, 22vw, 145px)', height: 'clamp(110px, 22vw, 145px)', borderRadius: '50%', background: 'radial-gradient(circle, #521946 25%, #190a26 65%, #ff7597 100%)', boxShadow: '0 0 50px rgba(255, 117, 151, 0.7), inset 0 0 20px rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 6 }}>
+            <img src={TEDDY_CUDDLE} alt="Listening Teddies" style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }} />
+          </motion.div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', gap: 3.5, height: 14, alignItems: 'flex-end', justifyContent: 'center', marginBottom: 6 }}>
+              {[10, 18, 13, 22, 15, 11, 20, 14, 18, 12].map((h, idx) => (
+                <motion.span key={idx} animate={{ height: isPlaying ? [4, h, 6, h * 0.75, 4] : 3 }} transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }} style={{ width: 3.5, borderRadius: 2, background: idx % 2 === 0 ? '#ff7597' : '#ffd54f', boxShadow: '0 0 8px rgba(255, 117, 151, 0.9)' }} />
+              ))}
+            </div>
+            <div style={{ fontSize: 'clamp(1.05rem, 3vw, 1.25rem)', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>🕊️ Chidiya • Special Track</div>
+            <div style={{ fontSize: '0.82rem', color: '#ffd54f', fontWeight: 800 }}>{formatTime(currentTime)} / {formatTime(duration)}</div>
+          </div>
+          <div ref={lyricsContainerRef} style={{ width: '100%', maxHeight: 'clamp(140px, 24vh, 200px)', overflowY: 'auto', padding: '10px 16px', display: 'flex', flexDirection: 'column', gap: 12, scrollBehavior: 'smooth', scrollbarWidth: 'none', maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)', zIndex: 2 }}>
+            {LETTER_1_LYRICS.map((cue, idx) => {
+              const isActive = activeLyricIdx === idx
+              return (
+                <motion.div key={idx} onClick={() => handleSeekLyric(cue.time)} className={isActive ? 'active-lyric' : ''} animate={{ scale: isActive ? 1.12 : 0.94, opacity: isActive ? 1 : 0.28, y: isActive ? 0 : 2 }} transition={{ duration: 0.35, ease: 'easeOut' }} style={{ fontSize: isActive ? 'clamp(1.4rem, 5vw, 1.85rem)' : 'clamp(1rem, 3.6vw, 1.25rem)', fontWeight: isActive ? 900 : 600, color: isActive ? '#ffd54f' : '#e0d5ec', textShadow: isActive ? '0 0 26px rgba(255, 213, 79, 0.95), 0 0 48px rgba(255, 117, 151, 0.8)' : 'none', letterSpacing: '0.03em', cursor: 'pointer', filter: isActive ? 'none' : 'blur(0.3px)' }}>"{cue.text}"</motion.div>
+              )
+            })}
+          </div>
+        </div>
+
+        <div style={{ position: 'fixed', bottom: 'max(16px, env(safe-area-inset-bottom, 16px))', right: 'max(16px, env(safe-area-inset-right, 16px))', zIndex: 1000000, width: 'min(380px, 92vw)', background: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(22px)', borderRadius: 22, border: '1.5px solid rgba(255, 255, 255, 0.3)', padding: '8px 16px', boxShadow: '0 12px 35px rgba(0, 0, 0, 0.65)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+            <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>{formatTime(currentTime)}</span>
+            <input type="range" min={0} max={duration || 1} step={0.1} value={currentTime} onChange={(e) => { if (audioRef.current) audioRef.current.currentTime = parseFloat(e.target.value) }} style={{ flex: 1, accentColor: '#ff7597', cursor: 'pointer', height: 4 }} />
+            <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>{formatTime(duration)}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <button onClick={handleReplay} style={{ background: 'rgba(255, 255, 255, 0.16)', border: '1px solid rgba(255, 255, 255, 0.3)', borderRadius: 16, color: '#fff', padding: '5px 12px', fontSize: '0.78rem', fontWeight: 800, cursor: 'pointer' }}>🔄 Replay</button>
+            <button onClick={togglePlayPause} style={{ background: 'linear-gradient(135deg, #ff4071, #ff7597)', border: 'none', borderRadius: '50%', width: 38, height: 38, color: '#fff', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 16px rgba(255, 64, 113, 0.7)' }}>{isPlaying ? '⏸' : '▶'}</button>
+            <button onClick={handleFinishSong1} style={{ background: 'linear-gradient(135deg, #ff3366, #ff6699)', border: '1px solid rgba(255, 255, 255, 0.4)', borderRadius: 16, color: '#fff', padding: '6px 14px', fontSize: '0.82rem', fontWeight: 900, cursor: 'pointer' }}>Next ➔</button>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
+
+  if (stage === 5) {
+    return (
+      <motion.div
+        key="song2room"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          width: '100vw',
+          height: '100dvh',
+          zIndex: 999999,
+          background: 'radial-gradient(circle at 50% 10%, #4a0d68 0%, #170428 45%, #06000f 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '16px',
+          textAlign: 'center',
+          overflow: 'hidden'
+        }}
+      >
+        <div style={{ position: 'absolute', top: '5%', right: '8%', width: 280, height: 280, borderRadius: '50%', background: 'rgba(192, 132, 252, 0.28)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', left: '8%', width: 320, height: 320, borderRadius: '50%', background: 'rgba(168, 85, 247, 0.2)', filter: 'blur(90px)', pointerEvents: 'none' }} />
+
+        <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} style={{ position: 'fixed', top: 'max(16px, env(safe-area-inset-top, 16px))', left: 'max(16px, env(safe-area-inset-left, 16px))', zIndex: 1000000, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(20px)', border: '1.5px solid rgba(192, 132, 252, 0.55)', borderRadius: 24, padding: '8px 18px', color: '#f3e8ff', fontSize: 'clamp(0.78rem, 2.2vw, 0.92rem)', fontWeight: 800, boxShadow: '0 8px 25px rgba(0,0,0,0.6)' }}>
+          <span>🎶 Midnight Violet Room • Ji Le Zindagi 😌✨</span>
+        </motion.div>
+
+        <motion.button onClick={handleFinishAll} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1, scale: [1, 1.06, 1] }} transition={{ scale: { repeat: Infinity, duration: 2, ease: 'easeInOut' }, delay: 0.2 }} whileHover={{ scale: 1.12 }} whileTap={{ scale: 0.92 }} style={{ position: 'fixed', top: 'max(14px, env(safe-area-inset-top, 14px))', right: 'max(16px, env(safe-area-inset-right, 16px))', zIndex: 1000000, display: 'inline-flex', alignItems: 'center', gap: 8, background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)', border: '2px solid rgba(255, 255, 255, 0.85)', borderRadius: 28, padding: '10px 22px', color: '#fff', fontSize: 'clamp(0.88rem, 2.5vw, 1.05rem)', fontWeight: 900, boxShadow: '0 0 28px rgba(168, 85, 247, 0.85)', cursor: 'pointer' }}>
+          <span>Cake Par Chalein 🎂✨ ➔</span>
+        </motion.button>
+
+        <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} style={{ position: 'fixed', bottom: 'max(16px, env(safe-area-inset-bottom, 16px))', left: 'max(16px, env(safe-area-inset-left, 16px))', zIndex: 1000000, display: 'flex', alignItems: 'flex-end', gap: 12, maxWidth: 'min(380px, 85vw)', pointerEvents: 'none' }}>
+          <img src={TEDDY_BLUSH} alt="Bubu Smiling" style={{ width: 64, height: 64, objectFit: 'contain', filter: 'drop-shadow(0 4px 16px rgba(192,132,252,0.9))', flexShrink: 0 }} />
+          <div style={{ background: 'rgba(255, 255, 255, 0.18)', backdropFilter: 'blur(20px)', border: '1.5px solid rgba(216, 180, 254, 0.75)', borderRadius: '20px 20px 20px 4px', padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', textAlign: 'left' }}>
+            <div style={{ fontSize: '0.74rem', color: '#e9d5ff', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em' }}>🧸 Bubu's Message:</div>
+            <div style={{ fontSize: 'clamp(0.82rem, 2.3vw, 0.92rem)', color: '#fff', fontWeight: 800, lineHeight: 1.35 }}>"Besharm zamane ko chodo... <span style={{ color: '#ffd54f' }}>'Aage Badhke Jile Zindagi'</span>! Mst smile karo aur cake kato ab! 😌🎂💖"</div>
+          </div>
+        </motion.div>
+
+        <div style={{ width: '100%', maxWidth: 600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, zIndex: 2, margin: 'auto 0' }}>
+          <motion.div animate={{ rotate: isPlaying ? 360 : 0 }} transition={{ repeat: Infinity, duration: 14, ease: 'linear' }} style={{ width: 'clamp(110px, 22vw, 145px)', height: 'clamp(110px, 22vw, 145px)', borderRadius: '50%', background: 'radial-gradient(circle, #581c87 25%, #18092a 65%, #c084fc 100%)', boxShadow: '0 0 50px rgba(192, 132, 252, 0.7), inset 0 0 20px rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 6 }}>
+            <img src={TEDDY_CUDDLE} alt="Listening Teddies" style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }} />
+          </motion.div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', gap: 3.5, height: 14, alignItems: 'flex-end', justifyContent: 'center', marginBottom: 6 }}>
+              {[10, 18, 13, 22, 15, 11, 20, 14, 18, 12].map((h, idx) => (
+                <motion.span key={idx} animate={{ height: isPlaying ? [4, h, 6, h * 0.75, 4] : 3 }} transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }} style={{ width: 3.5, borderRadius: 2, background: idx % 2 === 0 ? '#c084fc' : '#ffd54f', boxShadow: '0 0 8px rgba(192, 132, 252, 0.9)' }} />
+              ))}
+            </div>
+            <div style={{ fontSize: 'clamp(1.05rem, 3vw, 1.25rem)', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>✨ Vilen • Ji Le Zindagi</div>
+            <div style={{ fontSize: '0.82rem', color: '#ffd54f', fontWeight: 800 }}>{formatTime(currentTime)} / {formatTime(duration)}</div>
+          </div>
+          <div ref={lyricsContainerRef} style={{ width: '100%', maxHeight: 'clamp(140px, 24vh, 200px)', overflowY: 'auto', padding: '10px 16px', display: 'flex', flexDirection: 'column', gap: 12, scrollBehavior: 'smooth', scrollbarWidth: 'none', maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)', zIndex: 2 }}>
+            {LETTER_2_LYRICS.map((cue, idx) => {
+              const isActive = activeLyricIdx === idx
+              return (
+                <motion.div key={idx} onClick={() => handleSeekLyric(cue.time)} className={isActive ? 'active-lyric' : ''} animate={{ scale: isActive ? 1.12 : 0.94, opacity: isActive ? 1 : 0.28, y: isActive ? 0 : 2 }} transition={{ duration: 0.35, ease: 'easeOut' }} style={{ fontSize: isActive ? 'clamp(1.4rem, 5vw, 1.85rem)' : 'clamp(1rem, 3.6vw, 1.25rem)', fontWeight: isActive ? 900 : 600, color: isActive ? '#ffd54f' : '#e9d5ff', textShadow: isActive ? '0 0 26px rgba(255, 213, 79, 0.95), 0 0 48px rgba(192, 132, 252, 0.8)' : 'none', letterSpacing: '0.03em', cursor: 'pointer', filter: isActive ? 'none' : 'blur(0.3px)' }}>"{cue.text}"</motion.div>
+              )
+            })}
+          </div>
+        </div>
+
+        <div style={{ position: 'fixed', bottom: 'max(16px, env(safe-area-inset-bottom, 16px))', right: 'max(16px, env(safe-area-inset-right, 16px))', zIndex: 1000000, width: 'min(380px, 92vw)', background: 'rgba(255, 255, 255, 0.14)', backdropFilter: 'blur(22px)', borderRadius: 22, border: '1.5px solid rgba(255, 255, 255, 0.3)', padding: '8px 16px', boxShadow: '0 12px 35px rgba(0, 0, 0, 0.65)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+            <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>{formatTime(currentTime)}</span>
+            <input type="range" min={0} max={duration || 1} step={0.1} value={currentTime} onChange={(e) => { if (audioRef.current) audioRef.current.currentTime = parseFloat(e.target.value) }} style={{ flex: 1, accentColor: '#c084fc', cursor: 'pointer', height: 4 }} />
+            <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>{formatTime(duration)}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <button onClick={handleReplay} style={{ background: 'rgba(255, 255, 255, 0.16)', border: '1px solid rgba(255, 255, 255, 0.3)', borderRadius: 16, color: '#fff', padding: '5px 12px', fontSize: '0.78rem', fontWeight: 800, cursor: 'pointer' }}>🔄 Replay</button>
+            <button onClick={togglePlayPause} style={{ background: 'linear-gradient(135deg, #c084fc, #7e22ce)', border: 'none', borderRadius: '50%', width: 38, height: 38, color: '#fff', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 16px rgba(192, 132, 252, 0.7)' }}>{isPlaying ? '⏸' : '▶'}</button>
+            <button onClick={handleFinishAll} style={{ background: 'linear-gradient(135deg, #a855f7, #7e22ce)', border: '1px solid rgba(255, 255, 255, 0.4)', borderRadius: 16, color: '#fff', padding: '6px 14px', fontSize: '0.82rem', fontWeight: 900, cursor: 'pointer' }}>Cake 🎂 ➔</button>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
+
   return (
     <SceneShell wide>
       <AnimatePresence mode="wait">
-        {/* ========================================================= */}
-        {/* STAGE 0: OVERTHINKING REASSURANCE                         */}
-        {/* ========================================================= */}
         {stage === 0 && (
-          <motion.div
-            key="reassurance"
-            initial={{ opacity: 0, scale: 0.92, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -15 }}
-            transition={SPRING}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              padding: '24px 20px',
-              maxWidth: 480,
-              margin: '0 auto'
-            }}
-          >
-            <motion.div
-              animate={{ y: [0, -8, 0], rotate: [-2, 2, -2] }}
-              transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
-              style={{ marginBottom: 12 }}
-            >
-              <img
-                src={TEDDY_BLUSH}
-                alt="Teddy Reassurance"
-                style={{
-                  width: 140,
-                  height: 140,
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 10px 24px rgba(247, 85, 138, 0.35))'
-                }}
-              />
+          <motion.div key="reassurance" initial={{ opacity: 0, scale: 0.92, y: 15 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: -15 }} transition={SPRING} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 20px', maxWidth: 480, margin: '0 auto' }}>
+            <motion.div animate={{ y: [0, -8, 0], rotate: [-2, 2, -2] }} transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }} style={{ marginBottom: 12 }}>
+              <img src={TEDDY_BLUSH} alt="Teddy Reassurance" style={{ width: 140, height: 140, objectFit: 'contain', filter: 'drop-shadow(0 10px 24px rgba(247, 85, 138, 0.35))' }} />
             </motion.div>
-
-            <h2
-              className="title-xl"
-              style={{
-                fontSize: 'clamp(1.3rem, 4.5vw, 1.65rem)',
-                color: 'var(--rose-deep)',
-                margin: '6px 0 10px',
-                lineHeight: 1.35
-              }}
-            >
-              {LETTER_REASSURANCE.title}
-            </h2>
-
-            <p className="subtitle" style={{ fontSize: '1.05rem', margin: '4px 0 8px', color: 'var(--ink)' }}>
-              {LETTER_REASSURANCE.subtitle}
-            </p>
-
-            <p style={{ fontSize: '0.92rem', color: '#888', fontStyle: 'italic', marginBottom: 20 }}>
-              {LETTER_REASSURANCE.tease}
-            </p>
-
-            <motion.button
-              className="btn-primary"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleOpenLetter1}
-              style={{ padding: '14px 28px', fontSize: '1.05rem', fontWeight: 800 }}
-            >
-              <span>{LETTER_REASSURANCE.openBtn}</span>
-            </motion.button>
+            <h2 className="title-xl" style={{ fontSize: 'clamp(1.3rem, 4.5vw, 1.65rem)', color: 'var(--rose-deep)', margin: '6px 0 10px', lineHeight: 1.35 }}>{LETTER_REASSURANCE.title}</h2>
+            <div style={{ background: 'rgba(255, 255, 255, 0.95)', borderRadius: 20, padding: '16px 20px', border: '1.5px solid rgba(255, 182, 193, 0.6)', boxShadow: '0 8px 24px rgba(247, 85, 138, 0.12)', margin: '8px 0 20px', textAlign: 'left' }}>
+              <p style={{ fontSize: '0.98rem', lineHeight: 1.6, color: 'var(--ink)', margin: '0 0 8px', fontWeight: 600 }}>{LETTER_REASSURANCE.body}</p>
+              <p style={{ fontSize: '0.86rem', color: 'var(--rose-deep)', fontWeight: 800, margin: 0 }}>{LETTER_REASSURANCE.subtext}</p>
+            </div>
+            <button className="btn-primary" onClick={handleOpenLetter1} style={{ padding: '15px 36px', fontSize: '1.05rem' }}><span>{LETTER_REASSURANCE.btnText}</span></button>
           </motion.div>
         )}
 
-        {/* ========================================================= */}
-        {/* STAGE 1: LETTER 1 (Pure Peaceful Reading)                 */}
-        {/* ========================================================= */}
         {stage === 1 && (
-          <motion.div
-            key="letter1"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={SPRING}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '100%',
-              maxWidth: 520,
-              margin: '0 auto'
-            }}
-          >
-            <div className="hand-note" style={{ marginBottom: 4 }}>
-              💌 Pehla Letter • Free Fire Se Aaj Tak 🌸
-            </div>
-
-            {/* Clean Letter Paper */}
-            <div
-              ref={scrollRef1}
-              style={{
-                marginTop: 6,
-                maxHeight: '52dvh',
-                overflowY: 'auto',
-                background: '#fffdf7',
-                borderRadius: 22,
-                padding: '22px 24px',
-                width: 'min(480px, 92vw)',
-                boxShadow: '0 16px 40px rgba(247, 85, 138, 0.18)',
-                textAlign: 'left',
-                border: '1.5px solid rgba(255, 217, 232, 0.9)',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 14,
-                  right: 18,
-                  opacity: 0.18,
-                  fontSize: 44,
-                  pointerEvents: 'none'
-                }}
-              >
-                💌
-              </div>
-
-              <div
-                style={{
-                  fontFamily: 'var(--font-hand)',
-                  fontSize: '1.42rem',
-                  lineHeight: 1.45,
-                  whiteSpace: 'pre-wrap',
-                  color: '#4a384f',
-                  fontWeight: 600
-                }}
-              >
-                {output1.join('\n')}
-              </div>
-
+          <motion.div key="stage1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <div className="hand-note" style={{ marginBottom: 4 }}>{LETTER_UI.typewriter}</div>
+            <div ref={scrollRef1} style={{ marginTop: 6, maxHeight: '52dvh', overflowY: 'auto', background: '#fffdf7', borderRadius: 22, padding: '22px 24px', width: 'min(480px, 92vw)', boxShadow: '0 16px 40px rgba(247, 85, 138, 0.16)', textAlign: 'left', border: '1.5px solid rgba(255, 214, 224, 0.9)', position: 'relative' }}>
+              <div style={{ fontFamily: 'var(--font-hand)', fontSize: '1.42rem', lineHeight: 1.45, whiteSpace: 'pre-wrap', color: '#4a2835', fontWeight: 600 }}>{output1.join('\n')}</div>
               {done1 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    marginTop: 20,
-                    gap: 10
-                  }}
-                >
-                  <img
-                    src={TEDDY_SWEET}
-                    alt="Cute Teddy"
-                    style={{
-                      width: 90,
-                      height: 90,
-                      objectFit: 'contain',
-                      borderRadius: 16
-                    }}
-                  />
-                  <button
-                    className="btn-primary"
-                    onClick={handleStartSong1}
-                    style={{ width: '100%', maxWidth: 300, padding: '14px 20px', fontSize: '1rem' }}
-                  >
-                    <span>Padh liya? Ab Gaana Sunte Hain 🎧✨</span>
-                  </button>
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10 }}>
+                  <img src={TEDDY_BLUSH} alt="Blushing Teddy" style={{ width: 90, height: 90, objectFit: 'contain', borderRadius: 16 }} />
+                  <button className="btn-primary" onClick={handleStartSong1} style={{ width: '100%', maxWidth: 300, padding: '14px 20px', fontSize: '1rem' }}><span>Padh liya? Ab Gaana Sunte Hain 🎧✨</span></button>
                 </motion.div>
               )}
             </div>
           </motion.div>
         )}
 
-        {/* ================================================================= */}
-        {/* STAGE 2: IMMERSIVE TWILIGHT LO-FI MUSIC WORLD (Chidiya)          */}
-        {/* ================================================================= */}
-        {stage === 2 && (
-          <motion.div
-            key="song1room"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              width: '100vw',
-              height: '100dvh',
-              zIndex: 99999,
-              background: 'radial-gradient(circle at 50% 10%, #520f3e 0%, #200626 45%, #08010f 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '16px',
-              textAlign: 'center',
-              overflow: 'hidden'
-            }}
-          >
-            {/* 🌌 Animated Magical Background Stars & Nebulas */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '5%',
-                left: '8%',
-                width: 250,
-                height: 250,
-                borderRadius: '50%',
-                background: 'rgba(255, 75, 130, 0.22)',
-                filter: 'blur(75px)',
-                pointerEvents: 'none'
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '10%',
-                right: '8%',
-                width: 280,
-                height: 280,
-                borderRadius: '50%',
-                background: 'rgba(255, 213, 79, 0.15)',
-                filter: 'blur(85px)',
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* 🎧 OUTSIDE CANVAS (TOP-LEFT): Earphones Recommended Badge */}
-            <motion.div
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              style={{
-                position: 'fixed',
-                top: 'max(14px, env(safe-area-inset-top, 14px))',
-                left: 'max(14px, env(safe-area-inset-left, 14px))',
-                zIndex: 100000,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 7,
-                background: 'rgba(255, 255, 255, 0.12)',
-                backdropFilter: 'blur(20px)',
-                border: '1.5px solid rgba(255, 117, 151, 0.45)',
-                borderRadius: 24,
-                padding: '7px 16px',
-                color: '#ffe4ec',
-                fontSize: 'clamp(0.76rem, 2.2vw, 0.88rem)',
-                fontWeight: 800,
-                boxShadow: '0 8px 25px rgba(0,0,0,0.5)'
-              }}
-            >
-              <span>🎧 Earphones Recommended • Feel Every Word 🕊️</span>
-            </motion.div>
-
-            {/* 👉 OUTSIDE CANVAS (TOP-RIGHT): Big Glowing Persistent Next Button */}
-            <motion.button
-              onClick={handleFinishSong1}
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1, scale: [1, 1.06, 1] }}
-              transition={{ scale: { repeat: Infinity, duration: 2, ease: 'easeInOut' }, delay: 0.2 }}
-              whileHover={{ scale: 1.12 }}
-              whileTap={{ scale: 0.92 }}
-              style={{
-                position: 'fixed',
-                top: 'max(12px, env(safe-area-inset-top, 12px))',
-                right: 'max(14px, env(safe-area-inset-right, 14px))',
-                zIndex: 100000,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                background: 'linear-gradient(135deg, #ff3366 0%, #ff6699 100%)',
-                border: '2px solid rgba(255, 255, 255, 0.75)',
-                borderRadius: 26,
-                padding: '9px 20px',
-                color: '#fff',
-                fontSize: 'clamp(0.85rem, 2.5vw, 0.98rem)',
-                fontWeight: 900,
-                boxShadow: '0 0 25px rgba(255, 51, 102, 0.75)',
-                cursor: 'pointer'
-              }}
-            >
-              <span>Aage Chalein 😏 ➔</span>
-            </motion.button>
-
-            {/* 🧸 OUTSIDE CANVAS (BOTTOM-LEFT): Smiling Bubu Mascot with Speech Card */}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              style={{
-                position: 'fixed',
-                bottom: 'max(14px, env(safe-area-inset-bottom, 14px))',
-                left: 'max(14px, env(safe-area-inset-left, 14px))',
-                zIndex: 100000,
-                display: 'flex',
-                alignItems: 'flex-end',
-                gap: 10,
-                maxWidth: 'min(360px, 85vw)',
-                pointerEvents: 'none'
-              }}
-            >
-              <img
-                src={TEDDY_BLUSH}
-                alt="Bubu Smiling"
-                style={{
-                  width: 58,
-                  height: 58,
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 4px 14px rgba(255,107,147,0.8))',
-                  flexShrink: 0
-                }}
-              />
-              <div
-                style={{
-                  background: 'rgba(255, 255, 255, 0.16)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1.5px solid rgba(255, 213, 79, 0.65)',
-                  borderRadius: '18px 18px 18px 4px',
-                  padding: '8px 14px',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.6)',
-                  textAlign: 'left'
-                }}
-              >
-                <div style={{ fontSize: '0.72rem', color: '#ffd54f', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  🧸 Bubu's Message:
-                </div>
-                <div style={{ fontSize: 'clamp(0.8rem, 2.3vw, 0.88rem)', color: '#fff', fontWeight: 800, lineHeight: 1.35 }}>
-                  "Aise muh mat latkao baccha... <span style={{ color: '#ffd54f' }}>'Teri Hi Muskaan Se Bani Hai'</span> 🤍 toh ab mst cute si smile karo! 🥺💖"
-                </div>
-              </div>
-            </motion.div>
-
-            {/* 🌟 CENTER CANVAS: Spinning Vinyl Player + Pure Synced Lyrics */}
-            <div
-              style={{
-                width: '100%',
-                maxWidth: 600,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 10,
-                zIndex: 2,
-                marginTop: 20
-              }}
-            >
-              {/* Vinyl Record */}
-              <motion.div
-                animate={{ rotate: isPlaying ? 360 : 0 }}
-                transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
-                style={{
-                  width: 'clamp(100px, 20vw, 135px)',
-                  height: 'clamp(100px, 20vw, 135px)',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, #521946 25%, #190a26 65%, #ff7597 100%)',
-                  boxShadow: '0 0 45px rgba(255, 117, 151, 0.6), inset 0 0 18px rgba(0,0,0,0.85)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: 5
-                }}
-              >
-                <img
-                  src={TEDDY_CUDDLE}
-                  alt="Listening Teddies"
-                  style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
-                />
-              </motion.div>
-
-              {/* Equalizer & Track Name */}
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ display: 'flex', gap: 3, height: 12, alignItems: 'flex-end', justifyContent: 'center', marginBottom: 4 }}>
-                  {[8, 16, 11, 20, 14, 10, 18, 12, 16, 10].map((h, idx) => (
-                    <motion.span
-                      key={idx}
-                      animate={{ height: isPlaying ? [3, h, 5, h * 0.75, 3] : 3 }}
-                      transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
-                      style={{
-                        width: 3,
-                        borderRadius: 2,
-                        background: idx % 2 === 0 ? '#ff7597' : '#ffd54f',
-                        boxShadow: '0 0 6px rgba(255, 117, 151, 0.8)'
-                      }}
-                    />
-                  ))}
-                </div>
-                <div style={{ fontSize: 'clamp(0.95rem, 2.8vw, 1.1rem)', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
-                  🕊️ Chidiya • Special Track
-                </div>
-                <div style={{ fontSize: '0.78rem', color: '#ffd54f', fontWeight: 800 }}>
-                  {formatTime(currentTime)} / {formatTime(duration)}
-                </div>
-              </div>
-
-              {/* PURE LYRICS BOX (Completely Clean & Uncluttered) */}
-              <div
-                ref={lyricsContainerRef}
-                style={{
-                  width: '100%',
-                  maxHeight: 'clamp(140px, 24vh, 200px)',
-                  overflowY: 'auto',
-                  padding: '10px 16px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 12,
-                  scrollBehavior: 'smooth',
-                  scrollbarWidth: 'none',
-                  maskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 16%, black 84%, transparent 100%)',
-                  zIndex: 2
-                }}
-              >
-                {LETTER_1_LYRICS.map((cue, idx) => {
-                  const isActive = activeLyricIdx === idx
-                  return (
-                    <motion.div
-                      key={idx}
-                      onClick={() => handleSeekLyric(cue.time)}
-                      className={isActive ? 'active-lyric' : ''}
-                      animate={{
-                        scale: isActive ? 1.1 : 0.94,
-                        opacity: isActive ? 1 : 0.28,
-                        y: isActive ? 0 : 2
-                      }}
-                      transition={{ duration: 0.35, ease: 'easeOut' }}
-                      style={{
-                        fontSize: isActive ? 'clamp(1.35rem, 4.6vw, 1.75rem)' : 'clamp(1rem, 3.4vw, 1.2rem)',
-                        fontWeight: isActive ? 900 : 600,
-                        color: isActive ? '#ffd54f' : '#e0d5ec',
-                        textShadow: isActive
-                          ? '0 0 24px rgba(255, 213, 79, 0.95), 0 0 45px rgba(255, 117, 151, 0.75)'
-                          : 'none',
-                        letterSpacing: '0.03em',
-                        cursor: 'pointer',
-                        filter: isActive ? 'none' : 'blur(0.3px)'
-                      }}
-                    >
-                      "{cue.text}"
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* 🎵 OUTSIDE CANVAS (BOTTOM-RIGHT): Sleek Music Controller Dock */}
-            <div
-              style={{
-                position: 'fixed',
-                bottom: 'max(14px, env(safe-area-inset-bottom, 14px))',
-                right: 'max(14px, env(safe-area-inset-right, 14px))',
-                zIndex: 100000,
-                width: 'min(380px, 92vw)',
-                background: 'rgba(255, 255, 255, 0.12)',
-                backdropFilter: 'blur(22px)',
-                borderRadius: 22,
-                border: '1.5px solid rgba(255, 255, 255, 0.25)',
-                padding: '8px 16px',
-                boxShadow: '0 12px 35px rgba(0, 0, 0, 0.6)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6
-              }}
-            >
-              {/* Scrubber & Time */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
-                <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>
-                  {formatTime(currentTime)}
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={duration || 1}
-                  step={0.1}
-                  value={currentTime}
-                  onChange={(e) => {
-                    const val = parseFloat(e.target.value)
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = val
-                    }
-                  }}
-                  style={{
-                    flex: 1,
-                    accentColor: '#ff7597',
-                    cursor: 'pointer',
-                    height: 4
-                  }}
-                />
-                <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.85)', minWidth: 28 }}>
-                  {formatTime(duration)}
-                </span>
-              </div>
-
-              {/* Action Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <button
-                  onClick={handleReplay}
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.16)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    borderRadius: 16,
-                    color: '#fff',
-                    padding: '5px 12px',
-                    fontSize: '0.78rem',
-                    fontWeight: 800,
-                    cursor: 'pointer'
-                  }}
-                >
-                  🔄 Replay
-                </button>
-
-                <button
-                  onClick={togglePlayPause}
-                  style={{
-                    background: 'linear-gradient(135deg, #ff4071, #ff7597)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: 38,
-                    height: 38,
-                    color: '#fff',
-                    fontSize: '1rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 0 16px rgba(255, 64, 113, 0.7)'
-                  }}
-                >
-                  {isPlaying ? '⏸' : '▶'}
-                </button>
-
-                <button
-                  onClick={handleFinishSong1}
-                  style={{
-                    background: 'linear-gradient(135deg, #ff3366, #ff6699)',
-                    border: '1px solid rgba(255, 255, 255, 0.4)',
-                    borderRadius: 16,
-                    color: '#fff',
-                    padding: '6px 14px',
-                    fontSize: '0.82rem',
-                    fontWeight: 900,
-                    cursor: 'pointer'
-                  }}
-                >
-                  Next ➔
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* ========================================================= */}
-        {/* STAGE 3: SURPRISE TRANSITION                              */}
-        {/* ========================================================= */}
         {stage === 3 && (
-          <motion.div
-            key="transition"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={SPRING}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              textAlign: 'center',
-              padding: '24px 20px',
-              maxWidth: 460,
-              margin: '0 auto'
-            }}
-          >
-            <motion.div
-              animate={{ rotate: [-4, 4, -4], scale: [1, 1.06, 1] }}
-              transition={{ repeat: Infinity, duration: 2.4 }}
-              style={{ fontSize: 48, marginBottom: 8 }}
-            >
-              🎁👀
-            </motion.div>
-
-            <h2
-              className="title-xl"
-              style={{
-                fontSize: 'clamp(1.5rem, 5vw, 1.9rem)',
-                color: 'var(--rose-deep)',
-                margin: '6px 0 8px'
-              }}
-            >
-              {LETTER_TRANSITION.line1}
-            </h2>
-
-            <p style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', margin: '4px 0 6px' }}>
-              {LETTER_TRANSITION.line2}
-            </p>
-
-            <p className="subtitle" style={{ fontSize: '0.98rem', marginBottom: 20 }}>
-              {LETTER_TRANSITION.line3}
-            </p>
-
-            <motion.button
-              className="btn-primary"
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.94 }}
-              onClick={handleOpenLetter2}
-              style={{ padding: '14px 32px', fontSize: '1.05rem', fontWeight: 800 }}
-            >
-              <span>{LETTER_TRANSITION.openBtn}</span>
-            </motion.button>
+          <motion.div key="transition" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={SPRING} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px 20px', maxWidth: 460, margin: '0 auto' }}>
+            <motion.div animate={{ rotate: [-4, 4, -4], scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 2.4 }} style={{ fontSize: 48, marginBottom: 8 }}>🎁👀</motion.div>
+            <h2 className="title-xl" style={{ fontSize: 'clamp(1.5rem, 5vw, 1.9rem)', color: 'var(--rose-deep)', margin: '6px 0 8px' }}>{LETTER_TRANSITION.line1}</h2>
+            <p style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--ink)', margin: '4px 0 6px' }}>{LETTER_TRANSITION.line2}</p>
+            <p className="subtitle" style={{ fontSize: '0.98rem', marginBottom: 20 }}>{LETTER_TRANSITION.line3}</p>
+            <button className="btn-primary" onClick={handleOpenLetter2} style={{ padding: '15px 36px', fontSize: '1.05rem' }}><span>{LETTER_TRANSITION.btnText}</span></button>
           </motion.div>
         )}
 
-        {/* ========================================================= */}
-        {/* STAGE 4: LETTER 2 (Pure Peaceful Reading)                 */}
-        {/* ========================================================= */}
         {stage === 4 && (
-          <motion.div
-            key="letter2"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={SPRING}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '100%',
-              maxWidth: 520,
-              margin: '0 auto'
-            }}
-          >
-            <div className="hand-note" style={{ marginBottom: 4 }}>
-              💌 Dusra Letter • Thoda Sa Tang Karne Ke Liye 😏🎀
-            </div>
-
-            {/* Clean Letter 2 Paper */}
-            <div
-              ref={scrollRef2}
-              style={{
-                marginTop: 6,
-                maxHeight: '52dvh',
-                overflowY: 'auto',
-                background: '#fffdf7',
-                borderRadius: 22,
-                padding: '22px 24px',
-                width: 'min(480px, 92vw)',
-                boxShadow: '0 16px 40px rgba(168, 85, 247, 0.18)',
-                textAlign: 'left',
-                border: '1.5px solid rgba(230, 219, 255, 0.9)',
-                position: 'relative'
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 14,
-                  right: 18,
-                  opacity: 0.18,
-                  fontSize: 44,
-                  pointerEvents: 'none'
-                }}
-              >
-                🎀
-              </div>
-
-              <div
-                style={{
-                  fontFamily: 'var(--font-hand)',
-                  fontSize: '1.42rem',
-                  lineHeight: 1.45,
-                  whiteSpace: 'pre-wrap',
-                  color: '#4a384f',
-                  fontWeight: 600
-                }}
-              >
-                {output2.join('\n')}
-              </div>
-
+          <motion.div key="stage4" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+            <div className="hand-note" style={{ marginBottom: 4 }}>💌 Dusra Letter • Thoda Sa Tang Karne Ke Liye 😏🎀</div>
+            <div ref={scrollRef2} style={{ marginTop: 6, maxHeight: '52dvh', overflowY: 'auto', background: '#fffdf7', borderRadius: 22, padding: '22px 24px', width: 'min(480px, 92vw)', boxShadow: '0 16px 40px rgba(168, 85, 247, 0.18)', textAlign: 'left', border: '1.5px solid rgba(230, 219, 255, 0.9)', position: 'relative' }}>
+              <div style={{ fontFamily: 'var(--font-hand)', fontSize: '1.42rem', lineHeight: 1.45, whiteSpace: 'pre-wrap', color: '#4a384f', fontWeight: 600 }}>{output2.join('\n')}</div>
               {done2 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    marginTop: 20,
-                    gap: 10
-                  }}
-                >
-                  <img
-                    src={TEDDY_BLUSH}
-                    alt="Blushing Teddy"
-                    style={{
-                      width: 90,
-                      height: 90,
-                      objectFit: 'contain',
-                      borderRadius: 16
-                    }}
-                  />
-                  <button
-                    className="btn-primary"
-                    onClick={handleStartSong2}
-                    style={{ width: '100%', maxWidth: 300, padding: '14px 20px', fontSize: '1rem' }}
-                  >
-                    <span>Ye Bhi Padh Liya? Ab Gaana Suno 🎶✨</span>
-                  </button>
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 20, gap: 10 }}>
+                  <img src={TEDDY_BLUSH} alt="Blushing Teddy" style={{ width: 90, height: 90, objectFit: 'contain', borderRadius: 16 }} />
+                  <button className="btn-primary" onClick={handleStartSong2} style={{ width: '100%', maxWidth: 300, padding: '14px 20px', fontSize: '1rem' }}><span>Ye Bhi Padh Liya? Ab Gaana Suno 🎶✨</span></button>
                 </motion.div>
               )}
-            </div>
-          </motion.div>
-        )}
-
-        {/* ========================================================= */}
-        {/* STAGE 5: FULL-SCREEN WARM VIOLET LOFI ROOM (Vilen)        */}
-        {/* ========================================================= */}
-        {stage === 5 && (
-          <motion.div
-            key="song2room"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              width: '100vw',
-              height: '100dvh',
-              zIndex: 99999,
-              background: 'radial-gradient(ellipse at 50% 15%, #3d1554 0%, #1e0a2e 45%, #0d0317 100%)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: 'clamp(10px, 2vh, 18px) clamp(14px, 3.5vw, 24px)',
-              textAlign: 'center',
-              overflowY: 'auto'
-            }}
-          >
-            {/* Ambient Warm Violet Moon & Twinkling Stars */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 14,
-                left: 18,
-                width: 52,
-                height: 52,
-                borderRadius: '50%',
-                background: 'radial-gradient(circle at 35% 35%, #fffdf0 0%, #e9d5ff 55%, rgba(233,213,255,0) 80%)',
-                boxShadow: '0 0 35px rgba(216, 180, 254, 0.8)',
-                opacity: 0.95,
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* Glowing Warm Violet Orbs */}
-            <motion.div
-              animate={{ scale: [1, 1.25, 1], opacity: [0.35, 0.55, 0.35] }}
-              transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}
-              style={{
-                position: 'absolute',
-                top: '10%',
-                right: '6%',
-                width: 280,
-                height: 280,
-                borderRadius: '50%',
-                background: 'rgba(192, 132, 252, 0.28)',
-                filter: 'blur(70px)',
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* TOP HEADER: Song Badge + PERMANENT FLOATING CAKE BUTTON IN OPEN CANVAS */}
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 12,
-                padding: '0 clamp(8px, 3vw, 24px)',
-                zIndex: 10,
-                marginTop: 2
-              }}
-            >
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  background: 'rgba(255, 255, 255, 0.12)',
-                  backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  borderRadius: 20,
-                  padding: '5px 14px',
-                  color: '#f3e8ff',
-                  fontSize: 'clamp(0.75rem, 2.4vw, 0.86rem)',
-                  fontWeight: 800
-                }}
-              >
-                <span>🎶 Deep Violet Night</span>
-              </div>
-
-              {/* ALWAYS-VISIBLE TOP CAKE BUTTON */}
-              <motion.button
-                onClick={handleFinishAll}
-                animate={{ scale: [1, 1.05, 1], boxShadow: ['0 0 10px rgba(192,132,252,0.5)', '0 0 22px rgba(192,132,252,0.9)', '0 0 10px rgba(192,132,252,0.5)'] }}
-                transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
-                  border: '1.5px solid rgba(255, 255, 255, 0.6)',
-                  borderRadius: 24,
-                  padding: '7px 16px',
-                  color: '#fff',
-                  fontSize: 'clamp(0.82rem, 2.6vw, 0.95rem)',
-                  fontWeight: 900,
-                  cursor: 'pointer'
-                }}
-              >
-                <span>Cake Par Chalein 🎂 ➔</span>
-              </motion.button>
-            </div>
-
-            {/* Central Animated Lo-Fi Vinyl + Cuddle Teddies */}
-            <motion.div
-              initial={{ scale: 0.88, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.1, type: 'spring' }}
-              style={{
-                position: 'relative',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                zIndex: 2,
-                margin: '2px 0'
-              }}
-            >
-              <motion.div
-                animate={{ rotate: isPlaying ? 360 : 0 }}
-                transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
-                style={{
-                  width: 'clamp(95px, 22vw, 130px)',
-                  height: 'clamp(95px, 22vw, 130px)',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(circle, #581c87 25%, #18092a 65%, #c084fc 100%)',
-                  boxShadow: '0 0 40px rgba(192, 132, 252, 0.6), inset 0 0 18px rgba(0,0,0,0.85)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: 5
-                }}
-              >
-                <img
-                  src={TEDDY_CUDDLE}
-                  alt="Listening Teddies"
-                  style={{ width: '80%', height: '80%', objectFit: 'contain', borderRadius: '50%' }}
-                />
-              </motion.div>
-
-              {/* Lo-Fi Frequency Equalizer Bar */}
-              <div style={{ display: 'flex', gap: 3, height: 12, alignItems: 'flex-end', marginTop: 6 }}>
-                {[8, 16, 11, 20, 14, 10, 18, 12, 16, 10].map((h, idx) => (
-                  <motion.span
-                    key={idx}
-                    animate={{ height: isPlaying ? [3, h, 5, h * 0.75, 3] : 3 }}
-                    transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
-                    style={{
-                      width: 3,
-                      borderRadius: 2,
-                      background: idx % 2 === 0 ? '#c084fc' : '#ffd54f',
-                      boxShadow: '0 0 6px rgba(192, 132, 252, 0.8)'
-                    }}
-                  />
-                ))}
-              </div>
-
-              <div style={{ textAlign: 'center', marginTop: 2 }}>
-                <div style={{ fontSize: 'clamp(0.9rem, 2.8vw, 1.05rem)', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
-                  ✨ Vilen • Ji Le Zindagi
-                </div>
-                <div style={{ fontSize: '0.78rem', color: '#ffd54f', fontWeight: 800 }}>
-                  {formatTime(currentTime)} / {formatTime(duration)}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* CINEMATIC LYRICS LIST */}
-            <div
-              ref={lyricsContainerRef}
-              style={{
-                width: '100%',
-                maxWidth: 580,
-                maxHeight: 'clamp(120px, 18vh, 160px)',
-                overflowY: 'auto',
-                padding: '6px 12px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-                scrollBehavior: 'smooth',
-                scrollbarWidth: 'none',
-                maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
-                zIndex: 2
-              }}
-            >
-              {LETTER_2_LYRICS.map((cue, idx) => {
-                const isActive = activeLyricIdx === idx
-                return (
-                  <motion.div
-                    key={idx}
-                    onClick={() => handleSeekLyric(cue.time)}
-                    className={isActive ? 'active-lyric' : ''}
-                    animate={{
-                      scale: isActive ? 1.08 : 0.94,
-                      opacity: isActive ? 1 : 0.3,
-                      y: isActive ? 0 : 2
-                    }}
-                    transition={{ duration: 0.35, ease: 'easeOut' }}
-                    style={{
-                      fontSize: isActive ? 'clamp(1.25rem, 4.4vw, 1.65rem)' : 'clamp(0.95rem, 3.4vw, 1.15rem)',
-                      fontWeight: isActive ? 900 : 600,
-                      color: isActive ? '#ffd54f' : '#e9d5ff',
-                      textShadow: isActive
-                        ? '0 0 24px rgba(255, 213, 79, 0.9), 0 0 45px rgba(192, 132, 252, 0.7)'
-                        : 'none',
-                      letterSpacing: '0.03em',
-                      cursor: 'pointer',
-                      filter: isActive ? 'none' : 'blur(0.3px)'
-                    }}
-                  >
-                    "{cue.text}"
-                  </motion.div>
-                )
-              })}
-            </div>
-
-            {/* BIG PROMINENT BUBU SMILING MASCOT IN OPEN SPACE */}
-            <motion.div
-              animate={{ y: [0, -5, 0], rotate: [-1.5, 1.5, -1.5] }}
-              transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 12,
-                background: 'rgba(255, 255, 255, 0.12)',
-                backdropFilter: 'blur(16px)',
-                border: '2px solid rgba(216, 180, 254, 0.55)',
-                borderRadius: 22,
-                padding: '8px 18px',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.45)',
-                maxWidth: 480,
-                margin: '4px auto',
-                zIndex: 3
-              }}
-            >
-              <img
-                src={TEDDY_BLUSH}
-                alt="Bubu Smiling"
-                style={{
-                  width: 50,
-                  height: 50,
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 4px 12px rgba(192,132,252,0.6))',
-                  flexShrink: 0
-                }}
-              />
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: '0.78rem', color: '#e9d5ff', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  🧸 Bubu's Message:
-                </div>
-                <div style={{ fontSize: 'clamp(0.88rem, 2.8vw, 1rem)', color: '#fff', fontWeight: 800, lineHeight: 1.35 }}>
-                  "Besharm zamane ko chodo... <span style={{ color: '#ffd54f' }}>'Aage Badhke Jile Zindagi'</span>! Mst smile karo aur cake kato ab! 😌🎂💖"
-                </div>
-              </div>
-            </motion.div>
-
-            {/* COMPLETION CARD (Triggered near end or always accessible) */}
-            {(currentTime >= 16 || activeLyricIdx >= LETTER_2_LYRICS.length - 2) && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                style={{
-                  width: '100%',
-                  maxWidth: 480,
-                  background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(255, 213, 79, 0.28))',
-                  border: '2px solid #ffd54f',
-                  borderRadius: 20,
-                  padding: '10px 16px',
-                  boxShadow: '0 0 35px rgba(168, 85, 247, 0.5)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 10,
-                  zIndex: 10,
-                  margin: '2px auto'
-                }}
-              >
-                <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontSize: '0.94rem', fontWeight: 900, color: '#fff' }}>
-                    🎂 Birthday Cake Waiting!
-                  </div>
-                  <div style={{ fontSize: '0.78rem', color: '#ffd54f', fontWeight: 700 }}>
-                    Chalo ab cake cutting karte hain!
-                  </div>
-                </div>
-
-                <motion.button
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={handleFinishAll}
-                  className="btn-primary"
-                  style={{
-                    padding: '8px 18px',
-                    fontSize: '0.92rem',
-                    fontWeight: 900,
-                    background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)',
-                    boxShadow: '0 4px 16px rgba(168, 85, 247, 0.6)',
-                    flexShrink: 0
-                  }}
-                >
-                  <span>Cake Par Chalein 🎂 ➔</span>
-                </motion.button>
-              </motion.div>
-            )}
-
-            {/* LO-FI GLASS CONTROL DOCK WITH PROMINENT CAKE BUTTON */}
-            <div
-              style={{
-                width: '100%',
-                maxWidth: 500,
-                background: 'rgba(255, 255, 255, 0.09)',
-                backdropFilter: 'blur(20px)',
-                borderRadius: 20,
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                padding: '8px 14px',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 6,
-                zIndex: 3
-              }}
-            >
-              {/* Scrubber & Time */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
-                <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.75)', minWidth: 28 }}>
-                  {formatTime(currentTime)}
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={duration || 1}
-                  step={0.1}
-                  value={currentTime}
-                  onChange={(e) => {
-                    const val = parseFloat(e.target.value)
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = val
-                    }
-                  }}
-                  style={{
-                    flex: 1,
-                    accentColor: '#c084fc',
-                    cursor: 'pointer',
-                    height: 4
-                  }}
-                />
-                <span style={{ fontSize: '0.74rem', color: 'rgba(255,255,255,0.75)', minWidth: 28 }}>
-                  {formatTime(duration)}
-                </span>
-              </div>
-
-              {/* Action Buttons with Big Prominent Next Button */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, width: '100%' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <button
-                    onClick={handleReplay}
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.14)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      borderRadius: 16,
-                      color: '#fff',
-                      padding: '5px 10px',
-                      fontSize: '0.76rem',
-                      fontWeight: 700,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    🔄 Replay
-                  </button>
-
-                  <button
-                    onClick={togglePlayPause}
-                    style={{
-                      background: 'linear-gradient(135deg, #c084fc, #7e22ce)',
-                      border: 'none',
-                      borderRadius: '50%',
-                      width: 36,
-                      height: 36,
-                      color: '#fff',
-                      fontSize: '0.98rem',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 0 14px rgba(192, 132, 252, 0.6)'
-                    }}
-                  >
-                    {isPlaying ? '⏸' : '▶'}
-                  </button>
-                </div>
-
-                {/* Bottom Cake CTA */}
-                <motion.button
-                  onClick={handleFinishAll}
-                  whileHover={{ scale: 1.06 }}
-                  whileTap={{ scale: 0.94 }}
-                  className="btn-primary"
-                  style={{
-                    padding: '8px 18px',
-                    fontSize: '0.9rem',
-                    fontWeight: 900,
-                    letterSpacing: '0.03em',
-                    background: 'linear-gradient(135deg, #a855f7 0%, #6b21a8 100%)',
-                    boxShadow: '0 4px 16px rgba(168, 85, 247, 0.5)',
-                    border: '1.5px solid rgba(255, 255, 255, 0.4)'
-                  }}
-                >
-                  <span>Cake Par Chalein 🎂 ➔</span>
-                </motion.button>
-              </div>
             </div>
           </motion.div>
         )}

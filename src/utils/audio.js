@@ -2,25 +2,31 @@ const base = import.meta.env.BASE_URL || './'
 const cleanBase = base.endsWith('/') ? base : `${base}/`
 const BGM_SRC = `${cleanBase}assets/audio/bgm.mp3`
 
-let bgmAudio = null
-
 export function initBGM() {
-  if (!bgmAudio) {
-    bgmAudio = new Audio(BGM_SRC)
-    bgmAudio.loop = true
-    bgmAudio.volume = 0.8
-    bgmAudio.preload = 'auto'
+  let el = typeof document !== 'undefined' ? document.getElementById('bgm-player') : null
+  if (!el) {
+    el = new Audio(BGM_SRC)
+    el.id = 'bgm-player'
+    el.loop = true
+    el.volume = 0.8
+    el.preload = 'auto'
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.appendChild(el)
+    }
   }
-  return bgmAudio
+  return el
 }
 
 export function startMusic() {
   try {
     const bgm = initBGM()
-    bgm.loop = true
-    const p = bgm.play()
-    if (p && p.catch) {
-      p.catch(() => {})
+    if (bgm) {
+      bgm.loop = true
+      bgm.volume = 0.8
+      const p = bgm.play()
+      if (p && p.catch) {
+        p.catch(() => {})
+      }
     }
   } catch (err) {
     console.warn('startMusic error:', err)
@@ -28,24 +34,29 @@ export function startMusic() {
 }
 
 export function stopMusic() {
-  if (bgmAudio) {
-    bgmAudio.pause()
+  const bgm = initBGM()
+  if (bgm) {
+    bgm.pause()
   }
 }
 
 export function pauseBGM() {
-  if (bgmAudio) {
-    bgmAudio.pause()
+  const bgm = initBGM()
+  if (bgm) {
+    bgm.pause()
   }
 }
 
 export function resumeBGM() {
   try {
     const bgm = initBGM()
-    bgm.loop = true
-    const p = bgm.play()
-    if (p && p.catch) {
-      p.catch(() => {})
+    if (bgm) {
+      bgm.loop = true
+      bgm.volume = 0.8
+      const p = bgm.play()
+      if (p && p.catch) {
+        p.catch(() => {})
+      }
     }
   } catch (err) {
     console.warn('resumeBGM error:', err)
