@@ -107,3 +107,57 @@ export const DECO_BY_NAME = {
   balloon: getDeco(10),
   cake: getDeco(11)
 }
+
+// 🌟 Modern 3D Animated Cute Emojis (Microsoft Fluent 3D Set)
+export const get3dEmoji = (name) => `${base}assets/3d-emoji/${name}.png`
+
+export const EMOJI_3D = {
+  hearts: [
+    get3dEmoji('sparkling_heart'),
+    get3dEmoji('two_hearts'),
+    get3dEmoji('growing_heart'),
+    get3dEmoji('heart_with_ribbon'),
+    get3dEmoji('revolving_hearts'),
+    get3dEmoji('heart_decoration'),
+    get3dEmoji('red_heart')
+  ],
+  smilies: [
+    get3dEmoji('smiling_face_with_hearts'),
+    get3dEmoji('face_blowing_a_kiss'),
+    get3dEmoji('smiling_face_with_heart_eyes'),
+    get3dEmoji('partying_face'),
+    get3dEmoji('star_struck'),
+    get3dEmoji('hugging_face'),
+    get3dEmoji('pleading_face'),
+    get3dEmoji('kissing_cat')
+  ],
+  party: [
+    get3dEmoji('birthday_cake'),
+    get3dEmoji('party_popper'),
+    get3dEmoji('wrapped_gift'),
+    get3dEmoji('sparkles'),
+    get3dEmoji('sparkler'),
+    get3dEmoji('balloon'),
+    get3dEmoji('crown'),
+    get3dEmoji('clinking_glasses')
+  ],
+  sweets: [
+    get3dEmoji('cupcake'),
+    get3dEmoji('shortcake'),
+    get3dEmoji('ice_cream'),
+    get3dEmoji('doughnut'),
+    get3dEmoji('chocolate_bar'),
+    get3dEmoji('candy'),
+    get3dEmoji('lollipop'),
+    get3dEmoji('strawberry'),
+    get3dEmoji('cherries')
+  ],
+  cute: [
+    get3dEmoji('teddy_bear'),
+    get3dEmoji('ribbon'),
+    get3dEmoji('shooting_star'),
+    get3dEmoji('glowing_star'),
+    get3dEmoji('love_letter'),
+    get3dEmoji('fire')
+  ]
+}
