@@ -368,7 +368,7 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 2: FULL-SCREEN IMMERSIVE LOFI ROOM (Chidiya)        */}
+        {/* STAGE 2: FULL-SCREEN WARM ROMANTIC LOFI ROOM (Chidiya)    */}
         {/* ========================================================= */}
         {stage === 2 && (
           <motion.div
@@ -383,78 +383,84 @@ export default function LetterScene({ onNext }) {
               width: '100vw',
               height: '100vh',
               zIndex: 99999,
-              background: 'radial-gradient(ellipse at 50% 25%, #1f0f35 0%, #0c071a 55%, #040209 100%)',
+              background: 'radial-gradient(ellipse at 50% 15%, #3d1442 0%, #200d2b 45%, #0e0517 100%)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: 'clamp(14px, 3vh, 24px) clamp(16px, 4vw, 28px)',
+              padding: 'clamp(12px, 2.5vh, 20px) clamp(14px, 3.5vw, 24px)',
               textAlign: 'center',
               overflow: 'hidden'
             }}
           >
-            {/* Ambient Moon & Twinkling Stars */}
+            {/* Ambient Warm Golden Moon & Twinkling Stars */}
             <div
               style={{
                 position: 'absolute',
-                top: 24,
-                right: 28,
-                width: 64,
-                height: 64,
+                top: 18,
+                right: 22,
+                width: 58,
+                height: 58,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle at 35% 35%, #fffde8 0%, #ffd580 50%, rgba(255,213,128,0) 80%)',
-                boxShadow: '0 0 45px rgba(255, 235, 160, 0.75)',
-                opacity: 0.92,
+                background: 'radial-gradient(circle at 35% 35%, #fffdf0 0%, #ffdf9e 55%, rgba(255,223,158,0) 80%)',
+                boxShadow: '0 0 40px rgba(255, 223, 158, 0.8)',
+                opacity: 0.95,
                 pointerEvents: 'none'
               }}
             />
 
-            {/* Glowing Aurora Orbs */}
+            {/* Glowing Warm Sunset Orbs */}
             <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.45, 0.25] }}
-              transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+              animate={{ scale: [1, 1.25, 1], opacity: [0.35, 0.55, 0.35] }}
+              transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}
               style={{
                 position: 'absolute',
-                top: '15%',
-                left: '8%',
-                width: 320,
-                height: 320,
+                top: '10%',
+                left: '6%',
+                width: 300,
+                height: 300,
                 borderRadius: '50%',
-                background: 'rgba(255, 107, 147, 0.2)',
-                filter: 'blur(75px)',
+                background: 'rgba(255, 120, 160, 0.28)',
+                filter: 'blur(70px)',
                 pointerEvents: 'none'
               }}
             />
 
-            {/* Header Lofi Pill */}
+            {/* Top Bubu Smiling Teddy Encouraging Her to Smile */}
             <motion.div
-              initial={{ y: -20, opacity: 0 }}
+              initial={{ y: -15, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: 8,
-                background: 'rgba(255, 255, 255, 0.08)',
+                gap: 10,
+                background: 'rgba(255, 255, 255, 0.12)',
                 backdropFilter: 'blur(16px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                borderRadius: 30,
-                padding: '6px 20px',
-                color: '#ffe4ec',
-                fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)',
-                fontWeight: 800,
-                letterSpacing: '0.04em',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
-                zIndex: 2
+                border: '1.5px solid rgba(255, 182, 193, 0.4)',
+                borderRadius: 24,
+                padding: '6px 16px',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
+                zIndex: 3
               }}
             >
-              <span>🎧 Earphones Recommended</span>
-              <span>•</span>
-              <span style={{ color: '#ffd54f' }}>Feel Every Word 🕊️</span>
+              <img
+                src={TEDDY_BLUSH}
+                alt="Bubu Smiling"
+                style={{
+                  width: 38,
+                  height: 38,
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 2px 8px rgba(255,107,147,0.5))'
+                }}
+              />
+              <span style={{ fontSize: 'clamp(0.85rem, 2.8vw, 0.98rem)', fontWeight: 800, color: '#fff', textShadow: '0 2px 6px rgba(0,0,0,0.5)' }}>
+                Bubu: <span style={{ color: '#ffd54f' }}>"Chalo ab smile karo na baccha… mst wali 🥺✨"</span>
+              </span>
             </motion.div>
 
-            {/* Central Animated Lo-Fi Cassette Visual */}
+            {/* Central Animated Lo-Fi Vinyl + Cuddle Teddies */}
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
+              initial={{ scale: 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1, type: 'spring' }}
               style={{
@@ -463,22 +469,22 @@ export default function LetterScene({ onNext }) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 zIndex: 2,
-                margin: 'auto 0 6px'
+                margin: '4px 0'
               }}
             >
               <motion.div
                 animate={{ rotate: isPlaying ? 360 : 0 }}
                 transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
                 style={{
-                  width: 'clamp(130px, 30vw, 175px)',
-                  height: 'clamp(130px, 30vw, 175px)',
+                  width: 'clamp(115px, 26vw, 155px)',
+                  height: 'clamp(115px, 26vw, 155px)',
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, #4a1942 25%, #130a22 65%, #ff7597 100%)',
-                  boxShadow: '0 0 50px rgba(255, 117, 151, 0.55), inset 0 0 25px rgba(0,0,0,0.85)',
+                  background: 'radial-gradient(circle, #521946 25%, #190a26 65%, #ff7597 100%)',
+                  boxShadow: '0 0 45px rgba(255, 117, 151, 0.6), inset 0 0 20px rgba(0,0,0,0.85)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 8
+                  padding: 6
                 }}
               >
                 <img
@@ -489,11 +495,11 @@ export default function LetterScene({ onNext }) {
               </motion.div>
 
               {/* Lo-Fi Frequency Equalizer Bar */}
-              <div style={{ display: 'flex', gap: 4, height: 18, alignItems: 'flex-end', marginTop: 12 }}>
-                {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
+              <div style={{ display: 'flex', gap: 3.5, height: 14, alignItems: 'flex-end', marginTop: 8 }}>
+                {[10, 18, 13, 22, 15, 11, 20, 14, 18, 12].map((h, idx) => (
                   <motion.span
                     key={idx}
-                    animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                    animate={{ height: isPlaying ? [4, h, 6, h * 0.75, 4] : 3 }}
                     transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
                     style={{
                       width: 3.5,
@@ -505,65 +511,87 @@ export default function LetterScene({ onNext }) {
                 ))}
               </div>
 
-              <div style={{ textAlign: 'center', marginTop: 4 }}>
-                <div style={{ fontSize: 'clamp(1rem, 3.2vw, 1.25rem)', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
-                  🕊️ Chidiya • Special Lofi Track
+              <div style={{ textAlign: 'center', marginTop: 2 }}>
+                <div style={{ fontSize: 'clamp(0.95rem, 3vw, 1.15rem)', fontWeight: 900, color: '#ffe4ec', letterSpacing: '0.02em' }}>
+                  🕊️ Chidiya • Special Track
                 </div>
-                <div style={{ fontSize: '0.86rem', color: '#ffd54f', fontWeight: 800 }}>
+                <div style={{ fontSize: '0.82rem', color: '#ffd54f', fontWeight: 800 }}>
                   {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
             </motion.div>
 
-              {/* Real-Time Synced Scrollable Lyrics List */}
-              <div
-                ref={lyricsContainerRef}
-                style={{
-                  width: '100%',
-                  height: 'clamp(180px, 28vh, 230px)',
-                  overflowY: 'auto',
-                  background: 'rgba(0, 0, 0, 0.35)',
-                  borderRadius: 18,
-                  padding: '16px 12px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 10,
-                  scrollBehavior: 'smooth'
-                }}
-              >
-                {LETTER_1_LYRICS.map((cue, idx) => {
-                  const isActive = activeLyricIdx === idx
-                  return (
-                    <motion.div
-                      key={idx}
-                      onClick={() => handleSeekLyric(cue.time)}
-                      className={isActive ? 'active-lyric' : ''}
-                      animate={{
-                        scale: isActive ? 1.05 : 0.96,
-                        opacity: isActive ? 1 : 0.42
-                      }}
-                      style={{
-                        padding: '8px 12px',
-                        borderRadius: 14,
-                        background: isActive ? 'rgba(255, 117, 151, 0.22)' : 'transparent',
-                        border: isActive ? '1px solid rgba(255, 117, 151, 0.45)' : '1px solid transparent',
-                        color: isActive ? '#ffd54f' : '#f0e6ff',
-                        fontWeight: isActive ? 900 : 600,
-                        fontSize: isActive ? '1.15rem' : '0.94rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.25s ease',
-                        textShadow: isActive ? '0 0 14px rgba(255, 213, 79, 0.5)' : 'none'
-                      }}
-                    >
-                      {cue.text}
-                    </motion.div>
-                  )
-                })}
-              </div>
+            {/* CINEMATIC LYRICS LIST */}
+            <div
+              ref={lyricsContainerRef}
+              style={{
+                width: '100%',
+                maxHeight: 'clamp(140px, 22vh, 180px)',
+                overflowY: 'auto',
+                padding: '10px 14px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                scrollBehavior: 'smooth',
+                scrollbarWidth: 'none',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+                zIndex: 2
+              }}
+            >
+              {LETTER_1_LYRICS.map((cue, idx) => {
+                const isActive = activeLyricIdx === idx
+                return (
+                  <motion.div
+                    key={idx}
+                    onClick={() => handleSeekLyric(cue.time)}
+                    className={isActive ? 'active-lyric' : ''}
+                    animate={{
+                      scale: isActive ? 1.08 : 0.94,
+                      opacity: isActive ? 1 : 0.3,
+                      y: isActive ? 0 : 2
+                    }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    style={{
+                      fontSize: isActive ? 'clamp(1.3rem, 4.8vw, 1.75rem)' : 'clamp(1rem, 3.6vw, 1.25rem)',
+                      fontWeight: isActive ? 900 : 600,
+                      color: isActive ? '#ffeaa7' : '#e0d5ec',
+                      textShadow: isActive
+                        ? '0 0 24px rgba(255, 234, 167, 0.9), 0 0 45px rgba(255, 117, 151, 0.7)'
+                        : 'none',
+                      letterSpacing: '0.03em',
+                      cursor: 'pointer',
+                      filter: isActive ? 'none' : 'blur(0.3px)'
+                    }}
+                  >
+                    "{cue.text}"
+                  </motion.div>
+                )
+              })}
+            </div>
 
-              {/* Progress Slider */}
-              <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* LO-FI GLASS CONTROL DOCK WITH PROMINENT NEXT BUTTON */}
+            <div
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                background: 'rgba(255, 255, 255, 0.09)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: 22,
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '10px 16px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                zIndex: 3
+              }}
+            >
+              {/* Scrubber & Time */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
+                <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.75)', minWidth: 30 }}>
+                  {formatTime(currentTime)}
+                </span>
                 <input
                   type="range"
                   min={0}
@@ -580,61 +608,74 @@ export default function LetterScene({ onNext }) {
                     flex: 1,
                     accentColor: '#ff7597',
                     cursor: 'pointer',
-                    height: 5
+                    height: 4
                   }}
                 />
+                <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.75)', minWidth: 30 }}>
+                  {formatTime(duration)}
+                </span>
               </div>
 
-              {/* Controls Bar */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, width: '100%' }}>
-                <button
-                  onClick={() => handleReplay(LETTER_1_LYRICS)}
-                  style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    border: 'none',
-                    borderRadius: 20,
-                    color: '#fff',
-                    padding: '6px 14px',
-                    fontSize: '0.84rem',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  🔄 Replay
-                </button>
+              {/* Action Buttons with Big Prominent Next Button */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <button
+                    onClick={handleReplay}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.14)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      borderRadius: 18,
+                      color: '#fff',
+                      padding: '6px 12px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🔄 Replay
+                  </button>
 
-                <button
-                  onClick={togglePlayPause}
-                  style={{
-                    background: 'linear-gradient(135deg, #ff7597, #ff4b72)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: 44,
-                    height: 44,
-                    color: '#fff',
-                    fontSize: '1.1rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 14px rgba(255, 75, 114, 0.4)'
-                  }}
-                >
-                  {isPlaying ? '⏸' : '▶'}
-                </button>
+                  <button
+                    onClick={togglePlayPause}
+                    style={{
+                      background: 'linear-gradient(135deg, #ff7597, #ff4b72)',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: 40,
+                      height: 40,
+                      color: '#fff',
+                      fontSize: '1.05rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 0 16px rgba(255, 75, 114, 0.6)'
+                    }}
+                  >
+                    {isPlaying ? '⏸' : '▶'}
+                  </button>
+                </div>
 
-                <button
+                {/* Big Prominent Next CTA */}
+                <motion.button
                   onClick={handleFinishSong1}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.94 }}
                   className="btn-primary"
                   style={{
-                    padding: '8px 18px',
-                    fontSize: '0.9rem',
-                    background: 'linear-gradient(135deg, #ff85a8 0%, #ff4b72 100%)'
+                    padding: '10px 20px',
+                    fontSize: '0.94rem',
+                    fontWeight: 900,
+                    letterSpacing: '0.03em',
+                    background: 'linear-gradient(135deg, #ff7597 0%, #ff2a5f 100%)',
+                    boxShadow: '0 4px 18px rgba(255, 42, 95, 0.5)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.4)'
                   }}
                 >
-                  <span>Aage Chalein? 😏→</span>
-                </button>
+                  <span>Aage Chalein? 😏 ➔</span>
+                </motion.button>
               </div>
+            </div>
           </motion.div>
         )}
 
@@ -800,7 +841,7 @@ export default function LetterScene({ onNext }) {
         )}
 
         {/* ========================================================= */}
-        {/* STAGE 5: FULL-SCREEN IMMERSIVE LOFI ROOM (Vilen)          */}
+        {/* STAGE 5: FULL-SCREEN WARM VIOLET LOFI ROOM (Vilen)        */}
         {/* ========================================================= */}
         {stage === 5 && (
           <motion.div
@@ -815,78 +856,84 @@ export default function LetterScene({ onNext }) {
               width: '100vw',
               height: '100vh',
               zIndex: 99999,
-              background: 'radial-gradient(ellipse at 50% 25%, #2a0e44 0%, #0e051a 55%, #04010a 100%)',
+              background: 'radial-gradient(ellipse at 50% 15%, #3d1554 0%, #1e0a2e 45%, #0d0317 100%)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: 'clamp(14px, 3vh, 24px) clamp(16px, 4vw, 28px)',
+              padding: 'clamp(12px, 2.5vh, 20px) clamp(14px, 3.5vw, 24px)',
               textAlign: 'center',
               overflow: 'hidden'
             }}
           >
-            {/* Ambient Moon & Twinkling Stars */}
+            {/* Ambient Warm Violet Moon & Twinkling Stars */}
             <div
               style={{
                 position: 'absolute',
-                top: 24,
-                right: 28,
-                width: 64,
-                height: 64,
+                top: 18,
+                right: 22,
+                width: 58,
+                height: 58,
                 borderRadius: '50%',
-                background: 'radial-gradient(circle at 35% 35%, #fffde8 0%, #d8b4fe 50%, rgba(216,180,254,0) 80%)',
-                boxShadow: '0 0 45px rgba(216, 180, 254, 0.75)',
-                opacity: 0.92,
+                background: 'radial-gradient(circle at 35% 35%, #fffdf0 0%, #e9d5ff 55%, rgba(233,213,255,0) 80%)',
+                boxShadow: '0 0 40px rgba(216, 180, 254, 0.8)',
+                opacity: 0.95,
                 pointerEvents: 'none'
               }}
             />
 
-            {/* Glowing Aurora Orbs */}
+            {/* Glowing Warm Violet Orbs */}
             <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.45, 0.25] }}
-              transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+              animate={{ scale: [1, 1.25, 1], opacity: [0.35, 0.55, 0.35] }}
+              transition={{ repeat: Infinity, duration: 7, ease: 'easeInOut' }}
               style={{
                 position: 'absolute',
-                top: '15%',
-                left: '8%',
-                width: 320,
-                height: 320,
+                top: '10%',
+                left: '6%',
+                width: 300,
+                height: 300,
                 borderRadius: '50%',
-                background: 'rgba(168, 85, 247, 0.22)',
-                filter: 'blur(75px)',
+                background: 'rgba(192, 132, 252, 0.28)',
+                filter: 'blur(70px)',
                 pointerEvents: 'none'
               }}
             />
 
-            {/* Header Lofi Pill */}
+            {/* Top Bubu Smiling Teddy Encouraging Her to Smile */}
             <motion.div
-              initial={{ y: -20, opacity: 0 }}
+              initial={{ y: -15, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               style={{
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: 8,
-                background: 'rgba(255, 255, 255, 0.08)',
+                gap: 10,
+                background: 'rgba(255, 255, 255, 0.12)',
                 backdropFilter: 'blur(16px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                borderRadius: 30,
-                padding: '6px 20px',
-                color: '#f3e8ff',
-                fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)',
-                fontWeight: 800,
-                letterSpacing: '0.04em',
-                boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
-                zIndex: 2
+                border: '1.5px solid rgba(216, 180, 254, 0.4)',
+                borderRadius: 24,
+                padding: '6px 16px',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
+                zIndex: 3
               }}
             >
-              <span>🎶 Deep Violet Night</span>
-              <span>•</span>
-              <span style={{ color: '#c084fc' }}>Ji Le Zindagi ✨</span>
+              <img
+                src={TEDDY_BLUSH}
+                alt="Bubu Smiling"
+                style={{
+                  width: 38,
+                  height: 38,
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 2px 8px rgba(192,132,252,0.5))'
+                }}
+              />
+              <span style={{ fontSize: 'clamp(0.85rem, 2.8vw, 0.98rem)', fontWeight: 800, color: '#fff', textShadow: '0 2px 6px rgba(0,0,0,0.5)' }}>
+                Bubu: <span style={{ color: '#ffd54f' }}>"Chalo ab smile karo na baccha… mst wali 🥺✨"</span>
+              </span>
             </motion.div>
 
-            {/* Central Animated Lo-Fi Cassette Visual */}
+            {/* Central Animated Lo-Fi Vinyl + Cuddle Teddies */}
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
+              initial={{ scale: 0.88, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.1, type: 'spring' }}
               style={{
@@ -895,22 +942,22 @@ export default function LetterScene({ onNext }) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 zIndex: 2,
-                margin: 'auto 0 6px'
+                margin: '4px 0'
               }}
             >
               <motion.div
                 animate={{ rotate: isPlaying ? 360 : 0 }}
                 transition={{ repeat: Infinity, duration: 14, ease: 'linear' }}
                 style={{
-                  width: 'clamp(130px, 30vw, 175px)',
-                  height: 'clamp(130px, 30vw, 175px)',
+                  width: 'clamp(115px, 26vw, 155px)',
+                  height: 'clamp(115px, 26vw, 155px)',
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, #5b21b6 25%, #150928 65%, #c084fc 100%)',
-                  boxShadow: '0 0 50px rgba(192, 132, 252, 0.55), inset 0 0 25px rgba(0,0,0,0.85)',
+                  background: 'radial-gradient(circle, #581c87 25%, #18092a 65%, #c084fc 100%)',
+                  boxShadow: '0 0 45px rgba(192, 132, 252, 0.6), inset 0 0 20px rgba(0,0,0,0.85)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 8
+                  padding: 6
                 }}
               >
                 <img
@@ -921,11 +968,11 @@ export default function LetterScene({ onNext }) {
               </motion.div>
 
               {/* Lo-Fi Frequency Equalizer Bar */}
-              <div style={{ display: 'flex', gap: 4, height: 18, alignItems: 'flex-end', marginTop: 12 }}>
-                {[12, 22, 16, 28, 18, 14, 26, 17, 24, 15].map((h, idx) => (
+              <div style={{ display: 'flex', gap: 3.5, height: 14, alignItems: 'flex-end', marginTop: 8 }}>
+                {[10, 18, 13, 22, 15, 11, 20, 14, 18, 12].map((h, idx) => (
                   <motion.span
                     key={idx}
-                    animate={{ height: isPlaying ? [5, h, 7, h * 0.75, 5] : 4 }}
+                    animate={{ height: isPlaying ? [4, h, 6, h * 0.75, 4] : 3 }}
                     transition={{ repeat: Infinity, duration: 1.1 + (idx * 0.1), ease: 'easeInOut' }}
                     style={{
                       width: 3.5,
@@ -937,65 +984,87 @@ export default function LetterScene({ onNext }) {
                 ))}
               </div>
 
-              <div style={{ textAlign: 'center', marginTop: 4 }}>
-                <div style={{ fontSize: 'clamp(1rem, 3.2vw, 1.25rem)', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
+              <div style={{ textAlign: 'center', marginTop: 2 }}>
+                <div style={{ fontSize: 'clamp(0.95rem, 3vw, 1.15rem)', fontWeight: 900, color: '#f3e8ff', letterSpacing: '0.02em' }}>
                   ✨ Vilen • Ji Le Zindagi
                 </div>
-                <div style={{ fontSize: '0.86rem', color: '#ffd54f', fontWeight: 800 }}>
+                <div style={{ fontSize: '0.82rem', color: '#ffd54f', fontWeight: 800 }}>
                   {formatTime(currentTime)} / {formatTime(duration)}
                 </div>
               </div>
             </motion.div>
 
-              {/* Real-Time Synced Scrollable Lyrics List */}
-              <div
-                ref={lyricsContainerRef}
-                style={{
-                  width: '100%',
-                  height: 'clamp(180px, 28vh, 230px)',
-                  overflowY: 'auto',
-                  background: 'rgba(0, 0, 0, 0.35)',
-                  borderRadius: 18,
-                  padding: '16px 12px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 10,
-                  scrollBehavior: 'smooth'
-                }}
-              >
-                {LETTER_2_LYRICS.map((cue, idx) => {
-                  const isActive = activeLyricIdx === idx
-                  return (
-                    <motion.div
-                      key={idx}
-                      onClick={() => handleSeekLyric(cue.time)}
-                      className={isActive ? 'active-lyric' : ''}
-                      animate={{
-                        scale: isActive ? 1.05 : 0.96,
-                        opacity: isActive ? 1 : 0.42
-                      }}
-                      style={{
-                        padding: '8px 12px',
-                        borderRadius: 14,
-                        background: isActive ? 'rgba(192, 132, 252, 0.22)' : 'transparent',
-                        border: isActive ? '1px solid rgba(192, 132, 252, 0.45)' : '1px solid transparent',
-                        color: isActive ? '#ffd54f' : '#f0e6ff',
-                        fontWeight: isActive ? 900 : 600,
-                        fontSize: isActive ? '1.15rem' : '0.94rem',
-                        cursor: 'pointer',
-                        transition: 'all 0.25s ease',
-                        textShadow: isActive ? '0 0 14px rgba(255, 213, 79, 0.5)' : 'none'
-                      }}
-                    >
-                      {cue.text}
-                    </motion.div>
-                  )
-                })}
-              </div>
+            {/* CINEMATIC LYRICS LIST */}
+            <div
+              ref={lyricsContainerRef}
+              style={{
+                width: '100%',
+                maxHeight: 'clamp(140px, 22vh, 180px)',
+                overflowY: 'auto',
+                padding: '10px 14px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+                scrollBehavior: 'smooth',
+                scrollbarWidth: 'none',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+                zIndex: 2
+              }}
+            >
+              {LETTER_2_LYRICS.map((cue, idx) => {
+                const isActive = activeLyricIdx === idx
+                return (
+                  <motion.div
+                    key={idx}
+                    onClick={() => handleSeekLyric(cue.time)}
+                    className={isActive ? 'active-lyric' : ''}
+                    animate={{
+                      scale: isActive ? 1.08 : 0.94,
+                      opacity: isActive ? 1 : 0.3,
+                      y: isActive ? 0 : 2
+                    }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    style={{
+                      fontSize: isActive ? 'clamp(1.3rem, 4.8vw, 1.75rem)' : 'clamp(1rem, 3.6vw, 1.25rem)',
+                      fontWeight: isActive ? 900 : 600,
+                      color: isActive ? '#ffd54f' : '#e9d5ff',
+                      textShadow: isActive
+                        ? '0 0 24px rgba(255, 213, 79, 0.9), 0 0 45px rgba(192, 132, 252, 0.7)'
+                        : 'none',
+                      letterSpacing: '0.03em',
+                      cursor: 'pointer',
+                      filter: isActive ? 'none' : 'blur(0.3px)'
+                    }}
+                  >
+                    "{cue.text}"
+                  </motion.div>
+                )
+              })}
+            </div>
 
-              {/* Progress Slider */}
-              <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* LO-FI GLASS CONTROL DOCK WITH PROMINENT CAKE BUTTON */}
+            <div
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                background: 'rgba(255, 255, 255, 0.09)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: 22,
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '10px 16px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                zIndex: 3
+              }}
+            >
+              {/* Scrubber & Time */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
+                <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.75)', minWidth: 30 }}>
+                  {formatTime(currentTime)}
+                </span>
                 <input
                   type="range"
                   min={0}
@@ -1012,61 +1081,74 @@ export default function LetterScene({ onNext }) {
                     flex: 1,
                     accentColor: '#c084fc',
                     cursor: 'pointer',
-                    height: 5
+                    height: 4
                   }}
                 />
+                <span style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.75)', minWidth: 30 }}>
+                  {formatTime(duration)}
+                </span>
               </div>
 
-              {/* Controls Bar */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, width: '100%' }}>
-                <button
-                  onClick={() => handleReplay(LETTER_2_LYRICS)}
-                  style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    border: 'none',
-                    borderRadius: 20,
-                    color: '#fff',
-                    padding: '6px 14px',
-                    fontSize: '0.84rem',
-                    fontWeight: 700,
-                    cursor: 'pointer'
-                  }}
-                >
-                  🔄 Replay
-                </button>
+              {/* Action Buttons with Big Prominent Next Button */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <button
+                    onClick={handleReplay}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.14)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      borderRadius: 18,
+                      color: '#fff',
+                      padding: '6px 12px',
+                      fontSize: '0.8rem',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🔄 Replay
+                  </button>
 
-                <button
-                  onClick={togglePlayPause}
-                  style={{
-                    background: 'linear-gradient(135deg, #c084fc, #7e22ce)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: 44,
-                    height: 44,
-                    color: '#fff',
-                    fontSize: '1.1rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 14px rgba(126, 34, 206, 0.4)'
-                  }}
-                >
-                  {isPlaying ? '⏸' : '▶'}
-                </button>
+                  <button
+                    onClick={togglePlayPause}
+                    style={{
+                      background: 'linear-gradient(135deg, #c084fc, #7e22ce)',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: 40,
+                      height: 40,
+                      color: '#fff',
+                      fontSize: '1.05rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 0 16px rgba(192, 132, 252, 0.6)'
+                    }}
+                  >
+                    {isPlaying ? '⏸' : '▶'}
+                  </button>
+                </div>
 
-                <button
+                {/* Big Prominent Cake Next CTA */}
+                <motion.button
                   onClick={handleFinishAll}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.94 }}
                   className="btn-primary"
                   style={{
-                    padding: '8px 18px',
-                    fontSize: '0.9rem',
-                    background: 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)'
+                    padding: '10px 20px',
+                    fontSize: '0.94rem',
+                    fontWeight: 900,
+                    letterSpacing: '0.03em',
+                    background: 'linear-gradient(135deg, #a855f7 0%, #6b21a8 100%)',
+                    boxShadow: '0 4px 18px rgba(168, 85, 247, 0.5)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.4)'
                   }}
                 >
-                  <span>Cake Par Chalein 🎂✨</span>
-                </button>
+                  <span>Cake Par Chalein 🎂✨ ➔</span>
+                </motion.button>
               </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
