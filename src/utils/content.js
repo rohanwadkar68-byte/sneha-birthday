@@ -66,21 +66,21 @@ export const COMPLIMENTS = [
   {
     emoji: '🧸',
     title: 'Gaal Wala Pending Kaam',
-    text: 'Aapke chubby gaal ko bite krna tho bnta hai...  Sote time gaal squish, phir tight hug… aur haan, aapke chest pr jana Guarented hai 😂🙈',
+    text: 'Aapke chubby gaal ko bite krna tho bnta hai... Sote time gaal squish, phir tight hug… aur haan, aapke chest pr jana Guaranteed hai 😂🙈',
     customSticker: 'assets/kisses/milk_mocha_kiss_3.gif',
     gradient: 'linear-gradient(135deg, #fff2f8 0%, #ffd8ec 100%)'
   },
   {
     emoji: '😏',
     title: 'Mommy Mode',
-    text: '“Or meko humesha Data na kro ,masoom sa hu nai ,acche se mommy treatment diya kro😂',
+    text: '“Aur meko humesha daanta na kro, masoom sa toh hoon main, acche se mommy treatment diya kro 😂”',
     customSticker: 'assets/kisses/bubu_kiss_7.gif',
     gradient: 'linear-gradient(135deg, #eafff4 0%, #c9ffe6 100%)'
   },
   {
     emoji: '🎮',
-    title: 'ProDepartment',
-    text: 'Game me apka proness dekhkr bade bade log apse inspiration lete hai Mommy,I am proud of you baccha 😌',
+    title: 'Pro Department',
+    text: 'Game me apka proness dekhkr bade bade log apse inspiration lete hai Mommy, I am proud of you baccha 😌',
     customSticker: 'assets/kisses/milk_mocha_kiss_7.gif',
     gradient: 'linear-gradient(135deg, #f4ecff 0%, #e0ccff 100%)'
   },
@@ -101,7 +101,7 @@ export const COMPLIMENTS = [
   {
     emoji: '🙈',
     title: 'Ab Sharma Bhi Lo',
-    text: 'Aap meko mst kissi sb ka lalach dete , Boobie ka bhi maja apko bhi sta pr Ganda Bs mai Sabit hota ,☺️🙂😑...Aapko lagta hai mujhe pata nahi chalta? 😏🎀',
+    text: 'Aap meko mast kissi sab ka lalach dete, cuddle ka maja aapko bhi aata par ganda bas main saabit hota ☺️🙂😑... Aapko lagta hai mujhe pata nahi chalta? 😏🎀',
     customSticker: 'assets/kisses/bubu_kiss_5.gif',
     gradient: 'linear-gradient(135deg, #fff8e8 0%, #ffe9c8 100%)'
   },
@@ -156,28 +156,28 @@ export const MEMORIES = [
     tape: '#fff3c9', rot: -2, emoji: '🌙',
     title: '12 Se 3 Tak',
     text: 'Game kab ka khatam, lekin baatein nahi. “Bas thodi der” se seedha 2:30–3 baje tak pahunch jaana apni specialty hai 😂🌙',
-    secretNote: 'Secret: Aap “neend aa rahi hai” bolti ho aur phir jldi so jati,itni konsi Jldi rehti Apko ,site tjo na mobile chalate rrhtr pta meko☺️☺️',
+    secretNote: 'Secret: Aap “neend aa rahi hai” bolti ho aur phir jaldi so jaati, itni konsi jaldi rehti aapko, sote thodi na, mobile chalate rehte ho pata hai meko ☺️☺️',
     deco: 'flower', customSticker: 'assets/kisses/cuddle_3.gif', pookieIdx: 12, tag: '12 AM Club'
   },
   {
     tape: '#e2dcff', rot: 3, emoji: '🧸',
     title: 'Pending Gaal Squish',
     text: 'Abhi tak sirf virtual bakbak aur cuddles… real meeting wala gaal-squish mission abhi pending hai 🙈',
-    secretNote: 'Secret: Sote time Kabhi khud bhi Meko mere rights offer Kiya kro Beshrmm 😤🧸',
+    secretNote: 'Secret: Sote time kabhi khud bhi meko mere rights offer kiya karo besharm 😤🧸',
     deco: 'bow', customSticker: 'assets/kisses/milk_mocha_kiss_3.gif', pookieIdx: 42, tag: 'Pending Mission'
   },
   {
     tape: '#ffe0ef', rot: -2.5, emoji: '📱',
     title: 'Chat Archive',
-    text: 'Sbse Best part Apko preshan krne mai maja ata 📩😂',
+    text: 'Sabse best part aapko pareshan karne me maza aata 📩😂',
     secretNote: 'Secret: Hum dono ek hi conversation me 5 alag topics kaise start kar dete hain, ye abhi tak samajh nahi aaya 😭📱',
     deco: 'sparkle', pookieIdx: 41, tag: 'Cute Chats'
   },
   {
     tape: '#d9f6e8', rot: 2, emoji: '😏',
     title: 'Nakhre + Teasing',
-    text: 'Kabhi aapka muh phulna, kabhi mera muh fulta pr hr time mai hi manata ☺️😗😗😂',
-    secretNote: 'Secret: Jagda kitna bhu bda ho sakta hai, lekin next baat phir waise hi start ho jaati hai jaise kuch hua hi nahi. Buddhu dono taraf se hain 😌',
+    text: 'Kabhi aapka muh phulna, kabhi mera muh phulta par har time main hi manata ☺️😗😗😂',
+    secretNote: 'Secret: Jagda kitna bhi bada ho sakta hai, lekin next baat phir waise hi start ho jaati hai jaise kuch hua hi nahi. Buddhu dono taraf se hain 😌',
     deco: 'cloud', customSticker: 'assets/kisses/milk_mocha_kiss_13.gif', pookieIdx: 15, tag: 'Us Being Us'
   }
 ]
@@ -229,9 +229,8 @@ export const LETTER_LINES = [
   '',
   'Aur haan, virtual cuddles, kisses aur aapki woh teasing… uska toh main kuch bolunga hi nahi. Aap khud samajh jaogi aur phir sharmaogi. 😏🙈',
   '',
-  
   '',
-  'Bas birthday pe ek cheez: aise hi rehna. Hasti rehna, apne nakhre karna, mujhe tang karna aur kabhi kabhi als ko dur krooooo beshrm 😾 🎀',
+  'Bas birthday pe ek cheez: aise hi rehna. Hasti rehna, apne nakhre karna, mujhe tang karna aur kabhi kabhi aalas ko door karoooo besharm 😾 🎀',
   '',
   'Happy Birthday, Dora. 23 ka level mast se enjoy karo. 🎂',
   '',
@@ -265,7 +264,7 @@ export const LETTER_2_LINES = [
   '',
   'Aapko lagta hai aap bohot innocent ho na? naa naa naa bilkul naa😂',
   '',
-  'Game me akele akele khelna psnd apko ,aaj hi dekhe hum, ☺️☺️(sarcasm) iska jissb tho hoga filhal postponed hai',
+  'Game me akele akele khelna psnd apko ,aaj hi dekhe hum, ☺️☺️(sarcasm) iska hisaab toh hoga filhal postponed hai',
   '',
   'Lekin sach bolu jaise bhi ho ,ho tho apne hi Mommy jo ho or thanks itna jhelne ke liye meko ,mtlb mai jhelta apko bs ulta bol diya 😗😑,  ',
   '',
@@ -273,7 +272,7 @@ export const LETTER_2_LINES = [
   '',
   'Chalo ab smile karo… mast wali 😌',
   'Aaj ka poora din aapka hai. ',
-  'Batana jarur kaisa laga ,itna Kuch na ata meko 🐍l hehehe',
+  'Batana jarur kaisa laga ,itna kuch nahi aata meko 🐍 hehehe',
   'HAPPY BIRTHDAY, SNEHA!! 🧸🎂💖'
 ]
 
@@ -344,7 +343,7 @@ export const FAKE_GIFT_CONTENT = {
 }
 export const EXPLORER_CONTENT = {
   heading: 'Dora Ka Little Wonderland 🏰',
-  subtitle: '8 chhoti-chhoti cheezein chhupi hain… sab dhoondh ke dikhaiye (chipe huye bhi hai dekho unko bhi dhundo😏',
+  subtitle: '8 chhoti-chhoti cheezein chhupi hain… sab dhoondh ke dikhaiye (chhipe huye bhi hain dekho unko bhi dhoondo) 😏',
   progressLabel: 'Dora Ne Kitna Dhoonda:',
   allFoundBanner: 'Sab mil gaya! Wah buddhu, aap expected se zyada smart nikli 😭✨',
   nextBtn: 'Ab Cute Cards Khologe? 🃏✨'
@@ -378,10 +377,10 @@ export const KISS_CEREMONY_CONTENT = {
     options: [
       'Ek aur cheek squish 🧸',
       'Cute forehead kiss 🙈',
-      'Nose pe BITE👃',
+      'Nose pe BITE 👃',
       'Ek tight warm hug 🤗'
     ],
-    revealDialog: 'Ayy hayy… choice dekhko Madam ki? 😭😏 Theek hai, final reward locked. Aap innocent banne ki acting bahut Acche se krte ji Dora.',
+    revealDialog: 'Ayy hayy… choice dekho Madam ki? 😭😏 Theek hai, final reward locked. Aap innocent banne ki acting bahut acche se karte ho ji Dora.',
     finishBtn: 'Okayyy, Ab Aage Chalein 🙈✨'
   }
 }
@@ -477,7 +476,7 @@ export const LITTLE_WORLD_CONTENT = {
   intro: {
     badge: '🧸 OUR LITTLE WORLD 🌙',
     title: 'Ek Chhoti Si Pyaari Jagah…',
-    subtitle: 'Jahan bas mai aur beshrm mommy hain ✨',
+    subtitle: 'Jahan bas mai aur besharam mommy hain ✨',
     btn: 'Enter Little World →'
   },
   clockMilestones: [
@@ -491,7 +490,7 @@ export const LITTLE_WORLD_CONTENT = {
     { time: '03:01 AM', label: 'Signature cozy 3 AM cuddle 🫂🌙' }
   ],
   storyDialogues: {
-    waiting: 'mai bed par wait kar raha hai…',
+    waiting: 'Main bed par wait kar raha hoon…',
     enter: { p1: 'Aa gayi? 👀', p2: 'Haan… 😌' },
     gameOffer: { p1: 'Game khelein? 🎮', p2: 'Rehne do… aaj bas baatein karte hain 💬' },
     gameCancelBanner: 'GAME: ❌  BAKBAK: ✅',
@@ -519,11 +518,11 @@ export const LITTLE_WORLD_CONTENT = {
     feed: [
       'Mmm… aur milega? 🥺🍰',
       'Aap mujhe bigaad rahe ho 😂',
-      'Bas… ab ratbhr apko khaya jayega😋💖'
+      'Bas… ab raat bhar aapko khaya jayega 😋💖'
     ],
     cuddle: [
       'Idhar aaiye na… 🧸',
-      ' cuddle time 🙈💖',
+      'Cuddle time 🙈💖',
       'Aap sabse soft aur tasty ho 😝❤️'
     ],
     gift: [
@@ -539,7 +538,7 @@ export const LITTLE_WORLD_CONTENT = {
         'Waise…',
         'Haan bolo.'
       ],
-      systemNote: 'Sleep cancelled. bate continues. 😂🌙'
+      systemNote: 'Sleep cancelled. Baatein continue. 😂🌙'
     }
   },
   nextBtn: 'Ab Cute Compliments Khologe? 🃏✨'
