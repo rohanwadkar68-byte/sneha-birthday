@@ -78,6 +78,10 @@ export default function App() {
     startMusic()
     setMuted(false)
     next()
+    // 🐱 Guarantee Cat Waiter Popup appears right after Welcome doors unlock
+    setTimeout(() => {
+      setCatAssistantOpen(true)
+    }, 500)
   }
 
   const toggleMute = () => {
@@ -107,13 +111,13 @@ export default function App() {
     }
   }
 
-  // 🐱 Trigger Cat BGM Assistant on 3rd Scene (after Welcome)
+  // 🐱 Also trigger Cat BGM Assistant if landed on Scene 3
   useEffect(() => {
     if (sceneIndex === 3 && !hasShownCatAssistant) {
       setHasShownCatAssistant(true)
       const timer = setTimeout(() => {
         setCatAssistantOpen(true)
-      }, 800)
+      }, 500)
       return () => clearTimeout(timer)
     }
   }, [sceneIndex, hasShownCatAssistant])
