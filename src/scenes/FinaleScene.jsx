@@ -10,27 +10,16 @@ import { playFanfare, playSparkle } from '../utils/audio.js'
 export default function FinaleScene({ onNext, bonus = false }) {
   useEffect(() => {
     playFanfare()
-    const burst = (origin, count = 45) => {
-      playSparkle()
+    // 🌸 Single gentle, subtle breeze — clean & peaceful (no screen crowding)
+    const t1 = setTimeout(() => {
       triggerRosePetals({
-        particleCount: count,
-        origin,
-        burst: true
+        particleCount: 16,
+        origin: { x: 0.5, y: 0.4 },
+        burst: false
       })
-    }
+    }, 400)
 
-    burst({ x: 0.2, y: 0.55 })
-    const t1 = setTimeout(() => burst({ x: 0.8, y: 0.55 }), 400)
-    const t2 = setTimeout(() => burst({ x: 0.5, y: 0.35 }, 80), 800)
-    const t3 = setTimeout(() => burst({ x: 0.5, y: 0.65 }, 90), 1600)
-
-    if (bonus) {
-      const t4 = setTimeout(() => burst({ x: 0.3, y: 0.5 }, 130), 2200)
-      const t5 = setTimeout(() => burst({ x: 0.7, y: 0.5 }, 130), 2700)
-      const t6 = setTimeout(() => burst({ x: 0.5, y: 0.3 }, 200), 3200)
-      return () => [t1, t2, t3, t4, t5, t6].forEach(clearTimeout)
-    }
-    return () => [t1, t2, t3].forEach(clearTimeout)
+    return () => clearTimeout(t1)
   }, [bonus])
 
   return (
