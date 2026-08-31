@@ -58,11 +58,6 @@ export default function KissCeremonyScene({ onNext }) {
     playKissSound('mwah')
     playSparkle()
     playFanfare()
-    triggerRosePetals({
-      particleCount: 18,
-      origin: { x: 0.5, y: 0.55 },
-      burst: true
-    })
     setStep(5)
   }
 

@@ -188,20 +188,36 @@ const KISS_MWAH_SRC = `${cleanBase}assets/audio/kiss-mwah.mp3`
 const KISS_CHEEK_SRC = `${cleanBase}assets/audio/kiss-cheek.mp3`
 const KISS_SOFT_SRC = `${cleanBase}assets/audio/kiss-soft.mp3`
 
-// 💋 Real Recorded Authentic "Mwaaah! 💋" Kiss Sound Effects
+// 💋 Real Recorded Authentic "Mwaaah! 💋" Kiss Sound Effects with BGM Auto-Pause
 export function playKissSound(type = 'mwah') {
   try {
+    pauseBGM() // 🔇 Pause background music during the kiss!
+
     let src = KISS_MWAH_SRC
     if (type === 'cheek') src = KISS_CHEEK_SRC
     else if (type === 'soft' || type === 'forehead' || type === 'nose') src = KISS_SOFT_SRC
 
     const audio = new Audio(src)
-    audio.volume = 0.95
+    audio.volume = 1.0
+
+    // Automatically resume BGM when the kiss sound completes
+    audio.onended = () => {
+      resumeBGM()
+    }
+
     const p = audio.play()
     if (p && p.catch) {
-      p.catch(() => {})
+      p.catch(() => {
+        resumeBGM()
+      })
     }
+
+    // Safety timeout in case onended doesn't fire
+    setTimeout(() => {
+      resumeBGM()
+    }, 1800)
   } catch (err) {
     console.warn('playKissSound error:', err)
+    resumeBGM()
   }
 }

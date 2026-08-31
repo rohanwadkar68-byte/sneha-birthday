@@ -18,16 +18,6 @@ const FLOATING_3D_ICONS = [
 export default function FinaleScene({ onNext, bonus = false }) {
   useEffect(() => {
     playFanfare()
-    // 🌸 Single gentle, subtle breeze — clean & peaceful (no screen crowding)
-    const t1 = setTimeout(() => {
-      triggerRosePetals({
-        particleCount: 16,
-        origin: { x: 0.5, y: 0.4 },
-        burst: false
-      })
-    }, 400)
-
-    return () => clearTimeout(t1)
   }, [bonus])
 
   return (

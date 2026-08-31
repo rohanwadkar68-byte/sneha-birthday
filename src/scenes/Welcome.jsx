@@ -13,11 +13,6 @@ export default function Welcome({ onNext }) {
     if (doorOpen) return
     startMusic() // Immediately unlock and start continuous MP3 BGM on user gesture!
     setDoorOpen(true)
-    triggerRosePetals({
-      particleCount: 55,
-      origin: { x: 0.5, y: 0.6 },
-      burst: true
-    })
     setTimeout(() => {
       onNext()
     }, 1600)

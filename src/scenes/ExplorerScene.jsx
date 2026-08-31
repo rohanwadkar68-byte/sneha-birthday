@@ -49,11 +49,6 @@ export default function ExplorerScene({ onNext }) {
     if (!balloonAlive) return
     playPop()
     setBalloonAlive(false)
-    triggerRosePetals({
-      particleCount: 35,
-      origin: { x: 0.5, y: 0.55 },
-      burst: true
-    })
     setTimeout(() => setBalloonAlive(true), 1400)
     discover('balloon')
   }
@@ -76,11 +71,6 @@ export default function ExplorerScene({ onNext }) {
 
   const tapHeart = () => {
     discover('heart')
-    triggerRosePetals({
-      particleCount: 30,
-      origin: { x: 0.5, y: 0.65 },
-      burst: true
-    })
   }
 
   const handleTap = (id) => {

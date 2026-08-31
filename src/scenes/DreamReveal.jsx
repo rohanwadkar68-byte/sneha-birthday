@@ -26,11 +26,6 @@ export default function DreamReveal({ onNext }) {
     const t = setTimeout(() => {
       playSparkle()
       playFanfare()
-      triggerRosePetals({
-        particleCount: 50,
-        origin: { x: 0.5, y: 0.55 },
-        burst: true
-      })
     }, 400)
     return () => clearTimeout(t)
   }, [])

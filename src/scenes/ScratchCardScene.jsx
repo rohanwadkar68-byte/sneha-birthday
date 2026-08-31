@@ -13,11 +13,6 @@ export default function ScratchCardScene({ onNext }) {
     if (!unlocked[id]) {
       playPop()
       playSparkle()
-      triggerRosePetals({
-        particleCount: 30,
-        origin: { x: 0.5, y: 0.6 },
-        burst: true
-      })
       setUnlocked((prev) => ({ ...prev, [id]: true }))
     }
   }

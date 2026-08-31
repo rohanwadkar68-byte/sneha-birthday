@@ -64,11 +64,7 @@ export default function InteractiveTeddy({
     playPop()
     setIsTickled(true)
     setTimeout(() => setIsTickled(false), 600)
-    triggerRosePetals({
-      particleCount: 18,
-      origin: { x: 0.5, y: 0.6 },
-      burst: true
-    })
+    spawnHeart(e.clientX, e.clientY)
   }
 
   const spawnHeart = (x, y) => {

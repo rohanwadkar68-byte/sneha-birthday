@@ -25,11 +25,6 @@ export default function RunawayScene({ onNext }) {
       if (next >= TAUNTS.length - 1) {
         setTimeout(() => {
           playFanfare()
-          triggerRosePetals({
-            particleCount: 45,
-            origin: { x: 0.5, y: 0.6 },
-            burst: true
-          })
         }, 200)
       }
       return next
