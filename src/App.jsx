@@ -11,7 +11,6 @@ import ExplorerScene from './scenes/ExplorerScene.jsx'
 import LittleWorldScene from './scenes/LittleWorldScene.jsx'
 import ComplimentDeck from './scenes/ComplimentDeck.jsx'
 import KissCeremonyScene from './scenes/KissCeremonyScene.jsx'
-import ScratchCardScene from './scenes/ScratchCardScene.jsx'
 import ScrapbookScene from './scenes/ScrapbookScene.jsx'
 import LetterScene from './scenes/LetterScene.jsx'
 import CakeScene from './scenes/CakeScene.jsx'
@@ -144,7 +143,6 @@ export default function App() {
     <LittleWorldScene key="littleworld" onNext={next} />,
     <ComplimentDeck key="compliments" onNext={next} />,
     <KissCeremonyScene key="kissceremony" onNext={next} />,
-    <ScratchCardScene key="scratch" onNext={next} />,
     <ScrapbookScene key="scrapbook" onNext={next} />,
     <LetterScene key="letter" onNext={next} />,
     <CakeScene key="cake" onNext={next} />,
