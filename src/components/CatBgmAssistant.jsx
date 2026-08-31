@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { playPop, playSparkle } from '../utils/audio.js'
+import { CAT_ASSISTANT_CONTENT } from '../utils/content.js'
 
 export default function CatBgmAssistant({ isOpen, onYes, onNo }) {
   const handleYes = () => {
@@ -67,7 +68,7 @@ export default function CatBgmAssistant({ isOpen, onYes, onNo }) {
                 marginBottom: 10
               }}
             >
-              ☕ SPECIAL CAT WAITER MOMENT 🐾
+              {CAT_ASSISTANT_CONTENT.badge}
             </div>
 
             {/* Animated Cat with Mug Image / GIF */}
@@ -124,7 +125,7 @@ export default function CatBgmAssistant({ isOpen, onYes, onNo }) {
                 maxWidth: 360
               }}
             >
-              "Mommy, ye jo peeche background song baj raha hai… wo change karna hai kya aapko? ☕🐾"
+              {CAT_ASSISTANT_CONTENT.prompt}
             </motion.div>
 
             {/* Action Buttons (Yes & No) */}
@@ -145,7 +146,7 @@ export default function CatBgmAssistant({ isOpen, onYes, onNo }) {
                   cursor: 'pointer'
                 }}
               >
-                No, yehi theek hai 🥰
+                {CAT_ASSISTANT_CONTENT.noBtn}
               </motion.button>
 
               <motion.button
@@ -160,7 +161,7 @@ export default function CatBgmAssistant({ isOpen, onYes, onNo }) {
                   margin: 0
                 }}
               >
-                <span>Yes, badalna hai! 🎵</span>
+                <span>{CAT_ASSISTANT_CONTENT.yesBtn}</span>
               </motion.button>
             </div>
           </motion.div>

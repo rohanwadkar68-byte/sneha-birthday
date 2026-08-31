@@ -424,7 +424,54 @@ export const HUD_UI = {
 }
 
 // -------------------------------------------------------------------------
-// 🧸 [SECTION 14] SCENE 8: OUR LITTLE WORLD (2-Teddy Virtual Room)
+// ☕ [SECTION 18] CAT BGM ASSISTANT & MUSIC ROOM
+// -------------------------------------------------------------------------
+export const CAT_ASSISTANT_CONTENT = {
+  badge: '☕ SPECIAL CAT WAITER MOMENT 🐾',
+  prompt: 'Mommy, ye jo peeche background song baj raha hai… wo change karna hai kya aapko? ☕🐾',
+  yesBtn: 'Yes, badalna hai! 🎵',
+  noBtn: 'No, yehi theek hai 🥰',
+  tutorialHint: 'Mommy, yahan se aap jab chahein music band ya resume kar sakti hain! Aur naya gaana lagana ho toh is button ko dabayein 🎵🐾'
+}
+
+export const SONG_SEARCH_UI = {
+  title: '🎵 Music Room & Song Changer',
+  subtitle: 'Apna manpasand background song search karke lagayein ✨',
+  playingNow: 'Abhi baj raha hai:',
+  searchPlaceholder: 'Gaana ya artist ka naam likhein... (e.g. Tum Hi Ho)',
+  searchBtn: 'Search 🔍',
+  searchingText: 'Gaane dhoondhe ja rahe hain… 🎵',
+  noResults: 'Koi gaana nahi mila. Dusra naam search karke dekhein!',
+  popularTitle: 'Popular Romantic Tracks ✨',
+  keywords: ['Tum Hi Ho', 'Kesariya', 'Pehla Pyaar', 'Vilen Chidiya', 'Heeriye', 'Maan Meri Jaan', 'Tera Fitoor', 'Raataan Lambiyan', 'Shayad']
+}
+
+// -------------------------------------------------------------------------
+// 👑 [SECTION 19] SCENE 17: TRUE END (Holographic VIP Pass)
+// -------------------------------------------------------------------------
+export const TRUE_END_CONTENT = {
+  vipBadge: '👑 ALL-ACCESS VIP PASS',
+  specialTag: '★ SNEHA SPECIAL ★',
+  edition: 'Official 23rd Year Edition • Expiry: Hamesha Ke Liye',
+  certifyText: 'This pass certifies that Sneha is officially the cutest, most gorgeous Mommy, my #1 gaming partner, and the sole owner of my heart.',
+  handNote: 'mommy, ek aur baar — Happy Birthday! Aap meri sabse best cheez ho 💖',
+  stampText: '✓ APPROVED BY YOUR FAVOURITE PERSON',
+  replayBtn: 'Shuru Se Phir Dekhein ↺✨'
+}
+
+// -------------------------------------------------------------------------
+// 🤫 [SECTION 20] HUD & SECRET MODAL
+// -------------------------------------------------------------------------
+export const SECRET_MODAL_CONTENT = {
+  badge: '🔒 SECRET UNLOCKED',
+  heading: 'Arey, aapne 5 baar click kar diya! 😂',
+  body: 'Itna curious hona allowed nahi hai waise… lekin chalo, ek secret bata deta hoon:',
+  secret: '“Raat ko jab aap ‘neend aa rahi hai’ bolke bhi 2 baje tak baatein karti ho na… that’s my favourite part of the day.” 🧸❤️',
+  closeBtn: 'Shhh… Band Karo 🙈'
+}
+
+// -------------------------------------------------------------------------
+// 🧸 [SECTION 21] SCENE 8: OUR LITTLE WORLD (2-Teddy Virtual Room)
 // -------------------------------------------------------------------------
 export const LITTLE_WORLD_CONTENT = {
   intro: {
