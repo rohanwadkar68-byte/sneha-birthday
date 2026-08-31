@@ -322,7 +322,7 @@ export function triggerRosePetals(options = {}) {
   try {
     initPetalCanvas()
     const {
-      particleCount = 50,
+      particleCount = 5,
       origin = { x: 0.5, y: 0.5 },
       burst = true
     } = options
@@ -332,7 +332,8 @@ export function triggerRosePetals(options = {}) {
     const startX = origin.x != null ? (origin.x <= 1 ? origin.x * w : origin.x) : w * 0.5
     const startY = origin.y != null ? (origin.y <= 1 ? origin.y * h : origin.y) : h * 0.5
 
-    for (let i = 0; i < particleCount; i++) {
+    const safeCount = Math.min(particleCount, 8)
+    for (let i = 0; i < safeCount; i++) {
       activePetals.push(new CanvasPetal(startX, startY, burst))
     }
 
@@ -344,12 +345,12 @@ export function triggerRosePetals(options = {}) {
   }
 }
 
-export function triggerPetalBreeze(count = 35) {
+export function triggerPetalBreeze(count = 5) {
   try {
     initPetalCanvas()
     const w = typeof window !== 'undefined' ? window.innerWidth : 800
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < Math.min(count, 6); i++) {
       activePetals.push(new CanvasPetal(Math.random() * w, -20 - Math.random() * 200, false))
     }
 

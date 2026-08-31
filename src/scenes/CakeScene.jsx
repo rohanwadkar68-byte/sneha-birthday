@@ -25,7 +25,6 @@ export default function CakeScene({ onNext }) {
         if (!next.includes(true)) {
           setTimeout(() => {
             playSparkle()
-            triggerRosePetals({ particleCount: 30, origin: { x: 0.5, y: 0.45 } })
             setCutStep('ready_to_cut')
           }, 600)
         }
@@ -45,22 +44,12 @@ export default function CakeScene({ onNext }) {
       playFanfare()
       playSparkle()
       setCutStep('sliced')
-      triggerRosePetals({
-        particleCount: 70,
-        origin: { x: 0.5, y: 0.52 },
-        burst: true
-      })
     }, 1400)
   }
 
   const handleBite = () => {
     playSparkle()
     setBiteCount((b) => b + 1)
-    triggerRosePetals({
-      particleCount: 25,
-      origin: { x: 0.5, y: 0.62 },
-      burst: true
-    })
   }
 
   return (
