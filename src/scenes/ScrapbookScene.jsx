@@ -4,12 +4,15 @@ import SceneShell, { SPRING } from '../components/SceneShell.jsx'
 import Teddy from '../components/Teddy.jsx'
 import Sticker from '../components/Sticker.jsx'
 import EarthAgeDashboard from '../components/EarthAgeDashboard.jsx'
-import { MEMORIES, BIRTH_DATE, SCRAPBOOK_UI } from '../utils/content.js'
+import { MEMORIES, BIRTH_DATE, SCRAPBOOK_UI, SCROLL_ASSISTANT_CONTENT } from '../utils/content.js'
 import { POOKIE, TEDDY_WEBM } from '../utils/assets.js'
 import { playSparkle, playPop } from '../utils/audio.js'
+import ScrollAssistantCat from '../components/ScrollAssistantCat.jsx'
+import { useRef } from 'react'
 
 export default function ScrapbookScene({ onNext }) {
   const [flipped, setFlipped] = useState({})
+  const scrollContainerRef = useRef(null)
 
   const handlePolaroidClick = (i) => {
     playPop()
@@ -34,6 +37,7 @@ export default function ScrapbookScene({ onNext }) {
       <EarthAgeDashboard />
 
       <div
+        ref={scrollContainerRef}
         style={{
           maxHeight: '56dvh',
           width: '100%',
@@ -172,6 +176,9 @@ export default function ScrapbookScene({ onNext }) {
           <Teddy src={TEDDY_WEBM.love[0]} size={145} glow />
         </div>
       </div>
+
+      {/* 🐱 Cute Animated Scroll Assistant Cat */}
+      <ScrollAssistantCat targetRef={scrollContainerRef} text={SCROLL_ASSISTANT_CONTENT.scrapbookPrompt} />
 
       <button className="btn-primary" onClick={handleNext} style={{ marginTop: 10 }}>
         <span>{SCRAPBOOK_UI.nextBtn}</span>

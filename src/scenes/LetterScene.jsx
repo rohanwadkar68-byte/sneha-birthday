@@ -9,9 +9,11 @@ import {
   LETTER_TRANSITION,
   LETTER_2_LINES,
   LETTER_2_LYRICS,
-  LETTER_UI
+  LETTER_UI,
+  SCROLL_ASSISTANT_CONTENT
 } from '../utils/content.js'
 import { playSparkle, playPop, pauseBGM, resumeBGM } from '../utils/audio.js'
+import ScrollAssistantCat from '../components/ScrollAssistantCat.jsx'
 
 const BASE = import.meta.env.BASE_URL
 const SONG_1_VILEN = `${BASE}assets/audio/song-1-vilen.mp3`
@@ -475,6 +477,8 @@ export default function LetterScene({ onNext }) {
                 </motion.div>
               )}
             </div>
+            {/* 🐱 Cute Animated Scroll Assistant Cat */}
+            <ScrollAssistantCat targetRef={scrollRef1} text={SCROLL_ASSISTANT_CONTENT.letterPrompt} />
           </motion.div>
         )}
 
@@ -500,6 +504,8 @@ export default function LetterScene({ onNext }) {
                 </motion.div>
               )}
             </div>
+            {/* 🐱 Cute Animated Scroll Assistant Cat */}
+            <ScrollAssistantCat targetRef={scrollRef2} text={SCROLL_ASSISTANT_CONTENT.letterPrompt} />
           </motion.div>
         )}
       </AnimatePresence>

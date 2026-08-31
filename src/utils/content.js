@@ -543,3 +543,12 @@ export const LITTLE_WORLD_CONTENT = {
   },
   nextBtn: 'Ab Cute Compliments Khologe? 🃏✨'
 }
+
+// -------------------------------------------------------------------------
+// 🐾 [SECTION 22] SCROLL TUTORIAL ASSISTANT CAT
+// -------------------------------------------------------------------------
+export const SCROLL_ASSISTANT_CONTENT = {
+  prompt: 'Neeche scroll kijiye mommy 🐾👇',
+  scrapbookPrompt: 'Mommy, aur yaadein dekhne ke liye scroll karein 🐾📜',
+  letterPrompt: 'Poori chitthi padhne ke liye neeche scroll kijiye 🐾💌'
+}
