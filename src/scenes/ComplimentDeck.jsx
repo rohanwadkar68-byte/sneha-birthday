@@ -72,10 +72,10 @@ export default function ComplimentDeck({ onNext }) {
           <motion.div
             key={index}
             className="photocard-3d"
-            initial={{ rotateY: 85, opacity: 0, scale: 0.88 }}
+            initial={{ rotateY: 85, opacity: 0, scale: 0.9 }}
             animate={{ rotateY: 0, opacity: 1, scale: 1 }}
-            exit={{ rotateY: -85, opacity: 0, scale: 0.88 }}
-            transition={{ duration: 0.36, ease: 'easeOut' }}
+            exit={{ rotateY: -85, opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => !last && advance()}
             style={{
               background: card.gradient || 'linear-gradient(135deg, #fff0f6 0%, #ffe6f2 100%)',

@@ -20,7 +20,7 @@ export default function Welcome({ onNext }) {
     })
     setTimeout(() => {
       onNext()
-    }, 1100)
+    }, 1600)
   }
 
   return (

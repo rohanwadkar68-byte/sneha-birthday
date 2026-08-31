@@ -6,7 +6,7 @@ import Teddy from '../components/Teddy.jsx'
 import { TEDDY_WEBM } from '../utils/assets.js'
 import { blip, playSparkle, startMusic } from '../utils/audio.js'
 
-export default function FakeLoading({ onDone, duration = 4000 }) {
+export default function FakeLoading({ onDone, duration = 5500 }) {
   const total = FAKE_LOADING_STEPS.length
   const [step, setStep] = useState(0)
 
@@ -17,7 +17,7 @@ export default function FakeLoading({ onDone, duration = 4000 }) {
         if (s + 1 >= total) {
           clearInterval(timer)
           playSparkle()
-          setTimeout(onDone, 650)
+          setTimeout(onDone, 900)
           return s
         }
         blip(480 + (s + 1) * 60)

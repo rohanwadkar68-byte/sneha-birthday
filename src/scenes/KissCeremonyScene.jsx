@@ -31,7 +31,7 @@ export default function KissCeremonyScene({ onNext }) {
     setTimeout(() => {
       setScreenKiss(null)
       setStep(2)
-    }, 1600)
+    }, 2000)
   }
 
   const handleStep2 = (e) => {
@@ -42,7 +42,7 @@ export default function KissCeremonyScene({ onNext }) {
     setTimeout(() => {
       setScreenKiss(null)
       setStep(3)
-    }, 1600)
+    }, 2000)
   }
 
   const handleStep3 = (e) => {
@@ -52,7 +52,7 @@ export default function KissCeremonyScene({ onNext }) {
     setTimeout(() => {
       setScreenKiss(null)
       setStep(4)
-    }, 1600)
+    }, 2000)
   }
 
   const handleSelectOption = (opt) => {

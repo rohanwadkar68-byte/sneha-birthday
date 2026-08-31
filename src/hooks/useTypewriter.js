@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { playTypewriter } from '../utils/audio.js'
 
-export default function useTypewriter(lines, speed = 28, linePause = 450) {
+export default function useTypewriter(lines, speed = 34, linePause = 650) {
   const [output, setOutput] = useState([])
   const [done, setDone] = useState(false)
 

@@ -43,9 +43,9 @@ export default function LetterScene({ onNext }) {
   const scrollRef2 = useRef(null)
   const lyricsContainerRef = useRef(null)
 
-  // Typewriter hooks for clean letters
-  const { output: output1, done: done1 } = useTypewriter(opened1 ? LETTER_LINES : [], 22)
-  const { output: output2, done: done2 } = useTypewriter(opened2 ? LETTER_2_LINES : [], 22)
+  // Typewriter hooks for clean letters (slow, soulful & emotional)
+  const { output: output1, done: done1 } = useTypewriter(opened1 ? LETTER_LINES : [], 34, 650)
+  const { output: output2, done: done2 } = useTypewriter(opened2 ? LETTER_2_LINES : [], 34, 650)
 
   // Cleanup audio on unmount or stage change
   useEffect(() => {

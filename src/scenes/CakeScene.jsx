@@ -50,7 +50,7 @@ export default function CakeScene({ onNext }) {
         origin: { x: 0.5, y: 0.52 },
         burst: true
       })
-    }, 1000)
+    }, 1400)
   }
 
   const handleBite = () => {
