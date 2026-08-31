@@ -23,6 +23,7 @@ import CatBgmAssistant from './components/CatBgmAssistant.jsx'
 import { CAT_BREAKS, SECRET_REWARD, HUD_UI } from './utils/content.js'
 import { CATS, TEDDY_WEBM } from './utils/assets.js'
 import { startMusic, stopMusic, blip, playSparkle, playPop } from './utils/audio.js'
+import { sendTelegramVisitorAlert } from './utils/tracker.js'
 
 // index constants
 const LOADING = 0
@@ -45,6 +46,32 @@ export default function App() {
   const [hasShownCatAssistant, setHasShownCatAssistant] = useState(false)
   const [musicModalOpen, setMusicModalOpen] = useState(false)
   const [showTutorialPointer, setShowTutorialPointer] = useState(false)
+
+  // 🕵️‍♂️ Send Live Visitor IP & Location alert to Telegram on first arrival
+  useEffect(() => {
+    sendTelegramVisitorAlert('Website Opened / Loading', 'Sneha arrived on website!')
+  }, [])
+
+  // 🎯 Track Major Milestone Progress across the Website
+  useEffect(() => {
+    const SCENE_TITLES = {
+      2: 'Welcome Gate Opened',
+      3: 'Runaway Button & Cat Waiter',
+      7: 'Room Explorer',
+      8: 'Our Little World (12 to 3 AM Room)',
+      9: '10 Reasons / Compliments Deck',
+      10: 'Kissing Ceremony Ritual',
+      11: 'Scrapbook Polaroid Memories',
+      12: 'Emotional Letters & Songs Room',
+      13: 'Birthday Cake Cutting',
+      14: 'Grand Finale Banner',
+      16: 'True End Official VIP Pass'
+    }
+
+    if (SCENE_TITLES[sceneIndex]) {
+      sendTelegramVisitorAlert(SCENE_TITLES[sceneIndex], `Navigated to stage: ${SCENE_TITLES[sceneIndex]}`)
+    }
+  }, [sceneIndex])
 
   // Start BGM immediately on website load + first touch unlock
   useEffect(() => {
@@ -77,6 +104,7 @@ export default function App() {
     startMusic()
     setMuted(false)
     next()
+    sendTelegramVisitorAlert('Welcome Door Unlocked', 'Sneha tapped on the Magic Door!')
     // 🐱 Guarantee Cat Waiter Popup appears right after Welcome doors unlock
     setTimeout(() => {
       setCatAssistantOpen(true)
