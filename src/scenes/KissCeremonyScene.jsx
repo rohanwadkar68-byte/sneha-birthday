@@ -25,7 +25,6 @@ export default function KissCeremonyScene({ onNext }) {
 
   const handleStep1 = (e) => {
     playKissSound('cheek')
-    setTimeout(() => playKissSound('nibble'), 200)
     spawnHearts(e)
     setScreenKiss('left')
     setTimeout(() => {
@@ -35,8 +34,7 @@ export default function KissCeremonyScene({ onNext }) {
   }
 
   const handleStep2 = (e) => {
-    playKissSound('cheek')
-    setTimeout(() => playKissSound('cheek'), 220)
+    playKissSound('mwah')
     spawnHearts(e)
     setScreenKiss('right')
     setTimeout(() => {
@@ -46,7 +44,7 @@ export default function KissCeremonyScene({ onNext }) {
   }
 
   const handleStep3 = (e) => {
-    playKissSound('forehead')
+    playKissSound('soft')
     spawnHearts(e)
     setScreenKiss('forehead')
     setTimeout(() => {
@@ -57,12 +55,12 @@ export default function KissCeremonyScene({ onNext }) {
 
   const handleSelectOption = (opt) => {
     setSelectedOption(opt)
-    playPop()
+    playKissSound('mwah')
     playSparkle()
     playFanfare()
     triggerRosePetals({
-      particleCount: 50,
-      origin: { x: 0.5, y: 0.6 },
+      particleCount: 18,
+      origin: { x: 0.5, y: 0.55 },
       burst: true
     })
     setStep(5)
