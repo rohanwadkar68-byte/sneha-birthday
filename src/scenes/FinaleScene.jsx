@@ -1,11 +1,19 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import SceneShell, { SPRING } from '../components/SceneShell.jsx'
-import Teddy from '../components/Teddy.jsx'
-import Sticker from '../components/Sticker.jsx'
 import { FINALE_LETTERS, GIRL, FINALE_UI } from '../utils/content.js'
-import { TEDDY_WEBM, POOKIE, DECOS, triggerRosePetals } from '../utils/assets.js'
+import { triggerRosePetals } from '../utils/assets.js'
 import { playFanfare, playSparkle } from '../utils/audio.js'
+
+// 🌟 Fresh 3D Animated Celebration Floating Icons
+const FLOATING_3D_ICONS = [
+  { src: 'assets/3d-emoji/birthday_cake.png', size: 42, left: '8%', top: '12%', dur: 3.8 },
+  { src: 'assets/3d-emoji/crown.png', size: 38, left: '84%', top: '10%', dur: 4.2 },
+  { src: 'assets/3d-emoji/sparkling_heart.png', size: 36, left: '12%', top: '68%', dur: 3.5 },
+  { src: 'assets/3d-emoji/party_popper.png', size: 40, left: '86%', top: '70%', dur: 4.0 },
+  { src: 'assets/3d-emoji/wrapped_gift.png', size: 38, left: '5%', top: '42%', dur: 4.5 },
+  { src: 'assets/3d-emoji/cupcake.png', size: 36, left: '88%', top: '40%', dur: 3.9 }
+]
 
 export default function FinaleScene({ onNext, bonus = false }) {
   useEffect(() => {
@@ -24,26 +32,29 @@ export default function FinaleScene({ onNext, bonus = false }) {
 
   return (
     <SceneShell wide>
-      {/* Floating background decos */}
-      {DECOS.slice(0, 8).map((d, i) => (
+      {/* 🌟 Floating 3D Animated Party & Cake Emojis */}
+      {FLOATING_3D_ICONS.map((icon, i) => (
         <motion.img
           key={i}
-          src={d}
-          alt=""
-          className="deco-img"
+          src={icon.src}
+          alt="3D Celebration Icon"
           style={{
             position: 'absolute',
-            left: `${8 + (i * 14) % 84}%`,
-            top: `${6 + (i * 24) % 80}%`,
-            width: 32 + (i % 3) * 6,
-            opacity: 0.4,
+            left: icon.left,
+            top: icon.top,
+            width: icon.size,
+            height: icon.size,
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 4px 12px rgba(247, 85, 138, 0.25))',
+            pointerEvents: 'none',
             zIndex: 0
           }}
           animate={{
-            y: [0, -12 - i * 3, 0],
-            rotate: [0, i % 2 ? 14 : -14, 0]
+            y: [0, -14, 0],
+            rotate: [0, i % 2 ? 8 : -8, 0],
+            scale: [1, 1.06, 1]
           }}
-          transition={{ repeat: Infinity, duration: 3 + i * 0.5, ease: 'easeInOut' }}
+          transition={{ repeat: Infinity, duration: icon.dur, ease: 'easeInOut' }}
         />
       ))}
 
@@ -53,17 +64,18 @@ export default function FinaleScene({ onNext, bonus = false }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={SPRING}
         style={{
-          background: 'rgba(255, 255, 255, 0.9)',
-          padding: '4px 18px',
+          background: 'rgba(255, 255, 255, 0.95)',
+          padding: '5px 20px',
           borderRadius: 999,
-          fontSize: '0.9rem',
+          fontSize: '0.92rem',
           fontWeight: 800,
           color: 'var(--rose-deep)',
-          boxShadow: 'var(--shadow-soft)',
-          marginBottom: 6
+          boxShadow: '0 4px 16px rgba(247, 85, 138, 0.2)',
+          marginBottom: 6,
+          border: '2px solid rgba(255, 255, 255, 0.9)'
         }}
       >
-        {FINALE_UI.heading}
+        <span>👑</span> {FINALE_UI.heading}
       </motion.div>
 
       {/* 3D Animated Letters */}
@@ -98,38 +110,85 @@ export default function FinaleScene({ onNext, bonus = false }) {
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1.1, ...SPRING }}
-        style={{ marginTop: 6, fontSize: '1.5rem' }}
+        style={{ marginTop: 6, fontSize: '1.45rem' }}
       >
         {bonus ? '…AUR EK AUR CHOTA SA SURPRISE!! 🥳' : `World ki best insaan ke liye — Happy Birthday ${GIRL}! 🥳💖`}
       </motion.div>
 
-      {/* Dancing WebM Teddy Hero */}
-      <div style={{ margin: '8px 0' }}>
-        <Teddy src={TEDDY_WEBM.dance[0]} size={210} delay={1.3} glow />
-      </div>
+      {/* 🧸 Hero Centerpiece: Bubu & Dudu Romantic Celebration Cuddle */}
+      <motion.div
+        style={{ margin: '8px 0', display: 'flex', justifyContent: 'center' }}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.2, ...SPRING }}
+      >
+        <motion.img
+          src="assets/kisses/cuddle_3.gif"
+          alt="Bubu Dudu Celebration"
+          style={{
+            width: 175,
+            height: 175,
+            objectFit: 'contain',
+            borderRadius: 24,
+            filter: 'drop-shadow(0 8px 24px rgba(247, 85, 138, 0.4))'
+          }}
+          animate={{ y: [0, -8, 0], scale: [1, 1.03, 1] }}
+          transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
+        />
+      </motion.div>
 
-      {/* Dancing Pookie Parade below */}
+      {/* 🎭 Cute Meme & Mascot Parade Below (Cat Jam, Bubu Kiss, Dancing Doggo) */}
       <motion.div
         style={{
           display: 'flex',
-          gap: 14,
+          gap: 16,
           alignItems: 'center',
           justifyContent: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          marginTop: 4
         }}
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.6 }}
+        transition={{ delay: 1.5 }}
       >
-        {[20, 21, 22].map((idx, i) => (
-          <motion.div
-            key={idx}
-            animate={{ y: [0, -12, 0] }}
-            transition={{ repeat: Infinity, duration: 1.4, delay: i * 0.2 }}
-          >
-            <Sticker src={POOKIE.webp[idx]} size={60} float />
-          </motion.div>
-        ))}
+        {/* 🐱 Cat Jam Meme */}
+        <motion.div
+          animate={{ y: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.2, ease: 'easeInOut' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}
+        >
+          <img
+            src="assets/memes/cat_jam.gif"
+            alt="Cat Jam"
+            style={{ width: 62, height: 62, borderRadius: 14, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+          />
+        </motion.div>
+
+        {/* 🧸 Bubu Dudu Sweet Kiss */}
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5, delay: 0.2, ease: 'easeInOut' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}
+        >
+          <img
+            src="assets/kisses/bubu_kiss_5.gif"
+            alt="Bubu Kiss"
+            style={{ width: 70, height: 70, borderRadius: 16, filter: 'drop-shadow(0 4px 12px rgba(247, 85, 138, 0.3))' }}
+          />
+        </motion.div>
+
+        {/* 🐕 Dancing Doggo Meme */}
+        <motion.div
+          animate={{ y: [0, -8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.3, delay: 0.4, ease: 'easeInOut' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}
+        >
+          <img
+            src="assets/memes/dance_doggo.gif"
+            alt="Dancing Doggo"
+            style={{ width: 62, height: 62, borderRadius: 14, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+          />
+        </motion.div>
       </motion.div>
 
       <motion.button
@@ -137,7 +196,7 @@ export default function FinaleScene({ onNext, bonus = false }) {
         onClick={onNext}
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.0 }}
+        transition={{ delay: 1.8 }}
         whileHover={{ scale: 1.07 }}
         whileTap={{ scale: 0.94 }}
         style={{ marginTop: 14 }}
