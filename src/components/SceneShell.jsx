@@ -20,7 +20,7 @@ export default function SceneShell({ children, bg = null, wide = false, particle
           <div className="bokeh-orb" style={{ width: 300, height: 300, background: '#bae6fd', top: '40%', right: '15%', animationDelay: '-9s' }} />
         </div>
       )}
-      {particles && <FloatingParticles count={16} />}
+      {particles && <FloatingParticles count={4} />}
 
       {/* 🧊 Korean Claymorphism Floating Glass Island Container */}
       <div className={`korean-glass-island ${wide ? 'wide' : ''}`}>

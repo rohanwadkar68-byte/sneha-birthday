@@ -1,61 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const PARTICLE_EMOJIS = ['🌸', '🌹', '🍃', '🤍', '✨', '💖', ' petal ']
-const SOFT_COLORS = ['#ff8fb1', '#f43f5e', '#fda4af', '#f472b6', '#ffe4e6', '#fb7185']
-const TRAIL_EMOJIS = ['🌸', '✨', '🌹', '💖', '🍃', '🤍']
+const SOFT_SPARKLES = ['✨', '🤍', '🌸']
 
-export default function FloatingParticles({ count = 22, style }) {
-  const [trail, setTrail] = useState([])
-
+export default function FloatingParticles({ count = 5, style }) {
   const particles = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
         id: i,
-        emoji: i % 4 === 0 ? '🌸' : i % 4 === 1 ? '🌹' : i % 4 === 2 ? '✨' : '🍃',
-        color: SOFT_COLORS[i % SOFT_COLORS.length],
-        x: `${(i * 59 + 13) % 96 + 2}%`,
-        y: `${(i * 43 + 7) % 92 + 2}%`,
-        size: 14 + ((i * 7) % 14),
-        dur: 6 + (i % 6),
-        delay: (i * 0.3) % 4,
-        drift: 20 + ((i * 7) % 25)
+        emoji: SOFT_SPARKLES[i % SOFT_SPARKLES.length],
+        x: `${(i * 67 + 17) % 88 + 6}%`,
+        y: `${(i * 53 + 11) % 84 + 8}%`,
+        size: 12 + ((i * 3) % 6),
+        dur: 7 + (i % 4),
+        delay: (i * 0.5) % 3,
+        drift: 10 + ((i * 4) % 12)
       })),
     [count]
   )
-
-  useEffect(() => {
-    let lastTime = 0
-    const handleMove = (e) => {
-      const now = Date.now()
-      if (now - lastTime < 70) return // Throttle
-      lastTime = now
-
-      const clientX = e.clientX ?? e.touches?.[0]?.clientX
-      const clientY = e.clientY ?? e.touches?.[0]?.clientY
-      if (clientX == null || clientY == null) return
-
-      const newHeart = {
-        id: Math.random(),
-        x: clientX,
-        y: clientY,
-        emoji: TRAIL_EMOJIS[Math.floor(Math.random() * TRAIL_EMOJIS.length)],
-        size: 14 + Math.random() * 14
-      }
-
-      setTrail((prev) => [...prev.slice(-15), newHeart])
-      setTimeout(() => {
-        setTrail((prev) => prev.filter((item) => item.id !== newHeart.id))
-      }, 1100)
-    }
-
-    window.addEventListener('mousemove', handleMove, { passive: true })
-    window.addEventListener('touchmove', handleMove, { passive: true })
-    return () => {
-      window.removeEventListener('mousemove', handleMove)
-      window.removeEventListener('touchmove', handleMove)
-    }
-  }, [])
 
   return (
     <div
@@ -103,7 +65,7 @@ export default function FloatingParticles({ count = 22, style }) {
         }}
       />
 
-      {/* Floating Rose & Sakura Petals */}
+      {/* Gentle Floating Ambient Sparkles */}
       {particles.map((p) => (
         <motion.span
           key={p.id}
@@ -112,15 +74,13 @@ export default function FloatingParticles({ count = 22, style }) {
             left: p.x,
             top: p.y,
             fontSize: p.size,
-            filter: 'drop-shadow(0 2px 8px rgba(251, 113, 133, 0.35))',
+            filter: 'drop-shadow(0 2px 8px rgba(251, 113, 133, 0.25))',
             willChange: 'transform'
           }}
           animate={{
-            y: [0, p.drift * 1.6, p.drift * 3.2],
-            x: [0, Math.sin(p.id) * 25, Math.cos(p.id) * 35],
-            opacity: [0, 0.85, 0],
-            rotate: [0, 180, 360],
-            scale: [0.8, 1.1, 0.8]
+            y: [0, p.drift, p.drift * 2],
+            opacity: [0, 0.6, 0],
+            scale: [0.8, 1, 0.8]
           }}
           transition={{
             repeat: Infinity,
@@ -132,30 +92,6 @@ export default function FloatingParticles({ count = 22, style }) {
           {p.emoji}
         </motion.span>
       ))}
-
-      {/* Interactive Cursor Hearts & Sparkle Trail */}
-      <AnimatePresence>
-        {trail.map((item) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 1, scale: 0.5, x: item.x, y: item.y }}
-            animate={{ opacity: 0, scale: 1.4, y: item.y - 70, x: item.x + (Math.random() * 30 - 15) }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            style={{
-              position: 'fixed',
-              left: 0,
-              top: 0,
-              fontSize: item.size,
-              pointerEvents: 'none',
-              zIndex: 999,
-              filter: 'drop-shadow(0 2px 6px rgba(247, 106, 153, 0.4))'
-            }}
-          >
-            {item.emoji}
-          </motion.div>
-        ))}
-      </AnimatePresence>
     </div>
   )
 }
