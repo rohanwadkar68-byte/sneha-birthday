@@ -2,10 +2,13 @@ const base = import.meta.env.BASE_URL || './'
 const cleanBase = base.endsWith('/') ? base : `${base}/`
 const BGM_SRC = `${cleanBase}assets/audio/bgm.mp3`
 
+let currentBgmUrl = BGM_SRC
+let currentSongTitle = 'Cozy Birthday Lo-Fi'
+
 export function initBGM() {
   let el = typeof document !== 'undefined' ? document.getElementById('bgm-player') : null
   if (!el) {
-    el = new Audio(BGM_SRC)
+    el = new Audio(currentBgmUrl)
     el.id = 'bgm-player'
     el.loop = true
     el.volume = 0.8
@@ -15,6 +18,31 @@ export function initBGM() {
     }
   }
   return el
+}
+
+export function changeBGM(url, title = 'Custom Song') {
+  try {
+    currentBgmUrl = url
+    currentSongTitle = title
+    const bgm = initBGM()
+    if (bgm) {
+      bgm.pause()
+      bgm.src = url
+      bgm.currentTime = 0
+      bgm.loop = true
+      bgm.volume = 0.8
+      const p = bgm.play()
+      if (p && p.catch) {
+        p.catch(() => {})
+      }
+    }
+  } catch (err) {
+    console.warn('changeBGM error:', err)
+  }
+}
+
+export function getCurrentBGMTitle() {
+  return currentSongTitle
 }
 
 export function startMusic() {

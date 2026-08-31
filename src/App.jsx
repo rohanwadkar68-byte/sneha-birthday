@@ -19,6 +19,8 @@ import FinaleScene from './scenes/FinaleScene.jsx'
 import FinalMessage from './scenes/FinalMessage.jsx'
 import TrueEnd from './scenes/TrueEnd.jsx'
 import Teddy from './components/Teddy.jsx'
+import SongSearchModal from './components/SongSearchModal.jsx'
+import CatBgmAssistant from './components/CatBgmAssistant.jsx'
 import { CAT_BREAKS, SECRET_REWARD, HUD_UI } from './utils/content.js'
 import { CATS, TEDDY_WEBM } from './utils/assets.js'
 import { startMusic, stopMusic, blip, playSparkle, playPop } from './utils/audio.js'
@@ -38,6 +40,12 @@ export default function App() {
   const [dontClicks, setDontClicks] = useState(0)
   const [secretOpen, setSecretOpen] = useState(false)
   const [started, setStarted] = useState(false)
+
+  // 🐱 BGM Assistant & Music Changer States
+  const [catAssistantOpen, setCatAssistantOpen] = useState(false)
+  const [hasShownCatAssistant, setHasShownCatAssistant] = useState(false)
+  const [musicModalOpen, setMusicModalOpen] = useState(false)
+  const [showTutorialPointer, setShowTutorialPointer] = useState(false)
 
   // Start BGM immediately on website load + first touch unlock
   useEffect(() => {
@@ -99,6 +107,27 @@ export default function App() {
     }
   }
 
+  // 🐱 Trigger Cat BGM Assistant on 3rd Scene (after Welcome)
+  useEffect(() => {
+    if (sceneIndex === 3 && !hasShownCatAssistant) {
+      setHasShownCatAssistant(true)
+      const timer = setTimeout(() => {
+        setCatAssistantOpen(true)
+      }, 800)
+      return () => clearTimeout(timer)
+    }
+  }, [sceneIndex, hasShownCatAssistant])
+
+  const handleCatAssistantYes = () => {
+    setCatAssistantOpen(false)
+    setShowTutorialPointer(true)
+    setMusicModalOpen(true)
+  }
+
+  const handleCatAssistantNo = () => {
+    setCatAssistantOpen(false)
+  }
+
   const scenes = [
     <FakeLoading key="loading" onDone={() => go(1)} />,
     <FakeErrorScene key="fakeerr" onNext={() => go(2)} />,
@@ -126,11 +155,97 @@ export default function App() {
     <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden' }}>
       <AnimatePresence mode="wait">{scenes[sceneIndex]}</AnimatePresence>
 
+      {/* 🐱 Cat BGM Assistant Popup */}
+      <CatBgmAssistant
+        isOpen={catAssistantOpen}
+        onYes={handleCatAssistantYes}
+        onNo={handleCatAssistantNo}
+      />
+
+      {/* 🎵 Live Song Search & BGM Changer Modal */}
+      <SongSearchModal
+        isOpen={musicModalOpen}
+        onClose={() => setMusicModalOpen(false)}
+      />
+
+      {/* 👆 Animated Tutorial Pointer pointing to top Music HUD */}
+      <AnimatePresence>
+        {showTutorialPointer && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            style={{
+              position: 'fixed',
+              top: 68,
+              right: 16,
+              zIndex: 999999,
+              background: 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(20px)',
+              padding: '12px 18px',
+              borderRadius: 20,
+              boxShadow: '0 12px 35px rgba(247, 85, 138, 0.38)',
+              border: '2.5px solid var(--rose-deep)',
+              maxWidth: 290,
+              textAlign: 'right'
+            }}
+          >
+            <div style={{ fontSize: '0.86rem', fontWeight: 800, color: 'var(--rose-deep)', lineHeight: 1.4, marginBottom: 6 }}>
+              👆 Mommy, yahan se music band (🔇) ya naya gaana change (🎵) kar sakti hain!
+            </div>
+            <button
+              onClick={() => setShowTutorialPointer(false)}
+              style={{
+                border: 'none',
+                background: 'var(--rose-deep)',
+                color: '#fff',
+                fontSize: '0.76rem',
+                fontWeight: 800,
+                padding: '5px 14px',
+                borderRadius: 999,
+                cursor: 'pointer',
+                boxShadow: '0 2px 8px rgba(247, 85, 138, 0.3)'
+              }}
+            >
+              Samajh gayi! 👍
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {showHUD && (
         <>
-          <button className="mute-btn" onClick={toggleMute} aria-label="toggle sound">
-            {muted ? '🔇' : '🎵'}
-          </button>
+          {/* Top Right Music Controls Group */}
+          <div style={{ position: 'fixed', top: 16, right: 16, display: 'flex', gap: 8, zIndex: 99999 }}>
+            <button
+              className="mute-btn"
+              onClick={toggleMute}
+              aria-label="toggle sound"
+              title={muted ? 'Unmute Music' : 'Mute Music'}
+              style={{ position: 'static' }}
+            >
+              {muted ? '🔇' : '🔊'}
+            </button>
+            <button
+              className="mute-btn"
+              onClick={() => {
+                playSparkle()
+                setShowTutorialPointer(false)
+                setMusicModalOpen(true)
+              }}
+              aria-label="change music"
+              title="Change Background Song"
+              style={{
+                position: 'static',
+                background: 'linear-gradient(135deg, #ff7597, #f43f5e)',
+                color: '#fff',
+                boxShadow: '0 4px 14px rgba(244, 63, 94, 0.35)'
+              }}
+            >
+              🎵
+            </button>
+          </div>
 
           {!secretOpen && (
             <button className="dont-click" onClick={dontClick}>
