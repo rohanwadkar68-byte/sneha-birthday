@@ -46,21 +46,21 @@ export const COMPLIMENTS = [
     emoji: '🎂',
     title: 'Level 23 Unlocked',
     text: 'Aaj Level 23 unlock ho gaya 🎂 aur birthday girl ko officially extra attention milna banta hai. Waise cute toh aap pehle se hi thodi zyada ho.',
-    teddyWebm: 0,
+    customSticker: 'assets/3d-emoji/birthday_cake.png',
     gradient: 'linear-gradient(135deg, #fff0f5 0%, #ffe0ef 100%)'
   },
   {
     emoji: '🎮',
     title: 'That Random Game Lobby',
     text: 'Hum Free Fire me random mile the aur mujhe kya pata tha ki ye random teammate roz ki bakbak ka permanent part ban jayegi 😂🎮',
-    teddyWebm: 1,
+    customSticker: 'assets/kisses/cuddle_9.gif',
     gradient: 'linear-gradient(135deg, #eceaff 0%, #ddd6ff 100%)'
   },
   {
     emoji: '🌙',
     title: '12 AM Attendance',
     text: 'Din me kabhi timing match ho ya na ho, raat ke 12 baje dono ki attendance lag hi jaati hai. Phir “bas thodi der” bolke 2:30–3 baje tak bakbak 😭🌙',
-    customSticker: 'assets/kisses/cuddle_3.gif',
+    customSticker: 'assets/memes/typing_cat.gif',
     gradient: 'linear-gradient(135deg, #fff6e8 0%, #ffe3c2 100%)'
   },
   {
@@ -74,42 +74,42 @@ export const COMPLIMENTS = [
     emoji: '😤',
     title: 'Mommy Mode',
     text: '“Phone charge lagao.” “Khana khaya?” “Time pe soyiye.” Aapka mommy mode ON hote hi samajh aa jaata hai ki meri class lagne wali hai 😂',
-    teddyWebm: 10,
+    customSticker: 'assets/kisses/bubu_kiss_7.gif',
     gradient: 'linear-gradient(135deg, #eafff4 0%, #c9ffe6 100%)'
   },
   {
     emoji: '🎮',
     title: 'Nakhre Department',
     text: 'Game me akele aage bhaagna aur phir bolna “aapne bachaya kyun nahi?” aapki signature move hai. Aur main phir bhi next match me aapke saath aa jaata hoon 😌',
-    teddyWebm: 3,
+    customSticker: 'assets/kisses/milk_mocha_kiss_7.gif',
     gradient: 'linear-gradient(135deg, #f4ecff 0%, #e0ccff 100%)'
   },
   {
     emoji: '😏',
     title: 'Tease Alert',
     text: 'Zyada innocent banne ki zarurat nahi hai. Mujhe pata hai aap kitni badi tease ho… phir khud hi sharma ke innocent face bana leti ho. Haan haan, sab pata hai 😏',
-    teddyWebm: 22,
+    customSticker: 'assets/kisses/milk_mocha_kiss_9.gif',
     gradient: 'linear-gradient(135deg, #ffeef6 0%, #ffcde4 100%)'
   },
   {
     emoji: '📱',
     title: 'Typing...',
     text: 'Aapka “typing...” dikhna basically late-night bakbak ka official signal hai. Uske baad time ka koi bharosa nahi… 12 se 3 kab ho gaya pata hi nahi chalta 😂',
-    customSticker: 'assets/kisses/milk_mocha_kiss_13.gif',
+    customSticker: 'assets/memes/cat_jam.gif',
     gradient: 'linear-gradient(135deg, #eef5ff 0%, #d8eaff 100%)'
   },
   {
     emoji: '🙈',
     title: 'Ab Sharma Bhi Lo',
     text: 'Kabhi aapki ek cute si line ke baad aap khud hi sharma jaati ho aur phir aise behave karti ho jaise kuch hua hi nahi. Aapko lagta hai mujhe pata nahi chalta? 😏🎀',
-    customSticker: 'assets/kisses/milk_mocha_kiss_5.gif',
+    customSticker: 'assets/kisses/bubu_kiss_5.gif',
     gradient: 'linear-gradient(135deg, #fff8e8 0%, #ffe9c8 100%)'
   },
   {
     emoji: '🎀',
     title: 'Happy Birthday Baccha',
     text: 'HAPPY BIRTHDAY, Sneha!! 🎂 Aaj 23 ki ho gayi hain, lekin meri cute si Dora ki buddhu-baccha category permanently reserved hai. Hamesha aise hi hasti rehna 🧸🎀',
-    teddyWebm: 4,
+    customSticker: 'assets/kisses/cuddle_3.gif',
     gradient: 'linear-gradient(135deg, #ffd9e8 0%, #e6dbff 100%)'
   }
 ]
