@@ -19,7 +19,28 @@ export default function SpotifyApp({ onBackToWorld }) {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
   const [mobileNowPlayingOpen, setMobileNowPlayingOpen] = useState(false)
 
-  const { currentTrack, isPlaying, currentTime, duration, togglePlay, nextTrack, prevTrack, seekTo, toggleLike, isLiked } = useMusicPlayer()
+  const {
+    currentTrack,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    isMuted,
+    changeVolume,
+    toggleMute,
+    playTrack,
+    togglePlay,
+    nextTrack,
+    prevTrack,
+    seekTo,
+    toggleLike,
+    isLiked,
+    ambientColor,
+    sleepTimer,
+    sleepTimerRemaining,
+    setSleepTimerMode,
+    cancelSleepTimer
+  } = useMusicPlayer()
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768)
