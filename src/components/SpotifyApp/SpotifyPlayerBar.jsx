@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
+import EqualizerBars from './EqualizerBars.jsx'
 
 function formatTime(seconds) {
   if (!seconds || isNaN(seconds)) return '0:00'
@@ -86,21 +87,24 @@ export default function SpotifyPlayerBar({ activeView, setActiveView, onOpenMobi
         />
 
         <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <span
-            style={{
-              fontSize: '14px',
-              fontWeight: 700,
-              color: '#ffffff',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline' }}
-            onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none' }}
-          >
-            {currentTrack.title}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            <span
+              style={{
+                fontSize: '14px',
+                fontWeight: 700,
+                color: '#ffffff',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline' }}
+              onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none' }}
+            >
+              {currentTrack.title}
+            </span>
+            {isPlaying && <EqualizerBars isPlaying={isPlaying} size="small" />}
+          </div>
           <span
             style={{
               fontSize: '11px',
@@ -414,6 +418,142 @@ export default function SpotifyPlayerBar({ activeView, setActiveView, onOpenMobi
             <path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9A2.5 2.5 0 0 1 15 3.5v2A2.5 2.5 0 0 1 12.5 8h-9A2.5 2.5 0 0 1 1 5.5v-2zM3.5 2.5A1 1 0 0 0 2.5 3.5v2A1 1 0 0 0 3.5 6.5h9a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1h-9z"/>
           </svg>
         </button>
+
+                {/* Sleep Timer Button */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setShowSleepMenu((prev) => !prev)}
+            style={{
+              border: 'none',
+              background: 'transparent',
+              cursor: 'pointer',
+              color: sleepTimer ? '#1ed760' : '#b3b3b3',
+              padding: 4,
+              display: 'flex',
+              alignItems: 'center',
+              position: 'relative'
+            }}
+            onMouseEnter={(e) => { if (!sleepTimer) e.currentTarget.style.color = '#ffffff' }}
+            onMouseLeave={(e) => { if (!sleepTimer) e.currentTarget.style.color = '#b3b3b3' }}
+            title={sleepTimer ? `Sleep Timer: ${sleepTimerRemaining}` : 'Sleep Timer'}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+            {sleepTimer && (
+              <span style={{
+                position: 'absolute',
+                top: -8,
+                right: -10,
+                fontSize: '9px',
+                fontWeight: 800,
+                color: '#1ed760',
+                background: '#121212',
+                padding: '1px 4px',
+                borderRadius: 999,
+                border: '1px solid #1ed760',
+                whiteSpace: 'nowrap'
+              }}>
+                {sleepTimerRemaining}
+              </span>
+            )}
+          </button>
+
+          {/* Sleep Timer Dropdown Popover */}
+          {showSleepMenu && (
+            <div style={{
+              position: 'absolute',
+              bottom: 40,
+              right: -10,
+              background: '#282828',
+              borderRadius: 8,
+              padding: 6,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.8)',
+              minWidth: 160,
+              zIndex: 99999,
+              border: '1px solid #383838',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2
+            }}>
+              <div style={{ padding: '6px 10px', fontSize: '11px', fontWeight: 800, color: '#b3b3b3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Sleep Timer
+              </div>
+              {[15, 30, 45, 60].map((mins) => (
+                <button
+                  key={mins}
+                  onClick={() => {
+                    setSleepTimerMode(mins)
+                    setShowSleepMenu(false)
+                  }}
+                  style={{
+                    border: 'none',
+                    background: sleepTimer?.minutes === mins ? '#3e3e3e' : 'transparent',
+                    color: sleepTimer?.minutes === mins ? '#1ed760' : '#ffffff',
+                    padding: '8px 10px',
+                    borderRadius: 4,
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <span>{mins} minutes</span>
+                  {sleepTimer?.minutes === mins && <span>✓</span>}
+                </button>
+              ))}
+              <button
+                onClick={() => {
+                  setSleepTimerMode('end_of_song')
+                  setShowSleepMenu(false)
+                }}
+                style={{
+                  border: 'none',
+                  background: sleepTimer?.mode === 'end_of_song' ? '#3e3e3e' : 'transparent',
+                  color: sleepTimer?.mode === 'end_of_song' ? '#1ed760' : '#ffffff',
+                  padding: '8px 10px',
+                  borderRadius: 4,
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span>End of track</span>
+                {sleepTimer?.mode === 'end_of_song' && <span>✓</span>}
+              </button>
+              {sleepTimer && (
+                <button
+                  onClick={() => {
+                    cancelSleepTimer()
+                    setShowSleepMenu(false)
+                  }}
+                  style={{
+                    border: 'none',
+                    borderTop: '1px solid #383838',
+                    marginTop: 4,
+                    background: 'transparent',
+                    color: '#f87171',
+                    padding: '8px 10px',
+                    borderRadius: 4,
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    textAlign: 'left',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Turn off timer
+                </button>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Volume Control */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

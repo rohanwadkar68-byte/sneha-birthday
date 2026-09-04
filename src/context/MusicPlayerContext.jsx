@@ -4,8 +4,9 @@ import { CURATED_SONGS, DEFAULT_ALBUM_COVER } from '../data/musicLibrary.js'
 const MusicPlayerContext = createContext(null)
 
 const LIKED_STORAGE_KEY = 'sneha_spotify_liked_v2'
+const RECENTLY_PLAYED_KEY = 'sneha_spotify_recent_v1'
 
-function detectSongMood(track) {
+export function detectSongMood(track) {
   if (!track) return 'romantic'
   if (track.theme) return track.theme
 
@@ -15,6 +16,24 @@ function detectSongMood(track) {
   if (text.includes('anuv') || text.includes('indie') || text.includes('acoustic') || text.includes('prateek')) return 'indie'
   if (text.includes('punjabi') || text.includes('dhillon') || text.includes('sidhu') || text.includes('party')) return 'punjabi'
   return 'romantic'
+}
+
+export function getTrackAmbientColor(track) {
+  const mood = detectSongMood(track)
+  switch (mood) {
+    case 'romantic':
+      return '#be185d' // Elegant rose/pink glow
+    case 'pop':
+      return '#7c3aed' // Modern violet purple
+    case 'lofi':
+      return '#1e40af' // Deep midnight navy
+    case 'indie':
+      return '#0f766e' // Calm teal/emerald
+    case 'punjabi':
+      return '#ea580c' // Vibrant amber/orange
+    default:
+      return '#1db954' // Spotify signature green
+  }
 }
 
 function decodeHtml(html) {
@@ -34,6 +53,15 @@ export function MusicPlayerProvider({ children }) {
     }
   })
 
+  const [recentlyPlayed, setRecentlyPlayed] = useState(() => {
+    try {
+      const saved = localStorage.getItem(RECENTLY_PLAYED_KEY)
+      return saved ? JSON.parse(saved) : CURATED_SONGS.slice(0, 4)
+    } catch {
+      return CURATED_SONGS.slice(0, 4)
+    }
+  })
+
   const [queue, setQueue] = useState(CURATED_SONGS)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentTrack, setCurrentTrack] = useState(CURATED_SONGS[0])
@@ -45,8 +73,13 @@ export function MusicPlayerProvider({ children }) {
   const [isShuffle, setIsShuffle] = useState(false)
   const [repeatMode, setRepeatMode] = useState('all') // off | all | one
 
+  // Sleep Timer: { mode: 'minutes' | 'end_of_song', minutes?: number, endTime?: number }
+  const [sleepTimer, setSleepTimer] = useState(null)
+  const [sleepTimerRemaining, setSleepTimerRemaining] = useState(null)
+
   const audioRef = useRef(null)
   const fetchingRecommendationsRef = useRef(false)
+  const originalVolumeRef = useRef(0.85)
 
   // Initialize HTML5 Audio instance
   useEffect(() => {
@@ -88,6 +121,15 @@ export function MusicPlayerProvider({ children }) {
     if (!audio) return
 
     const onEnded = () => {
+      // Check sleep timer end_of_song mode
+      if (sleepTimer?.mode === 'end_of_song') {
+        audio.pause()
+        setIsPlaying(false)
+        setSleepTimer(null)
+        setSleepTimerRemaining(null)
+        return
+      }
+
       if (repeatMode === 'one') {
         audio.currentTime = 0
         audio.play().catch(() => {})
@@ -98,7 +140,6 @@ export function MusicPlayerProvider({ children }) {
 
     const onError = (e) => {
       console.warn('Audio playback stream error on track:', currentTrack?.title, e)
-      // Auto-skip to next mood-matched song if stream fails
       handleSmartNext(true)
     }
 
@@ -108,7 +149,48 @@ export function MusicPlayerProvider({ children }) {
       audio.removeEventListener('ended', onEnded)
       audio.removeEventListener('error', onError)
     }
-  }, [repeatMode, queue, currentIndex, isShuffle, currentTrack])
+  }, [repeatMode, queue, currentIndex, isShuffle, currentTrack, sleepTimer])
+
+  // Sleep timer interval watcher with smooth fade out
+  useEffect(() => {
+    if (!sleepTimer || sleepTimer.mode !== 'minutes') {
+      setSleepTimerRemaining(null)
+      return
+    }
+
+    const interval = setInterval(() => {
+      const now = Date.now()
+      const diffMs = sleepTimer.endTime - now
+
+      if (diffMs <= 0) {
+        // Sleep Timer Reached: Stop audio smoothly
+        const audio = audioRef.current
+        if (audio) {
+          audio.pause()
+          audio.volume = originalVolumeRef.current
+        }
+        setIsPlaying(false)
+        setSleepTimer(null)
+        setSleepTimerRemaining(null)
+      } else {
+        const totalSec = Math.ceil(diffMs / 1000)
+        const mins = Math.floor(totalSec / 60)
+        const secs = totalSec % 60
+        setSleepTimerRemaining(`${mins}:${secs < 10 ? '0' : ''}${secs}`)
+
+        // Smooth volume fade out in last 10 seconds
+        if (totalSec <= 10) {
+          const audio = audioRef.current
+          if (audio) {
+            const factor = Math.max(0, totalSec / 10)
+            audio.volume = originalVolumeRef.current * factor
+          }
+        }
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [sleepTimer])
 
   useEffect(() => {
     try {
@@ -117,6 +199,51 @@ export function MusicPlayerProvider({ children }) {
       console.warn(e)
     }
   }, [likedIds])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(RECENTLY_PLAYED_KEY, JSON.stringify(recentlyPlayed))
+    } catch (e) {
+      console.warn(e)
+    }
+  }, [recentlyPlayed])
+
+  const setSleepTimerMode = (minutesOrMode) => {
+    if (!minutesOrMode) {
+      cancelSleepTimer()
+      return
+    }
+
+    originalVolumeRef.current = volume
+
+    if (minutesOrMode === 'end_of_song') {
+      setSleepTimer({ mode: 'end_of_song' })
+      setSleepTimerRemaining('End of Song')
+    } else {
+      const mins = Number(minutesOrMode)
+      const endTime = Date.now() + mins * 60 * 1000
+      setSleepTimer({ mode: 'minutes', minutes: mins, endTime })
+      setSleepTimerRemaining(`${mins}:00`)
+    }
+  }
+
+  const cancelSleepTimer = () => {
+    setSleepTimer(null)
+    setSleepTimerRemaining(null)
+    const audio = audioRef.current
+    if (audio) {
+      audio.volume = isMuted ? 0 : volume
+    }
+  }
+
+  const clearRecentlyPlayed = () => {
+    setRecentlyPlayed([])
+    try {
+      localStorage.removeItem(RECENTLY_PLAYED_KEY)
+    } catch (e) {
+      console.warn(e)
+    }
+  }
 
   const playTrack = (track, customQueue = null) => {
     if (!track || !track.url) return
@@ -140,7 +267,14 @@ export function MusicPlayerProvider({ children }) {
     setCurrentTrack(track)
     audio.src = track.url
     audio.currentTime = 0
+    originalVolumeRef.current = volume
     audio.volume = isMuted ? 0 : volume
+
+    // Add to recently played (deduplicated, max 20)
+    setRecentlyPlayed((prev) => {
+      const filtered = prev.filter((item) => item.id !== track.id)
+      return [track, ...filtered].slice(0, 20)
+    })
 
     const playPromise = audio.play()
     if (playPromise && playPromise.catch) {
@@ -173,32 +307,45 @@ export function MusicPlayerProvider({ children }) {
     const currentMood = detectSongMood(currentTrack)
     const primaryArtist = (currentTrack?.artist || '').split(',')[0].trim()
 
-    // 1. If repeat is off and it's auto-end at the very last song
-    if (repeatMode === 'off' && currentIndex >= queue.length - 1 && isAuto) {
-      setIsPlaying(false)
-      return
-    }
-
-    // 2. If shuffle is enabled or choosing next mood track
-    let nextIdx = currentIndex + 1
+    let nextIdx = -1
 
     if (isShuffle) {
-      // Pick random song from queue that shares the same mood
-      const sameMoodIndices = []
-      queue.forEach((song, idx) => {
-        if (idx !== currentIndex && detectSongMood(song) === currentMood) {
-          sameMoodIndices.push(idx)
+      // Shuffle mode: Pick a random track matching the current mood
+      const moodMatches = []
+      queue.forEach((t, idx) => {
+        if (idx !== currentIndex && detectSongMood(t) === currentMood) {
+          moodMatches.push(idx)
         }
       })
 
-      if (sameMoodIndices.length > 0) {
-        nextIdx = sameMoodIndices[Math.floor(Math.random() * sameMoodIndices.length)]
+      if (moodMatches.length > 0) {
+        nextIdx = moodMatches[Math.floor(Math.random() * moodMatches.length)]
       } else {
-        nextIdx = Math.floor(Math.random() * queue.length)
+        // Fallback to any random track not current
+        const otherIdxs = queue.map((_, i) => i).filter((i) => i !== currentIndex)
+        nextIdx = otherIdxs.length > 0 ? otherIdxs[Math.floor(Math.random() * otherIdxs.length)] : 0
+      }
+    } else {
+      // Sequential smart mode: Look ahead for next song matching same mood
+      for (let i = currentIndex + 1; i < queue.length; i++) {
+        if (detectSongMood(queue[i]) === currentMood) {
+          nextIdx = i
+          break
+        }
+      }
+
+      // If no upcoming song matches mood, pick immediate next in queue
+      if (nextIdx === -1) {
+        nextIdx = (currentIndex + 1) % queue.length
       }
     }
 
-    // 3. If upcoming queue is ending (<= 2 songs remaining), auto-fetch mood-matching songs!
+    const nextTrack = queue[nextIdx]
+    if (nextTrack) {
+      playTrack(nextTrack)
+    }
+
+    // Auto-fetch mood-matching recommendations when queue is low
     if (nextIdx >= queue.length - 2 && !fetchingRecommendationsRef.current && primaryArtist) {
       fetchingRecommendationsRef.current = true
       try {
@@ -232,70 +379,53 @@ export function MusicPlayerProvider({ children }) {
             }
           }
         }
-      } catch (err) {
-        console.warn('Smart mood recommendation fetch error:', err)
+      } catch (e) {
+        console.warn('Auto-recommendation error:', e)
       } finally {
         fetchingRecommendationsRef.current = false
       }
     }
-
-    if (nextIdx >= queue.length) {
-      nextIdx = 0
-    }
-
-    const nextTrackItem = queue[nextIdx]
-    if (nextTrackItem) {
-      setCurrentIndex(nextIdx)
-      playTrack(nextTrackItem)
-    }
   }
 
   const handlePrev = () => {
+    if (!queue || queue.length === 0) return
     const audio = audioRef.current
+
+    // If more than 3 seconds into the track, restart it
     if (audio && audio.currentTime > 3) {
       audio.currentTime = 0
       return
     }
 
-    if (!queue || queue.length === 0) return
-
-    let prevIdx = currentIndex - 1
-    if (prevIdx < 0) {
-      prevIdx = queue.length - 1
-    }
-
-    const prevTrackItem = queue[prevIdx]
-    if (prevTrackItem) {
-      setCurrentIndex(prevIdx)
-      playTrack(prevTrackItem)
-    }
+    const prevIdx = (currentIndex - 1 + queue.length) % queue.length
+    playTrack(queue[prevIdx])
   }
 
   const seekTo = (seconds) => {
     const audio = audioRef.current
     if (!audio) return
-    audio.currentTime = seconds
-    setCurrentTime(seconds)
+    const clamped = Math.max(0, Math.min(seconds, duration || 0))
+    audio.currentTime = clamped
+    setCurrentTime(clamped)
   }
 
-  const changeVolume = (val) => {
-    const v = Math.max(0, Math.min(1, val))
-    setVolume(v)
+  const changeVolume = (newVol) => {
+    const clamped = Math.max(0, Math.min(1, newVol))
+    setVolume(clamped)
+    originalVolumeRef.current = clamped
+    setIsMuted(clamped === 0)
     if (audioRef.current) {
-      audioRef.current.volume = v
-      if (v > 0 && isMuted) setIsMuted(false)
+      audioRef.current.volume = clamped
     }
   }
 
   const toggleMute = () => {
-    const audio = audioRef.current
-    if (!audio) return
     if (isMuted) {
       setIsMuted(false)
-      audio.volume = volume
+      if (audioRef.current) audioRef.current.volume = volume > 0 ? volume : 0.5
     } else {
       setIsMuted(true)
-      audio.volume = 0
+      if (audioRef.current) audioRef.current.volume = 0
     }
   }
 
@@ -317,6 +447,8 @@ export function MusicPlayerProvider({ children }) {
     })
   }
 
+  const ambientColor = getTrackAmbientColor(currentTrack)
+
   const value = {
     currentTrack,
     isPlaying,
@@ -329,6 +461,13 @@ export function MusicPlayerProvider({ children }) {
     isShuffle,
     repeatMode,
     likedIds,
+    recentlyPlayed,
+    clearRecentlyPlayed,
+    sleepTimer,
+    sleepTimerRemaining,
+    setSleepTimerMode,
+    cancelSleepTimer,
+    ambientColor,
     playTrack,
     togglePlay,
     nextTrack: () => handleSmartNext(false),

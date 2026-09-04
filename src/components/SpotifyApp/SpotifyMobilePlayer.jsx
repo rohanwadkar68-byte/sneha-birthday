@@ -1,5 +1,6 @@
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
+import EqualizerBars from './EqualizerBars.jsx'
 
 export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
   const { currentTrack, isPlaying, currentTime, duration, togglePlay, toggleLike, isLiked } = useMusicPlayer()
@@ -54,15 +55,18 @@ export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
           onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
         <div style={{ minWidth: 0 }}>
-          <div style={{
-            fontSize: '13px',
-            fontWeight: 700,
-            color: '#ffffff',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}>
-            {currentTrack.title}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#ffffff',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}>
+              {currentTrack.title}
+            </span>
+            {isPlaying && <EqualizerBars isPlaying={isPlaying} size="small" />}
           </div>
           <div style={{
             fontSize: '11px',

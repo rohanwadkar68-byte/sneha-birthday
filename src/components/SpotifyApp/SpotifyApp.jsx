@@ -66,8 +66,9 @@ export default function SpotifyApp({ onBackToWorld }) {
           flex: 1,
           background: '#121212',
           backgroundImage: activeView === 'lyrics'
-            ? 'linear-gradient(to bottom, #2b1154 0%, #121212 450px)'
-            : 'linear-gradient(to bottom, #1d2228 0%, #121212 300px)',
+            ? `linear-gradient(to bottom, ${ambientColor || '#2b1154'}55 0%, #121212 500px)`
+            : `linear-gradient(to bottom, ${ambientColor || '#1d2228'}33 0%, #121212 380px)`,
+          transition: 'background-image 0.6s ease',
           borderRadius: !isMobile ? 8 : 0,
           margin: !isMobile ? '8px 8px 8px 0' : 0,
           overflowY: 'auto',
@@ -301,17 +302,20 @@ export default function SpotifyApp({ onBackToWorld }) {
             {/* Song Title & Like */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
               <div style={{ minWidth: 0, flex: 1, paddingRight: 10 }}>
-                <h2 style={{
-                  fontSize: '20px',
-                  fontWeight: 900,
-                  margin: '0 0 4px',
-                  color: '#ffffff',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis'
-                }}>
-                  {currentTrack.title}
-                </h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <h2 style={{
+                    fontSize: '20px',
+                    fontWeight: 900,
+                    margin: '0 0 4px',
+                    color: '#ffffff',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {currentTrack.title}
+                  </h2>
+                  {isPlaying && <EqualizerBars isPlaying={isPlaying} size="large" />}
+                </div>
                 <div style={{ fontSize: '14px', color: '#b3b3b3', fontWeight: 500 }}>
                   {currentTrack.artist}
                 </div>

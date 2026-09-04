@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { CURATED_SONGS, SPOTIFY_PLAYLISTS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
+import EqualizerBars from './EqualizerBars.jsx'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -11,7 +12,7 @@ function getGreeting() {
 }
 
 export default function SpotifyHomeView({ onSelectPlaylist }) {
-  const { currentTrack, isPlaying, playTrack, togglePlay } = useMusicPlayer()
+  const { currentTrack, isPlaying, playTrack, togglePlay, recentlyPlayed, clearRecentlyPlayed } = useMusicPlayer()
   const greeting = getGreeting()
 
   const quickAccessItems = [
@@ -78,6 +79,44 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
           })}
         </div>
       </div>
+
+            {/* RECENTLY PLAYED SHELF */}
+      {recentlyPlayed && recentlyPlayed.length > 0 && (
+        <ShelfSection
+          title="Recently Played"
+          action={
+            <button
+              onClick={clearRecentlyPlayed}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#b3b3b3',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                padding: '4px 8px'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = '#b3b3b3' }}
+            >
+              Clear
+            </button>
+          }
+        >
+          {recentlyPlayed.slice(0, 8).map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, recentlyPlayed)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
 
       {/* SHELF 1: Playlists */}
       <ShelfSection title="Featured Playlists">
@@ -309,12 +348,29 @@ function SongSquareCard({ song, isCurrent, isPlaying, onPlay }) {
         position: 'relative'
       }}
     >
-      <img
-        src={song.image}
-        alt=""
-        style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
-        onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
-      />
+      <div style={{ position: 'relative' }}>
+        <img
+          src={song.image}
+          alt=""
+          style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10, display: 'block' }}
+          onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
+        />
+        {isThisPlaying && (
+          <div style={{
+            position: 'absolute',
+            bottom: 16,
+            right: 8,
+            background: 'rgba(0,0,0,0.75)',
+            borderRadius: 999,
+            padding: '4px 6px',
+            display: 'flex',
+            alignItems: 'center',
+            backdropFilter: 'blur(4px)'
+          }}>
+            <EqualizerBars isPlaying={true} />
+          </div>
+        )}
+      </div>
       <div style={{
         fontSize: '13px',
         fontWeight: 700,
