@@ -189,19 +189,11 @@ export function MusicPlayerProvider({ children }) {
     }
   })
 
-  const togglePureSoundMode = () => {
-    setPureSoundMode((prev) => {
-      const next = !prev
-      try {
-        localStorage.setItem(PURE_SOUND_KEY, JSON.stringify(next))
-      } catch (e) {
-        console.warn(e)
-      }
-      return next
-    })
-  }
-
   const audioRef = useRef(null)
+  const audioCtxRef = useRef(null)
+  const bassFilterRef = useRef(null)
+  const vocalFilterRef = useRef(null)
+  const highShelfRef = useRef(null)
   const fadeIntervalRef = useRef(null)
   const fetchingRecommendationsRef = useRef(false)
   const originalVolumeRef = useRef(0.85)
@@ -214,11 +206,81 @@ export function MusicPlayerProvider({ children }) {
     }
   }
 
+  // Initialize Web Audio API DSP Pipeline for Pure Studio Clarity
+  const initWebAudio = () => {
+    if (audioCtxRef.current || typeof window === 'undefined') return
+    const AudioCtx = window.AudioContext || window.webkitAudioContext
+    if (!AudioCtx || !audioRef.current) return
+
+    try {
+      const ctx = new AudioCtx()
+      const audio = audioRef.current
+
+      const source = ctx.createMediaElementSource(audio)
+
+      // 1. Warm Acoustic Lows (110Hz +1.2dB) - gives rich body without boominess
+      const bass = ctx.createBiquadFilter()
+      bass.type = 'lowshelf'
+      bass.frequency.value = 110
+      bass.gain.value = pureSoundMode ? 1.2 : 0
+      bassFilterRef.current = bass
+
+      // 2. Vocal Intimacy & Clarity (2.8kHz +1.6dB, Q=1.0) - crystal-clear vocal articulation
+      const vocal = ctx.createBiquadFilter()
+      vocal.type = 'peaking'
+      vocal.frequency.value = 2800
+      vocal.Q.value = 1.0
+      vocal.gain.value = pureSoundMode ? 1.6 : 0
+      vocalFilterRef.current = vocal
+
+      // 3. Ear-Peace Anti-Fatigue High Shelf (5.2kHz -1.8dB) - eliminates ear-piercing sibilance
+      const high = ctx.createBiquadFilter()
+      high.type = 'highshelf'
+      high.frequency.value = 5200
+      high.gain.value = pureSoundMode ? -1.8 : 0
+      highShelfRef.current = high
+
+      // 4. Studio Dynamics Compressor - smooths loudness jumps for a relaxed listening feel
+      const compressor = ctx.createDynamicsCompressor()
+      compressor.threshold.value = -16
+      compressor.knee.value = 12
+      compressor.ratio.value = 3.0
+      compressor.attack.value = 0.005
+      compressor.release.value = 0.25
+
+      source.connect(bass)
+      bass.connect(vocal)
+      vocal.connect(high)
+      high.connect(compressor)
+      compressor.connect(ctx.destination)
+
+      audioCtxRef.current = ctx
+    } catch (e) {
+      console.warn('Web Audio initialization fallback:', e)
+    }
+  }
+
+  const togglePureSoundMode = () => {
+    setPureSoundMode((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem(PURE_SOUND_KEY, JSON.stringify(next))
+        if (bassFilterRef.current) bassFilterRef.current.gain.value = next ? 1.2 : 0
+        if (vocalFilterRef.current) vocalFilterRef.current.gain.value = next ? 1.6 : 0
+        if (highShelfRef.current) highShelfRef.current.gain.value = next ? -1.8 : 0
+      } catch (e) {
+        console.warn(e)
+      }
+      return next
+    })
+  }
+
   // Initialize HTML5 Audio instance
   useEffect(() => {
     if (typeof window === 'undefined') return
 
     const audio = new Audio()
+    audio.crossOrigin = 'anonymous'
     audio.preload = 'metadata'
     audio.volume = volume
     audioRef.current = audio
@@ -413,6 +475,17 @@ export function MusicPlayerProvider({ children }) {
       return [track, ...filtered].slice(0, 20)
     })
 
+    // Activate Web Audio DSP Chain for Studio Peace sound
+    try {
+      if (audioCtxRef.current) {
+        if (audioCtxRef.current.state === 'suspended') {
+          audioCtxRef.current.resume().catch(() => {})
+        }
+      } else {
+        initWebAudio()
+      }
+    } catch (e) {}
+
     // Smooth Crossfade: If music is already playing, fade down quickly, swap song, fade up
     if (!audio.paused && audio.src && targetVolume > 0.05) {
       const startVol = audio.volume
@@ -470,6 +543,17 @@ export function MusicPlayerProvider({ children }) {
     if (!audio) return
 
     clearFadeInterval()
+
+    // Resume or init Web Audio context
+    try {
+      if (audioCtxRef.current) {
+        if (audioCtxRef.current.state === 'suspended') {
+          audioCtxRef.current.resume().catch(() => {})
+        }
+      } else {
+        initWebAudio()
+      }
+    } catch (e) {}
 
     if (isPlaying) {
       audio.pause()
