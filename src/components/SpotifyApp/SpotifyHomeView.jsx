@@ -11,9 +11,10 @@ function getGreeting() {
   return 'Good evening'
 }
 
-export default function SpotifyHomeView({ onSelectPlaylist }) {
-  const { currentTrack, isPlaying, playTrack, togglePlay, recentlyPlayed, clearRecentlyPlayed } = useMusicPlayer()
+export default function SpotifyHomeView({ onSelectPlaylist, onOpenCreatePlaylist, onOpenAddToPlaylist }) {
+  const { currentTrack, isPlaying, playTrack, togglePlay, recentlyPlayed, clearRecentlyPlayed, customPlaylists } = useMusicPlayer()
   const greeting = getGreeting()
+
 
   const quickAccessItems = [
     {
@@ -109,16 +110,134 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
               song={song}
               isCurrent={currentTrack?.id === song.id}
               isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
               onPlay={() => {
                 if (currentTrack?.id === song.id) togglePlay()
                 else playTrack(song, recentlyPlayed)
               }}
             />
+
           ))}
         </ShelfSection>
       )}
 
-      {/* SHELF 1: Playlists */}
+      {/* SHELF 1: Custom Playlists by You */}
+      <ShelfSection
+        title={`Your Playlists (${customPlaylists.length})`}
+        action={
+          <button
+            onClick={onOpenCreatePlaylist}
+            style={{
+              background: '#1ed760',
+              border: 'none',
+              borderRadius: 999,
+              color: '#000000',
+              fontSize: '12px',
+              fontWeight: 800,
+              cursor: 'pointer',
+              padding: '6px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4
+            }}
+          >
+            <span>➕</span>
+            <span>New Playlist</span>
+          </button>
+        }
+      >
+        {/* Create New Card */}
+        <div
+          onClick={onOpenCreatePlaylist}
+          style={{
+            background: '#181818',
+            border: '2px dashed rgba(255,255,255,0.2)',
+            borderRadius: 6,
+            padding: 12,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 180,
+            cursor: 'pointer',
+            gap: 8,
+            transition: 'background 0.2s, border-color 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#222'
+            e.currentTarget.style.borderColor = '#1ed760'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#181818'
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'
+          }}
+        >
+          <div style={{
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '20px',
+            color: '#1ed760'
+          }}>
+            ➕
+          </div>
+          <span style={{ fontSize: '13px', fontWeight: 800, color: '#ffffff', textAlign: 'center' }}>
+            New Playlist
+          </span>
+        </div>
+
+        {customPlaylists.map((pl) => (
+          <div
+            key={pl.id}
+            onClick={() => onSelectPlaylist && onSelectPlaylist(pl)}
+            style={{
+              background: '#181818',
+              padding: 12,
+              borderRadius: 6,
+              cursor: 'pointer',
+              transition: 'background 0.2s',
+              position: 'relative'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#282828' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = '#181818' }}
+          >
+            <div style={{
+              width: '100%',
+              aspectRatio: '1/1',
+              borderRadius: 4,
+              background: pl.gradient || '#282828',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '42px',
+              marginBottom: 10,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+            }}>
+              {pl.emoji || '🎵'}
+            </div>
+            <div style={{
+              fontSize: '13px',
+              fontWeight: 700,
+              color: '#ffffff',
+              marginBottom: 4,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}>
+              {pl.title}
+            </div>
+            <div style={{ fontSize: '11px', color: '#b3b3b3' }}>
+              {pl.songIds.length} songs • By You
+            </div>
+          </div>
+        ))}
+      </ShelfSection>
+
+      {/* SHELF 2: Featured Curated Playlists */}
       <ShelfSection title="Featured Playlists">
         {SPOTIFY_PLAYLISTS.map((pl) => (
           <PlaylistCard
@@ -129,7 +248,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
         ))}
       </ShelfSection>
 
-      {/* SHELF 2: Romantic Hits */}
+      {/* SHELF 3: Romantic Hits */}
       <ShelfSection title="Romantic Melodies">
         {CURATED_SONGS.filter((s) => s.theme === 'romantic').map((song) => (
           <SongSquareCard
@@ -137,6 +256,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
             song={song}
             isCurrent={currentTrack?.id === song.id}
             isPlaying={isPlaying}
+            onOpenAddToPlaylist={onOpenAddToPlaylist}
             onPlay={() => {
               if (currentTrack?.id === song.id) togglePlay()
               else playTrack(song, CURATED_SONGS)
@@ -145,7 +265,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
         ))}
       </ShelfSection>
 
-      {/* SHELF 3: Pop & Indie */}
+      {/* SHELF 4: Pop & Indie */}
       <ShelfSection title="Pop & Indie Favorites">
         {CURATED_SONGS.filter((s) => s.theme === 'pop' || s.theme === 'indie').map((song) => (
           <SongSquareCard
@@ -153,6 +273,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
             song={song}
             isCurrent={currentTrack?.id === song.id}
             isPlaying={isPlaying}
+            onOpenAddToPlaylist={onOpenAddToPlaylist}
             onPlay={() => {
               if (currentTrack?.id === song.id) togglePlay()
               else playTrack(song, CURATED_SONGS)
@@ -161,7 +282,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
         ))}
       </ShelfSection>
 
-      {/* SHELF 4: Lo-Fi */}
+      {/* SHELF 5: Lo-Fi */}
       <ShelfSection title="Lo-Fi & Relax">
         {CURATED_SONGS.filter((s) => s.theme === 'lofi').map((song) => (
           <SongSquareCard
@@ -169,6 +290,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
             song={song}
             isCurrent={currentTrack?.id === song.id}
             isPlaying={isPlaying}
+            onOpenAddToPlaylist={onOpenAddToPlaylist}
             onPlay={() => {
               if (currentTrack?.id === song.id) togglePlay()
               else playTrack(song, CURATED_SONGS)
@@ -176,6 +298,7 @@ export default function SpotifyHomeView({ onSelectPlaylist }) {
           />
         ))}
       </ShelfSection>
+
     </div>
   )
 }
@@ -263,12 +386,15 @@ function QuickAccessCard({ item, isThisPlaying, onPlay }) {
   )
 }
 
-function ShelfSection({ title, children }) {
+function ShelfSection({ title, children, action }) {
   return (
     <div>
-      <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', margin: '0 0 14px' }}>
-        {title}
-      </h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0 0 14px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+          {title}
+        </h2>
+        {action}
+      </div>
 
       <div style={{
         display: 'grid',
@@ -280,6 +406,7 @@ function ShelfSection({ title, children }) {
     </div>
   )
 }
+
 
 function PlaylistCard({ playlist, onClick }) {
   const [hovered, setHovered] = useState(false)
@@ -330,7 +457,7 @@ function PlaylistCard({ playlist, onClick }) {
   )
 }
 
-function SongSquareCard({ song, isCurrent, isPlaying, onPlay }) {
+function SongSquareCard({ song, isCurrent, isPlaying, onPlay, onOpenAddToPlaylist }) {
   const [hovered, setHovered] = useState(false)
   const isThisPlaying = isCurrent && isPlaying
 
@@ -355,7 +482,40 @@ function SongSquareCard({ song, isCurrent, isPlaying, onPlay }) {
           style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10, display: 'block' }}
           onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
+        {/* Quick Add to Playlist Button */}
+        {onOpenAddToPlaylist && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenAddToPlaylist(song)
+            }}
+            style={{
+              position: 'absolute',
+              top: 6,
+              right: 6,
+              background: 'rgba(0,0,0,0.65)',
+              border: 'none',
+              borderRadius: '50%',
+              width: 26,
+              height: 26,
+              color: '#ffffff',
+              fontSize: '12px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(4px)',
+              transition: 'transform 0.15s'
+            }}
+            title="Add to playlist"
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.15)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+          >
+            ➕
+          </button>
+        )}
         {isThisPlaying && (
+
           <div style={{
             position: 'absolute',
             bottom: 16,

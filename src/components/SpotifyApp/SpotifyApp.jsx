@@ -9,17 +9,23 @@ import SpotifySearchView from './SpotifySearchView.jsx'
 import SpotifyPlaylistView from './SpotifyPlaylistView.jsx'
 import SpotifyLyricsView from './SpotifyLyricsView.jsx'
 import SpotifyQueueView from './SpotifyQueueView.jsx'
+import SpotifyLibraryView from './SpotifyLibraryView.jsx'
 import SpotifyPlayerBar from './SpotifyPlayerBar.jsx'
 import SpotifyMobilePlayer from './SpotifyMobilePlayer.jsx'
 import SpotifyErrorBoundary from './SpotifyErrorBoundary.jsx'
 import EqualizerBars from './EqualizerBars.jsx'
+import CreatePlaylistModal from './CreatePlaylistModal.jsx'
+import AddToPlaylistModal from './AddToPlaylistModal.jsx'
 
 export default function SpotifyApp({ onBackToWorld }) {
-  const [activeView, setActiveView] = useState('home') // home | search | playlist | lyrics | queue
+  const [activeView, setActiveView] = useState('home') // home | search | playlist | library | lyrics | queue
   const [activePlaylist, setActivePlaylist] = useState({ id: 'liked', title: 'Liked Songs' })
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
   const [mobileNowPlayingOpen, setMobileNowPlayingOpen] = useState(false)
+  const [isCreatePlaylistOpen, setIsCreatePlaylistOpen] = useState(false)
+  const [addToPlaylistSong, setAddToPlaylistSong] = useState(null)
+
 
   const {
     currentTrack,
@@ -82,6 +88,7 @@ export default function SpotifyApp({ onBackToWorld }) {
             activeView={activeView}
             setActiveView={setActiveView}
             onSelectPlaylist={handleSelectPlaylist}
+            onOpenCreatePlaylist={() => setIsCreatePlaylistOpen(true)}
           />
         )}
 
@@ -116,7 +123,11 @@ export default function SpotifyApp({ onBackToWorld }) {
           <div className="spotify-scroll-view" style={{ flex: 1, paddingTop: 16 }}>
             <SpotifyErrorBoundary onReset={() => setActiveView('home')}>
               {activeView === 'home' && (
-                <SpotifyHomeView onSelectPlaylist={handleSelectPlaylist} />
+                <SpotifyHomeView
+                  onSelectPlaylist={handleSelectPlaylist}
+                  onOpenCreatePlaylist={() => setIsCreatePlaylistOpen(true)}
+                  onOpenAddToPlaylist={(song) => setAddToPlaylistSong(song)}
+                />
               )}
               {activeView === 'search' && (
                 <SpotifySearchView
@@ -124,8 +135,22 @@ export default function SpotifyApp({ onBackToWorld }) {
                   setSearchQuery={setSearchQuery}
                 />
               )}
+              {activeView === 'library' && (
+                <SpotifyLibraryView
+                  onSelectPlaylist={handleSelectPlaylist}
+                  onOpenCreatePlaylist={() => setIsCreatePlaylistOpen(true)}
+                />
+              )}
               {activeView === 'playlist' && (
-                <SpotifyPlaylistView playlist={activePlaylist} />
+                <SpotifyPlaylistView
+                  playlist={activePlaylist}
+                  onOpenAddToPlaylist={(song) => setAddToPlaylistSong(song)}
+                  onNavigateSearch={() => setActiveView('search')}
+                  onDeleteCurrentPlaylist={() => {
+                    setActivePlaylist({ id: 'liked', title: 'Liked Songs' })
+                    setActiveView('home')
+                  }}
+                />
               )}
               {activeView === 'lyrics' && (
                 <SpotifyLyricsView />
@@ -135,6 +160,7 @@ export default function SpotifyApp({ onBackToWorld }) {
               )}
             </SpotifyErrorBoundary>
           </div>
+
         </div>
       </div>
 
@@ -225,14 +251,11 @@ export default function SpotifyApp({ onBackToWorld }) {
 
             {/* Your Library */}
             <button
-              onClick={() => {
-                setActivePlaylist({ id: 'liked', title: 'Liked Songs' })
-                setActiveView('playlist')
-              }}
+              onClick={() => setActiveView('library')}
               style={{
                 border: 'none',
                 background: 'transparent',
-                color: activeView === 'playlist' ? '#ffffff' : '#b3b3b3',
+                color: activeView === 'library' ? '#ffffff' : '#b3b3b3',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -242,6 +265,7 @@ export default function SpotifyApp({ onBackToWorld }) {
                 cursor: 'pointer'
               }}
             >
+
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866zM16 4.732l4 2.31V20h-4V4.732zM8 3a1 1 0 0 0-1 1v16a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1z"/>
               </svg>
@@ -442,6 +466,28 @@ export default function SpotifyApp({ onBackToWorld }) {
         </SpotifyErrorBoundary>
       )}
     </AnimatePresence>
+
+    {/* CREATE PLAYLIST MODAL */}
+    <CreatePlaylistModal
+      isOpen={isCreatePlaylistOpen}
+      onClose={() => setIsCreatePlaylistOpen(false)}
+      onCreated={(newPl) => {
+        setActivePlaylist(newPl)
+        setActiveView('playlist')
+      }}
+    />
+
+    {/* ADD TO PLAYLIST MODAL */}
+    <AddToPlaylistModal
+      isOpen={Boolean(addToPlaylistSong)}
+      song={addToPlaylistSong}
+      onClose={() => setAddToPlaylistSong(null)}
+      onOpenCreatePlaylist={() => {
+        setAddToPlaylistSong(null)
+        setIsCreatePlaylistOpen(true)
+      }}
+    />
   </div>
 )
 }
+

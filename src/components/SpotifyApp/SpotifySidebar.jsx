@@ -1,8 +1,8 @@
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { SPOTIFY_PLAYLISTS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
-export default function SpotifySidebar({ activeView, setActiveView, onSelectPlaylist }) {
-  const { likedIds } = useMusicPlayer()
+export default function SpotifySidebar({ activeView, setActiveView, onSelectPlaylist, onOpenCreatePlaylist }) {
+  const { likedIds, customPlaylists } = useMusicPlayer()
 
   return (
     <aside style={{
@@ -98,11 +98,12 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
         flexDirection: 'column',
         overflow: 'hidden'
       }}>
-        {/* Library Title */}
+        {/* Library Header with + Create Button */}
         <div style={{
-          padding: '16px 20px 10px',
+          padding: '16px 16px 10px',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           color: '#b3b3b3'
         }}>
           <div
@@ -115,13 +116,42 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff' }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#b3b3b3' }}
-            onClick={() => setActiveView('playlist')}
+            onClick={() => setActiveView('library')}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866zM16 4.732l4 2.31V20h-4V4.732zM8 3a1 1 0 0 0-1 1v16a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1z"/>
             </svg>
             <span style={{ fontSize: '14px', fontWeight: 700 }}>Your Library</span>
           </div>
+
+          <button
+            onClick={onOpenCreatePlaylist}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#b3b3b3',
+              cursor: 'pointer',
+              padding: 6,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s'
+            }}
+            title="Create playlist"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#ffffff'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#b3b3b3'
+              e.currentTarget.style.background = 'transparent'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 4a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5a1 1 0 0 1 1-1z"/>
+            </svg>
+          </button>
         </div>
 
         {/* Playlists Scroll Area */}
@@ -184,6 +214,59 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
               </div>
             </div>
           </div>
+
+          {/* User's Custom Playlists */}
+          {customPlaylists && customPlaylists.map((pl) => (
+            <div
+              key={pl.id}
+              onClick={() => {
+                if (onSelectPlaylist) onSelectPlaylist(pl)
+                setActiveView('playlist')
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '8px 10px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#1a1a1a' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+            >
+              <div style={{
+                width: 48,
+                height: 48,
+                borderRadius: 4,
+                background: pl.gradient || '#282828',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '22px',
+                flexShrink: 0
+              }}>
+                {pl.emoji || '🎵'}
+              </div>
+
+              <div style={{ minWidth: 0 }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  {pl.title}
+                </div>
+                <div style={{ fontSize: '12px', color: '#b3b3b3' }}>
+                  Playlist • {pl.songIds.length} songs
+                </div>
+              </div>
+            </div>
+          ))}
+
 
           {/* Curated Playlists */}
           {SPOTIFY_PLAYLISTS.map((pl) => (

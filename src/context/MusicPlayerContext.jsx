@@ -5,6 +5,21 @@ const MusicPlayerContext = createContext(null)
 
 const LIKED_STORAGE_KEY = 'sneha_spotify_liked_v2'
 const RECENTLY_PLAYED_KEY = 'sneha_spotify_recent_v1'
+const CUSTOM_PLAYLISTS_KEY = 'sneha_spotify_custom_playlists_v1'
+
+const DEFAULT_CUSTOM_PLAYLISTS = [
+  {
+    id: 'sneha_birthday_special',
+    title: "Sneha's Special Mix 🎂",
+    description: 'Personal favorite songs curated for Sneha',
+    cover: 'https://c.saavncdn.com/238/Romantic-Classics-Hits-Hindi-2026-20260529163838-500x500.jpg',
+    gradient: 'linear-gradient(135deg, #ff0844, #ffb199)',
+    emoji: '🎂',
+    songIds: ['kesariya', 'tu_hai_kahan', 'apna_bana_le'],
+    isCustom: true
+  }
+]
+
 
 export function detectSongMood(track) {
   if (!track) return 'romantic'
@@ -61,6 +76,24 @@ export function MusicPlayerProvider({ children }) {
       return CURATED_SONGS.slice(0, 4)
     }
   })
+
+  const [customPlaylists, setCustomPlaylists] = useState(() => {
+    try {
+      const saved = localStorage.getItem(CUSTOM_PLAYLISTS_KEY)
+      return saved ? JSON.parse(saved) : DEFAULT_CUSTOM_PLAYLISTS
+    } catch {
+      return DEFAULT_CUSTOM_PLAYLISTS
+    }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(CUSTOM_PLAYLISTS_KEY, JSON.stringify(customPlaylists))
+    } catch (err) {
+      console.warn('Failed to save custom playlists:', err)
+    }
+  }, [customPlaylists])
+
 
   const [queue, setQueue] = useState(CURATED_SONGS)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -461,6 +494,49 @@ export function MusicPlayerProvider({ children }) {
 
   const ambientColor = getTrackAmbientColor(currentTrack)
 
+  const createPlaylist = ({ title, description, gradient, emoji }) => {
+    const newPl = {
+      id: 'custom_' + Date.now(),
+      title: title?.trim() || 'My Playlist #' + (customPlaylists.length + 1),
+      description: description?.trim() || 'Created with love for Sneha',
+      gradient: gradient || 'linear-gradient(135deg, #1ed760, #1db954)',
+      emoji: emoji || '🎵',
+      songIds: [],
+      isCustom: true,
+      createdAt: Date.now()
+    }
+    setCustomPlaylists((prev) => [newPl, ...prev])
+    return newPl
+  }
+
+  const deletePlaylist = (playlistId) => {
+    setCustomPlaylists((prev) => prev.filter((p) => p.id !== playlistId))
+  }
+
+  const addSongToPlaylist = (playlistId, songId) => {
+    setCustomPlaylists((prev) =>
+      prev.map((p) => {
+        if (p.id === playlistId) {
+          if (!p.songIds.includes(songId)) {
+            return { ...p, songIds: [...p.songIds, songId] }
+          }
+        }
+        return p
+      })
+    )
+  }
+
+  const removeSongFromPlaylist = (playlistId, songId) => {
+    setCustomPlaylists((prev) =>
+      prev.map((p) => {
+        if (p.id === playlistId) {
+          return { ...p, songIds: p.songIds.filter((id) => id !== songId) }
+        }
+        return p
+      })
+    )
+  }
+
   const value = {
     currentTrack,
     isPlaying,
@@ -475,6 +551,11 @@ export function MusicPlayerProvider({ children }) {
     likedIds,
     recentlyPlayed,
     clearRecentlyPlayed,
+    customPlaylists,
+    createPlaylist,
+    deletePlaylist,
+    addSongToPlaylist,
+    removeSongFromPlaylist,
     sleepTimer,
     sleepTimerRemaining,
     setSleepTimerMode,
@@ -493,6 +574,7 @@ export function MusicPlayerProvider({ children }) {
     toggleRepeat,
     setQueue
   }
+
 
   return (
     <MusicPlayerContext.Provider value={value}>
