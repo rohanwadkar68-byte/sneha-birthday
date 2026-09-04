@@ -22,14 +22,14 @@ const PRESET_SONGS = [
     id: 'chidiya',
     title: 'Chidiya',
     artist: 'Vilen',
-    image: 'assets/3d-emoji/sparkling_heart.png',
+    image: DEFAULT_ALBUM_COVER,
     url: 'assets/audio/song-2-chidiya.mp3'
   },
   {
     id: 'vilen_special',
     title: 'Kyun - Acoustic Special',
     artist: 'Vilen',
-    image: 'assets/3d-emoji/two_hearts.png',
+    image: DEFAULT_ALBUM_COVER,
     url: 'assets/audio/song-1-vilen.mp3'
   },
   {
@@ -43,7 +43,7 @@ const PRESET_SONGS = [
     id: 'husn',
     title: 'Husn',
     artist: 'Anuv Jain',
-    image: 'assets/3d-emoji/growing_heart.png',
+    image: DEFAULT_ALBUM_COVER,
     url: 'https://aac.saavncdn.com/393/d1fc46d1bf10ea341e3d36ea1f7fe700_320.mp4'
   },
   {
@@ -106,7 +106,7 @@ export default function SongSearchModal({ isOpen, onClose }) {
               const imgUrl =
                 item.image?.[item.image.length - 1]?.url ||
                 item.image?.[0]?.url ||
-                'assets/3d-emoji/sparkling_heart.png'
+                DEFAULT_ALBUM_COVER
 
               const artistName =
                 item.artists?.primary?.[0]?.name ||
@@ -140,7 +140,7 @@ export default function SongSearchModal({ isOpen, onClose }) {
                 id: String(item.trackId || Math.random()),
                 title: decodeHtml(item.trackName || 'Song'),
                 artist: decodeHtml(item.artistName || 'Artist'),
-                image: item.artworkUrl100?.replace('100x100', '300x300') || 'assets/3d-emoji/sparkling_heart.png',
+                image: item.artworkUrl100?.replace('100x100', '300x300') || DEFAULT_ALBUM_COVER,
                 url: item.previewUrl
               })).filter((i) => !!i.url)
             }
@@ -368,7 +368,7 @@ export default function SongSearchModal({ isOpen, onClose }) {
                         alt=""
                         style={{ width: 44, height: 44, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }}
                         onError={(e) => {
-                          e.target.src = 'assets/3d-emoji/sparkling_heart.png'
+                          e.target.src = DEFAULT_ALBUM_COVER
                         }}
                       />
                       <div style={{ overflow: 'hidden' }}>

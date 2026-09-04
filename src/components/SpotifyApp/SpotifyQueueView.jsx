@@ -1,4 +1,5 @@
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
+import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 export default function SpotifyQueueView() {
   const { currentTrack, queue, currentIndex, playTrack, isLiked, toggleLike } = useMusicPlayer()
@@ -30,7 +31,7 @@ export default function SpotifyQueueView() {
                 src={currentTrack.image}
                 alt=""
                 style={{ width: 48, height: 48, borderRadius: 4, objectFit: 'cover' }}
-                onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+                onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
               />
               <div>
                 <div style={{ fontSize: '15px', fontWeight: 700, color: '#1ed760' }}>
@@ -97,7 +98,7 @@ export default function SpotifyQueueView() {
                     src={song.image}
                     alt=""
                     style={{ width: 40, height: 40, borderRadius: 4, objectFit: 'cover' }}
-                    onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+                    onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
                   />
                   <div>
                     <div style={{ fontSize: '14px', fontWeight: 600, color: '#ffffff' }}>

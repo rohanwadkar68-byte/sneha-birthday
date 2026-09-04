@@ -431,10 +431,10 @@ export default function BirthdayShell() {
             }}
           >
             <img
-              src={currentTrack?.image || 'assets/3d-emoji/sparkling_heart.png'}
+              src={currentTrack?.image || DEFAULT_ALBUM_COVER}
               alt=""
               style={{ width: 44, height: 44, borderRadius: 4, objectFit: 'cover' }}
-              onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+              onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
             />
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: '11px', color: '#1ed760', fontWeight: 700 }}>

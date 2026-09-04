@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
+import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 function formatTime(seconds) {
   if (!seconds || isNaN(seconds)) return '0:00'
@@ -81,7 +82,7 @@ export default function SpotifyPlayerBar({ activeView, setActiveView, onOpenMobi
             boxShadow: '0 4px 10px rgba(0,0,0,0.5)',
             flexShrink: 0
           }}
-          onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+          onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
 
         <div style={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>

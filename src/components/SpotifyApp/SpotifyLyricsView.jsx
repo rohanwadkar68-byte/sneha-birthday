@@ -95,7 +95,7 @@ export default function SpotifyLyricsView() {
             src={currentTrack.image}
             alt=""
             style={{ width: 52, height: 52, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }}
-            onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+            onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
           />
           <div>
             <div style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff' }}>

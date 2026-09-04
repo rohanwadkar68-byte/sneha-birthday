@@ -1,15 +1,17 @@
 // Clean, Authentic Spotify Music Library (No hardcoded personal picks, neutral curation)
 
+export const DEFAULT_ALBUM_COVER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Crect width='300' height='300' fill='%23282828'/%3E%3Ccircle cx='150' cy='150' r='90' fill='%23181818' stroke='%23383838' stroke-width='4'/%3E%3Ccircle cx='150' cy='150' r='35' fill='%23282828'/%3E%3Ccircle cx='150' cy='150' r='10' fill='%231ed760'/%3E%3Cpath d='M140 120v35a12 12 0 1 1-6-10.4V120h22v26a12 12 0 1 1-6-10.4V120h-10z' fill='%23ffffff' opacity='0.7'/%3E%3C/svg%3E"
+
 export const CURATED_SONGS = [
   {
     id: 'kesariya',
     title: 'Kesariya',
-    artist: 'Arijit Singh, Pritam',
+    artist: 'Pritam, Arijit Singh',
     album: 'Brahmastra',
     genre: 'Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/274/Brahmastra-Hindi-2022-20220717092834-500x500.jpg',
-    url: 'https://aac.saavncdn.com/274/09796e626998634bbad88e63bfa22f18_320.mp4',
+    image: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
+    url: 'https://aac.saavncdn.com/871/c2febd353f3a076a406fa37510f31f9f_320.mp4',
     duration: '4:28',
     lyrics: `Kesariya tera ishq hai piya
 Rang jaaun jo main haath lagaun
@@ -32,13 +34,13 @@ Rang jaaun jo main haath lagaun!`
   {
     id: 'tu_hai_kahan',
     title: 'Tu Hai Kahan',
-    artist: 'AUR',
+    artist: 'Swapnil Choudhary',
     album: 'Tu Hai Kahan',
     genre: 'Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/366/Tu-Hai-Kahan-Urdu-2023-20231012170327-500x500.jpg',
-    url: 'https://aac.saavncdn.com/366/875e533d1c32cfa0c1bfdfbb22c19e5d_320.mp4',
-    duration: '4:12',
+    image: 'https://c.saavncdn.com/859/Tu-hai-kahan-Hindi-2023-20231229111509-500x500.jpg',
+    url: 'https://aac.saavncdn.com/859/5932b8f911ef56d1bc62b5ef42580e9d_320.mp4',
+    duration: '3:45',
     lyrics: `Aise kaise ho gaya
 Ki tu mujhse door ho gaya
 Maine maangi thi dua
@@ -56,8 +58,8 @@ Tu laut aa, na kar aur imtihaan.`
     album: 'Bhediya',
     genre: 'Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/264/Bhediya-Hindi-2022-20221105083626-500x500.jpg',
-    url: 'https://aac.saavncdn.com/264/3dfdcf6b8f36c1e309cbff1efdbecaa3_320.mp4',
+    image: 'https://c.saavncdn.com/238/Romantic-Classics-Hits-Hindi-2026-20260529163838-500x500.jpg',
+    url: 'https://aac.saavncdn.com/238/5583fbab6328b12f467f01ee335e496d_320.mp4',
     duration: '4:21',
     lyrics: `Tu mera koi na hoke bhi kuch laage
 Tu mera koi na hoke bhi kuch laage
@@ -76,8 +78,8 @@ Dil ke nagar mein shehar tu basa le piya!`
     album: 'Lover',
     genre: 'Pop',
     theme: 'pop',
-    image: 'https://c.saavncdn.com/152/Lover-English-2019-20190823094828-500x500.jpg',
-    url: 'https://aac.saavncdn.com/152/24f3c7e7ffc9a4445582f34da1b6e41b_320.mp4',
+    image: 'https://c.saavncdn.com/228/Lover-English-2019-20250731010741-500x500.jpg',
+    url: 'https://aac.saavncdn.com/228/a1a7354ee4c329f97c82cfd2b40c9cdc_320.mp4',
     duration: '3:41',
     lyrics: `We could leave the Christmas lights up 'til January
 And this is our place, we make the rules
@@ -100,54 +102,49 @@ I take this magnetic force of a man to be my lover.`
     album: 'Husn',
     genre: 'Indie',
     theme: 'indie',
-    image: 'https://c.saavncdn.com/393/Husn-Hindi-2023-20231201043329-500x500.jpg',
-    url: 'https://aac.saavncdn.com/393/d1fc46d1bf10ea341e3d36ea1f7fe700_320.mp4',
-    duration: '3:38',
+    image: 'https://c.saavncdn.com/436/Husn-Hindi-2023-20231129054140-500x500.jpg',
+    url: 'https://aac.saavncdn.com/436/13795b7aa2e87393366162b9e6a6fe88_320.mp4',
+    duration: '3:37',
     lyrics: `Dekho dekho kaisi baatein yahan ki
-Hai saath par hain saath na bhi
+Hai saath par hai saath na bhi
 Kya itni aasaan hai yeh judai
-Ki main yahan aur tu wahan bhi?
+Ki khwabon mein bhi ab tu na aayi
 
-Husn tera tauba tauba
-Roop tera aafat hai
-Tujhe dekh ke lagta hai
-Rab ne likhi raahat hai
-
-Par tu sun na saki meri aawaaz ko
-Maine dabe paanv pukara tha
-Tere husn ke pehre the aise
-Ki main khud se bhi haara tha.`
+Kyun yeh raat itni tanha hai
+Kyun yeh dil bas tujhko doondhta hai
+Husn tera hai roshni jaisa
+Andheron mein bhi jo chamakta hai.`
   },
   {
     id: 'pehla_nasha',
     title: 'Pehla Nasha',
     artist: 'Udit Narayan, Sadhana Sargam',
     album: 'Jo Jeeta Wohi Sikandar',
-    genre: 'Classic',
+    genre: 'Classic Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/241/Jo-Jeeta-Wohi-Sikandar-Hindi-1992-20221105083907-500x500.jpg',
-    url: 'https://aac.saavncdn.com/241/9d5a711fe9bc9a7bf0f9d99c4381e3a9_320.mp4',
-    duration: '4:51',
+    image: 'https://c.saavncdn.com/852/Jo-Jeeta-Wohi-Sikandar-Hindi-1992-500x500.jpg',
+    url: 'https://aac.saavncdn.com/852/9d335ee08b26f171a3d65e11f8819d52_sar_320.mp4',
+    duration: '4:53',
     lyrics: `Pehla nasha, pehla khumaar
 Naya pyaar hai, naya intezaar
 Kar loon main kya apna haal
 Aye dil-e-bekaraar
-Mere dil-e-bekaraar, tu hi bata
+Mere dil-e-bekaraar, tu hi bata!
 
-Udta hi phiroon in hawaon mein kahin
-Ya main jhool jaaoon in ghataon mein kahin
+Udta hi firoon in hawaaon mein kahin
+Ya main jhool jaaun in ghataon mein kahin
 Ek kar doon aasmaan aur zameen
-Kaho yaaron kya karoon!`
+Kaho yaaron kya karoon, kya nahin!`
   },
   {
     id: 'shayad',
     title: 'Shayad',
-    artist: 'Arijit Singh, Pritam',
+    artist: 'Pritam, Arijit Singh',
     album: 'Love Aaj Kal',
     genre: 'Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/274/Love-Aaj-Kal-Hindi-2020-20200214140418-500x500.jpg',
-    url: 'https://aac.saavncdn.com/274/496f8664654b0114f52fa49326e06b3e_320.mp4',
+    image: 'https://c.saavncdn.com/862/Love-Aaj-Kal-Hindi-2020-20200214140423-500x500.jpg',
+    url: 'https://aac.saavncdn.com/862/e277c1b441b562640c6b264aa3335a83_320.mp4',
     duration: '4:07',
     lyrics: `Shayad kabhi na keh sakoon main tumko
 Kahe bina samajh lo tum shayad
@@ -155,45 +152,45 @@ Shayad mere khayal mein tum ek din
 Milo mujhe kahin pe ghum shayad
 
 Jo tum na ho, rahenge hum nahin
-Na chahiye kuch tumse zyaada
-Tumse kam nahin!`
+Jo tum na ho, sakenge hum nahin
+Na chahiye kuch tumse zyaada, tumse kam nahin!`
   },
   {
     id: 'raataan_lambiyan',
     title: 'Raataan Lambiyan',
-    artist: 'Jubin Nautiyal, Asees Kaur',
+    artist: 'Tanishk Bagchi, Jubin Nautiyal, Asees Kaur',
     album: 'Shershaah',
     genre: 'Romantic',
     theme: 'romantic',
-    image: 'https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack-Hindi-2021-20210815181610-500x500.jpg',
-    url: 'https://aac.saavncdn.com/238/5bc608920fae3725db4009bb31f7747e_320.mp4',
+    image: 'https://c.saavncdn.com/238/Shershaah-Original-Motion-Picture-Soundtrack--Hindi-2021-20210815181610-500x500.jpg',
+    url: 'https://aac.saavncdn.com/238/35726d4394604604e961bf5b846870d0_320.mp4',
     duration: '3:50',
     lyrics: `Teri meri gallan ho gayi mashhoor
 Kar na kabhi tu mujhe nazron se door
-Kithe chaliye tu kithe chaliye
+Kithe chali ae tu dhoop ke kinare
+Tere bina dil lagda nahi ve
 
-Kaatun kaise raataan o saawre
-Jiya nahi jaata sun bawre
-Ke raataan lambiyan lambiyan re
-Katein tere sangeyan sangeyan re!`
+Kaate kate na re raataan lambiyan lambiyan
+Re saware saware sang kaatiyan sang kaatiyan!`
   },
   {
     id: 'until_i_found_you',
     title: 'Until I Found You',
     artist: 'Stephen Sanchez',
-    album: 'Easy On My Eyes',
-    genre: 'Retro Pop',
+    album: 'Until I Found You',
+    genre: 'Pop / Retro',
     theme: 'pop',
-    image: 'https://c.saavncdn.com/488/Until-I-Found-You-English-2021-20220422051648-500x500.jpg',
-    url: 'https://aac.saavncdn.com/488/3ecbcae52bcbaae7620bc2a13f0a5b82_320.mp4',
-    duration: '2:57',
+    image: 'https://c.saavncdn.com/648/Until-I-Found-You-English-2022-20240426130801-500x500.jpg',
+    url: 'https://aac.saavncdn.com/648/b4f0c2422d605de887bb72f684ddaa8e_320.mp4',
+    duration: '2:58',
     lyrics: `Georgia, wrap me up in all your...
-I want you in my arms
-Oh, let me hold the love I found
+I want ya in my arms
+Oh, let me hold ya
+I'll never let you go again, like I did
+Oh, I used to say
 
-I would never fall in love
-Until I found her
-I said, "I would never fall, unless it's you I fall into"
+"I would never fall in love until I found her"
+I said, "I would never fall unless it's you I fall into"
 I was lost within the darkness, but then I found her
 I found you.`
   },
@@ -204,8 +201,8 @@ I found you.`
     album: 'Baarishein',
     genre: 'Indie',
     theme: 'indie',
-    image: 'https://c.saavncdn.com/006/Baarishein-Hindi-2016-20200811164920-500x500.jpg',
-    url: 'https://aac.saavncdn.com/006/cf2b07e992982d60f946da978bfdcfb4_320.mp4',
+    image: 'https://c.saavncdn.com/324/Barish-VIbes-Hindi-2026-20260716230015-500x500.jpg',
+    url: 'https://aac.saavncdn.com/324/4b7744968a4148bc89669257ef2a7f41_320.mp4',
     duration: '3:27',
     lyrics: `Hawaaon mein bahenge
 Ghataon mein rahenge
@@ -218,18 +215,17 @@ Tere bina kya hai
 Yeh saara aasmaan.`
   },
   {
-    id: 'cozy_lofi',
-    title: 'Cozy Lo-Fi Chill',
-    artist: 'Lo-Fi Lounge',
-    album: 'Midnight Chill',
+    id: 'study_lofi',
+    title: 'Study Lofi Beats',
+    artist: 'Lofi Chill Vibes',
+    album: 'Music To Sleep Chill To',
     genre: 'Lo-Fi',
     theme: 'lofi',
-    image: 'assets/3d-emoji/birthday_cake.png',
-    url: 'assets/audio/bgm.mp3',
+    image: 'https://c.saavncdn.com/054/Music-To-Put-You-In-A-Better-Mood-Lofi-Hip-Hop-Beats-to-Sleep-Chill-To-Unknown-2023-20250508183531-500x500.jpg',
+    url: 'https://aac.saavncdn.com/054/d0421389e10fbca2fcd2a4f47f9e7038_320.mp4',
     duration: '2:50',
-    isLocal: true,
-    lyrics: `(Soft gentle piano chords & vinyl crackle playing...)
-Relaxing lo-fi beats to chill, study, or unwind.
+    lyrics: `(Soft gentle piano chords & lo-fi vinyl crackle...)
+Relaxing lo-fi study beats to unwind and chill.
 Search any song to play full music tracks.`
   }
 ]
@@ -239,28 +235,28 @@ export const SPOTIFY_PLAYLISTS = [
     id: 'top_hits',
     title: "Today's Top Hits",
     description: 'The biggest and most popular tracks right now.',
-    cover: 'https://c.saavncdn.com/274/Brahmastra-Hindi-2022-20220717092834-500x500.jpg',
+    cover: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
     songIds: ['kesariya', 'tu_hai_kahan', 'apna_bana_le', 'taylor_lover', 'until_i_found_you']
   },
   {
     id: 'romantic',
     title: 'Romantic Melodies',
     description: 'Timeless romantic hits and heartfelt vocals.',
-    cover: 'https://c.saavncdn.com/264/Bhediya-Hindi-2022-20221105083626-500x500.jpg',
+    cover: 'https://c.saavncdn.com/238/Romantic-Classics-Hits-Hindi-2026-20260529163838-500x500.jpg',
     songIds: ['kesariya', 'apna_bana_le', 'shayad', 'raataan_lambiyan', 'pehla_nasha']
   },
   {
     id: 'chill_lofi',
     title: 'Lo-Fi & Chill',
     description: 'Peaceful beats for relaxing and unwinding.',
-    cover: 'https://c.saavncdn.com/488/Until-I-Found-You-English-2021-20220422051648-500x500.jpg',
-    songIds: ['cozy_lofi', 'until_i_found_you', 'baarishein']
+    cover: 'https://c.saavncdn.com/054/Music-To-Put-You-In-A-Better-Mood-Lofi-Hip-Hop-Beats-to-Sleep-Chill-To-Unknown-2023-20250508183531-500x500.jpg',
+    songIds: ['study_lofi', 'until_i_found_you', 'baarishein']
   },
   {
     id: 'acoustic_indie',
     title: 'Acoustic & Indie',
     description: 'Stripped-down acoustic strings and raw emotion.',
-    cover: 'https://c.saavncdn.com/393/Husn-Hindi-2023-20231201043329-500x500.jpg',
+    cover: 'https://c.saavncdn.com/436/Husn-Hindi-2023-20231129054140-500x500.jpg',
     songIds: ['husn', 'baarishein', 'tu_hai_kahan']
   }
 ]

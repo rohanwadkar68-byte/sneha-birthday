@@ -1,4 +1,5 @@
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
+import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
   const { currentTrack, isPlaying, currentTime, duration, togglePlay, toggleLike, isLiked } = useMusicPlayer()
@@ -50,7 +51,7 @@ export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
           src={currentTrack.image}
           alt=""
           style={{ width: 40, height: 40, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }}
-          onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+          onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
         <div style={{ minWidth: 0 }}>
           <div style={{

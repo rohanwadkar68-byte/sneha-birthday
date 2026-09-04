@@ -57,7 +57,7 @@ export default function SpotifySearchView({ searchQuery, setSearchQuery }) {
               const imgUrl =
                 item.image?.[item.image.length - 1]?.url ||
                 item.image?.[0]?.url ||
-                'assets/3d-emoji/sparkling_heart.png'
+                DEFAULT_ALBUM_COVER
 
               const artistName =
                 item.artists?.primary?.[0]?.name ||
@@ -93,7 +93,7 @@ export default function SpotifySearchView({ searchQuery, setSearchQuery }) {
                 title: decodeHtml(item.trackName || 'Song'),
                 artist: decodeHtml(item.artistName || 'Artist'),
                 album: decodeHtml(item.collectionName || 'Single'),
-                image: item.artworkUrl100?.replace('100x100', '300x300') || 'assets/3d-emoji/sparkling_heart.png',
+                image: item.artworkUrl100?.replace('100x100', '300x300') || DEFAULT_ALBUM_COVER,
                 url: item.previewUrl,
                 duration: item.trackTimeMillis ? Math.floor(item.trackTimeMillis / 60000) + ':' + (Math.floor((item.trackTimeMillis % 60000) / 1000) < 10 ? '0' : '') + Math.floor((item.trackTimeMillis % 60000) / 1000) : '3:00'
               })).filter((i) => !!i.url)
@@ -324,7 +324,7 @@ function TopResultCard({ song, isCurrent, isPlaying, onPlay }) {
             marginBottom: 16,
             boxShadow: '0 8px 24px rgba(0,0,0,0.5)'
           }}
-          onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+          onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
         <div style={{
           fontSize: '28px',
@@ -407,7 +407,7 @@ function SearchSongRow({ song, isCurrent, isPlaying, isLiked, onLike, onPlay }) 
             src={song.image}
             alt=""
             style={{ width: '100%', height: '100%', borderRadius: 4, objectFit: 'cover' }}
-            onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+            onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
           />
           {(hovered || isThisPlaying) && (
             <div style={{

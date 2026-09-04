@@ -1,5 +1,5 @@
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
-import { SPOTIFY_PLAYLISTS } from '../../data/musicLibrary.js'
+import { SPOTIFY_PLAYLISTS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 export default function SpotifySidebar({ activeView, setActiveView, onSelectPlaylist }) {
   const { likedIds } = useMusicPlayer()
@@ -209,7 +209,7 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
                 src={pl.cover}
                 alt=""
                 style={{ width: 48, height: 48, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }}
-                onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+                onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
               />
 
               <div style={{ minWidth: 0 }}>

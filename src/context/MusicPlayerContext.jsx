@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
-import { CURATED_SONGS } from '../data/musicLibrary.js'
+import { CURATED_SONGS, DEFAULT_ALBUM_COVER } from '../data/musicLibrary.js'
 
 const MusicPlayerContext = createContext(null)
 
@@ -82,7 +82,7 @@ export function MusicPlayerProvider({ children }) {
     }
   }, [])
 
-  // Auto-play next track when current ends
+  // Auto-play next track when current ends or on audio error
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -96,8 +96,18 @@ export function MusicPlayerProvider({ children }) {
       }
     }
 
+    const onError = (e) => {
+      console.warn('Audio playback stream error on track:', currentTrack?.title, e)
+      // Auto-skip to next mood-matched song if stream fails
+      handleSmartNext(true)
+    }
+
     audio.addEventListener('ended', onEnded)
-    return () => audio.removeEventListener('ended', onEnded)
+    audio.addEventListener('error', onError)
+    return () => {
+      audio.removeEventListener('ended', onEnded)
+      audio.removeEventListener('error', onError)
+    }
   }, [repeatMode, queue, currentIndex, isShuffle, currentTrack])
 
   useEffect(() => {
@@ -202,7 +212,7 @@ export function MusicPlayerProvider({ children }) {
             const newTracks = items
               .map((item) => {
                 const dlUrl = item.downloadUrl?.[item.downloadUrl.length - 1]?.url || item.downloadUrl?.[0]?.url || item.url
-                const imgUrl = item.image?.[item.image.length - 1]?.url || item.image?.[0]?.url || 'assets/3d-emoji/sparkling_heart.png'
+                const imgUrl = item.image?.[item.image.length - 1]?.url || item.image?.[0]?.url || DEFAULT_ALBUM_COVER
                 const artistName = item.artists?.primary?.[0]?.name || item.primaryArtists || 'Artist'
                 return {
                   id: item.id || String(Math.random()),

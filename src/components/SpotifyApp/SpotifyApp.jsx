@@ -294,7 +294,7 @@ export default function SpotifyApp({ onBackToWorld }) {
                   objectFit: 'cover',
                   boxShadow: '0 16px 40px rgba(0,0,0,0.6)'
                 }}
-                onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+                onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
               />
             </div>
 

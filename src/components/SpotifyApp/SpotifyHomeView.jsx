@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
-import { CURATED_SONGS, SPOTIFY_PLAYLISTS } from '../../data/musicLibrary.js'
+import { CURATED_SONGS, SPOTIFY_PLAYLISTS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -180,7 +180,7 @@ function QuickAccessCard({ item, isThisPlaying, onPlay }) {
             src={item.image}
             alt=""
             style={{ width: 52, height: 52, objectFit: 'cover', flexShrink: 0 }}
-            onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+            onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
           />
         )}
         <span style={{
@@ -263,7 +263,7 @@ function PlaylistCard({ playlist, onClick }) {
         src={playlist.cover}
         alt=""
         style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
-        onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+        onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
       />
       <div style={{
         fontSize: '13px',
@@ -313,7 +313,7 @@ function SongSquareCard({ song, isCurrent, isPlaying, onPlay }) {
         src={song.image}
         alt=""
         style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10 }}
-        onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+        onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
       />
       <div style={{
         fontSize: '13px',

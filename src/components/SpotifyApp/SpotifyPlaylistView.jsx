@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
-import { CURATED_SONGS } from '../../data/musicLibrary.js'
+import { CURATED_SONGS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 
 export default function SpotifyPlaylistView({ playlist }) {
   const { currentTrack, isPlaying, playTrack, togglePlay, likedIds, isLiked, toggleLike } = useMusicPlayer()
@@ -63,7 +63,7 @@ export default function SpotifyPlaylistView({ playlist }) {
               boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
               flexShrink: 0
             }}
-            onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+            onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
           />
         )}
 
@@ -187,7 +187,7 @@ function PlaylistTrackRow({ index, song, isCurrent, isPlaying, isLiked, onLike, 
           src={song.image}
           alt=""
           style={{ width: 42, height: 42, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }}
-          onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+          onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
         <div style={{ minWidth: 0 }}>
           <div style={{
