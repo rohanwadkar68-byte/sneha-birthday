@@ -39,10 +39,12 @@ export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
         background: 'rgba(255,255,255,0.15)'
       }}>
         <div style={{
-          width: `${progressPercent}%`,
+          width: '100%',
           height: '100%',
           background: '#ffffff',
-          transition: 'width 0.25s linear'
+          transform: `scaleX(${progressPercent / 100})`,
+          transformOrigin: 'left',
+          transition: 'transform 0.25s linear'
         }} />
       </div>
 

@@ -10,6 +10,8 @@ export default function SpotifyLyricsView() {
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
   const containerRef = useRef(null)
+  const isTouchingRef = useRef(false)
+  const lastScrolledIdxRef = useRef(-1)
 
   // Fetch live lyrics when currentTrack changes
   useEffect(() => {
@@ -49,12 +51,19 @@ export default function SpotifyLyricsView() {
     }
   }
 
-  // Smooth auto-scroll active line into view
+  // Smooth auto-scroll active line into view without blocking touch or causing layout jumps
   useEffect(() => {
-    if (!containerRef.current || activeIndex < 0) return
+    if (!containerRef.current || activeIndex < 0 || activeIndex === lastScrolledIdxRef.current) return
+    if (isTouchingRef.current) return // User is actively touching/scrolling
+
+    lastScrolledIdxRef.current = activeIndex
     const activeEl = containerRef.current.querySelector(`[data-line-idx="${activeIndex}"]`)
     if (activeEl) {
-      activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      const scrollParent = activeEl.closest('.spotify-scroll-view') || activeEl.parentElement
+      if (scrollParent) {
+        const targetTop = activeEl.offsetTop - (scrollParent.clientHeight / 2) + (activeEl.clientHeight / 2)
+        scrollParent.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' })
+      }
     }
   }, [activeIndex])
 
@@ -154,6 +163,8 @@ export default function SpotifyLyricsView() {
       {!loading && lines.length > 0 && (
         <div
           ref={containerRef}
+          onTouchStart={() => { isTouchingRef.current = true }}
+          onTouchEnd={() => { setTimeout(() => { isTouchingRef.current = false }, 1200) }}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -169,7 +180,7 @@ export default function SpotifyLyricsView() {
               <motion.div
                 key={idx}
                 data-line-idx={idx}
-                onClick={() => seekTo(item.time)}
+                onClick={() => { if (typeof item.time === 'number' && isFinite(item.time)) seekTo(item.time) }}
                 style={{
                   fontSize: 'clamp(20px, 4vw, 32px)',
                   fontWeight: isCurrent ? 900 : 700,

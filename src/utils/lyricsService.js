@@ -45,9 +45,10 @@ export function parsePlainLyrics(plainText, duration = 210) {
   const rawLines = plainText.split('\n').map((l) => l.trim()).filter(Boolean)
   if (rawLines.length === 0) return []
 
-  const step = duration / rawLines.length
+  const validDuration = (typeof duration === 'number' && !isNaN(duration) && duration > 0) ? duration : 210
+  const step = validDuration / rawLines.length
   return rawLines.map((text, idx) => ({
-    time: idx * step,
+    time: Math.round((idx * step) * 100) / 100,
     text: text
   }))
 }

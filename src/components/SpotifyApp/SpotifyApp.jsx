@@ -11,6 +11,7 @@ import SpotifyLyricsView from './SpotifyLyricsView.jsx'
 import SpotifyQueueView from './SpotifyQueueView.jsx'
 import SpotifyPlayerBar from './SpotifyPlayerBar.jsx'
 import SpotifyMobilePlayer from './SpotifyMobilePlayer.jsx'
+import SpotifyErrorBoundary from './SpotifyErrorBoundary.jsx'
 
 export default function SpotifyApp({ onBackToWorld }) {
   const [activeView, setActiveView] = useState('home') // home | search | playlist | lyrics | queue
@@ -54,7 +55,7 @@ export default function SpotifyApp({ onBackToWorld }) {
   }
 
   return (
-    <div style={{
+    <div className="spotify-scroll-view" style={{
       position: 'fixed',
       inset: 0,
       width: '100vw',
@@ -90,7 +91,6 @@ export default function SpotifyApp({ onBackToWorld }) {
           backgroundImage: activeView === 'lyrics'
             ? `linear-gradient(to bottom, ${ambientColor || '#2b1154'}55 0%, #121212 500px)`
             : `linear-gradient(to bottom, ${ambientColor || '#1d2228'}33 0%, #121212 380px)`,
-          transition: 'background-image 0.6s ease',
           borderRadius: !isMobile ? 8 : 0,
           margin: !isMobile ? '8px 8px 8px 0' : 0,
           overflowY: 'auto',
@@ -99,6 +99,7 @@ export default function SpotifyApp({ onBackToWorld }) {
           flexDirection: 'column',
           position: 'relative',
           paddingBottom: isMobile ? 124 : 16,
+          WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'thin'
         }}>
           {/* Top Bar */}
@@ -110,26 +111,28 @@ export default function SpotifyApp({ onBackToWorld }) {
             onBackToWorld={onBackToWorld}
           />
 
-          {/* Views Routing */}
-          <div style={{ flex: 1, paddingTop: 16 }}>
-            {activeView === 'home' && (
-              <SpotifyHomeView onSelectPlaylist={handleSelectPlaylist} />
-            )}
-            {activeView === 'search' && (
-              <SpotifySearchView
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
-            )}
-            {activeView === 'playlist' && (
-              <SpotifyPlaylistView playlist={activePlaylist} />
-            )}
-            {activeView === 'lyrics' && (
-              <SpotifyLyricsView />
-            )}
-            {activeView === 'queue' && (
-              <SpotifyQueueView />
-            )}
+          {/* Views Routing wrapped in ErrorBoundary */}
+          <div className="spotify-scroll-view" style={{ flex: 1, paddingTop: 16 }}>
+            <SpotifyErrorBoundary onReset={() => setActiveView('home')}>
+              {activeView === 'home' && (
+                <SpotifyHomeView onSelectPlaylist={handleSelectPlaylist} />
+              )}
+              {activeView === 'search' && (
+                <SpotifySearchView
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                />
+              )}
+              {activeView === 'playlist' && (
+                <SpotifyPlaylistView playlist={activePlaylist} />
+              )}
+              {activeView === 'lyrics' && (
+                <SpotifyLyricsView />
+              )}
+              {activeView === 'queue' && (
+                <SpotifyQueueView />
+              )}
+            </SpotifyErrorBoundary>
           </div>
         </div>
       </div>

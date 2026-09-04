@@ -80,6 +80,7 @@ export function MusicPlayerProvider({ children }) {
   const audioRef = useRef(null)
   const fetchingRecommendationsRef = useRef(false)
   const originalVolumeRef = useRef(0.85)
+  const lastTimeRef = useRef(0)
 
   // Initialize HTML5 Audio instance
   useEffect(() => {
@@ -91,7 +92,11 @@ export function MusicPlayerProvider({ children }) {
     audioRef.current = audio
 
     const onTimeUpdate = () => {
-      setCurrentTime(audio.currentTime)
+      const cur = audio.currentTime || 0
+      if (Math.abs(cur - lastTimeRef.current) >= 0.25 || cur === 0) {
+        lastTimeRef.current = cur
+        setCurrentTime(cur)
+      }
     }
 
     const onLoadedMetadata = () => {
@@ -404,9 +409,16 @@ export function MusicPlayerProvider({ children }) {
   const seekTo = (seconds) => {
     const audio = audioRef.current
     if (!audio) return
-    const clamped = Math.max(0, Math.min(seconds, duration || 0))
-    audio.currentTime = clamped
-    setCurrentTime(clamped)
+    const secNum = Number(seconds)
+    if (isNaN(secNum) || !isFinite(secNum)) return
+    const durNum = (duration && isFinite(duration)) ? duration : 0
+    const clamped = Math.max(0, Math.min(secNum, durNum))
+    try {
+      audio.currentTime = clamped
+      setCurrentTime(clamped)
+    } catch (e) {
+      console.warn('Seek error:', e)
+    }
   }
 
   const changeVolume = (newVol) => {
