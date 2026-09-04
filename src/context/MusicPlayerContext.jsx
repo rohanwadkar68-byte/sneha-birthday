@@ -25,29 +25,97 @@ export function detectSongMood(track) {
   if (!track) return 'romantic'
   if (track.theme) return track.theme
 
-  const text = ((track.title || '') + ' ' + (track.artist || '') + ' ' + (track.genre || '')).toLowerCase()
-  if (text.includes('lofi') || text.includes('chill') || text.includes('relax') || text.includes('midnight')) return 'lofi'
-  if (text.includes('taylor') || text.includes('pop') || text.includes('english') || text.includes('stephen')) return 'pop'
-  if (text.includes('anuv') || text.includes('indie') || text.includes('acoustic') || text.includes('prateek')) return 'indie'
-  if (text.includes('punjabi') || text.includes('dhillon') || text.includes('sidhu') || text.includes('party')) return 'punjabi'
+  const text = ((track.title || '') + ' ' + (track.artist || '') + ' ' + (track.album || '') + ' ' + (track.genre || '')).toLowerCase()
+  if (
+    text.includes('sad') ||
+    text.includes('choo') ||
+    text.includes('kahani') ||
+    text.includes('faasle') ||
+    text.includes('husn') ||
+    text.includes('baarishein') ||
+    text.includes('tu hai kahan') ||
+    text.includes('dard') ||
+    text.includes('broken') ||
+    text.includes('intezaar') ||
+    text.includes('judaai') ||
+    text.includes('judai') ||
+    text.includes('alone') ||
+    text.includes('heartbreak')
+  ) {
+    return 'sad'
+  }
+  if (
+    text.includes('reels') ||
+    text.includes('viral') ||
+    text.includes('insta') ||
+    text.includes('sajni') ||
+    text.includes('dunki') ||
+    text.includes('animal') ||
+    text.includes('o maahi') ||
+    text.includes('pehle bhi') ||
+    text.includes('trending')
+  ) {
+    return 'reels_viral'
+  }
+  if (
+    text.includes('lofi') ||
+    text.includes('lo-fi') ||
+    text.includes('chill') ||
+    text.includes('relax') ||
+    text.includes('midnight') ||
+    text.includes('study')
+  ) {
+    return 'lofi'
+  }
+  if (
+    text.includes('taylor') ||
+    text.includes('pop') ||
+    text.includes('english') ||
+    text.includes('stephen') ||
+    text.includes('until i found')
+  ) {
+    return 'pop'
+  }
+  if (
+    text.includes('anuv') ||
+    text.includes('indie') ||
+    text.includes('acoustic') ||
+    text.includes('prateek') ||
+    text.includes('local train')
+  ) {
+    return 'indie'
+  }
+  if (
+    text.includes('punjabi') ||
+    text.includes('dhillon') ||
+    text.includes('sidhu') ||
+    text.includes('party') ||
+    text.includes('diljit')
+  ) {
+    return 'punjabi'
+  }
   return 'romantic'
 }
 
 export function getTrackAmbientColor(track) {
   const mood = detectSongMood(track)
   switch (mood) {
+    case 'sad':
+      return '#2563eb' // Soulful midnight blue
+    case 'reels_viral':
+      return '#e1306c' // Instagram vibrant berry
     case 'romantic':
-      return '#be185d' // Elegant rose/pink glow
+      return '#be185d' // Rose pink
     case 'pop':
-      return '#7c3aed' // Modern violet purple
+      return '#7c3aed' // Violet purple
     case 'lofi':
-      return '#1e40af' // Deep midnight navy
+      return '#1e40af' // Midnight navy
     case 'indie':
-      return '#0f766e' // Calm teal/emerald
+      return '#0f766e' // Calm teal
     case 'punjabi':
-      return '#ea580c' // Vibrant amber/orange
+      return '#ea580c' // Vibrant amber
     default:
-      return '#1db954' // Spotify signature green
+      return '#1db954' // Spotify green
   }
 }
 
@@ -110,10 +178,41 @@ export function MusicPlayerProvider({ children }) {
   const [sleepTimer, setSleepTimer] = useState(null)
   const [sleepTimerRemaining, setSleepTimerRemaining] = useState(null)
 
+  // Pure Studio Peace Audio Mode (default enabled for warmth and soft dynamics)
+  const PURE_SOUND_KEY = 'sneha_spotify_pure_sound_v1'
+  const [pureSoundMode, setPureSoundMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem(PURE_SOUND_KEY)
+      return saved !== null ? JSON.parse(saved) : true
+    } catch {
+      return true
+    }
+  })
+
+  const togglePureSoundMode = () => {
+    setPureSoundMode((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem(PURE_SOUND_KEY, JSON.stringify(next))
+      } catch (e) {
+        console.warn(e)
+      }
+      return next
+    })
+  }
+
   const audioRef = useRef(null)
+  const fadeIntervalRef = useRef(null)
   const fetchingRecommendationsRef = useRef(false)
   const originalVolumeRef = useRef(0.85)
   const lastTimeRef = useRef(0)
+
+  const clearFadeInterval = () => {
+    if (fadeIntervalRef.current) {
+      clearInterval(fadeIntervalRef.current)
+      fadeIntervalRef.current = null
+    }
+  }
 
   // Initialize HTML5 Audio instance
   useEffect(() => {
@@ -288,6 +387,8 @@ export function MusicPlayerProvider({ children }) {
     const audio = audioRef.current
     if (!audio) return
 
+    clearFadeInterval()
+
     if (customQueue && customQueue.length > 0) {
       setQueue(customQueue)
       const foundIdx = customQueue.findIndex((t) => t.id === track.id)
@@ -303,10 +404,8 @@ export function MusicPlayerProvider({ children }) {
     }
 
     setCurrentTrack(track)
-    audio.src = track.url
-    audio.currentTime = 0
     originalVolumeRef.current = volume
-    audio.volume = isMuted ? 0 : volume
+    const targetVolume = isMuted ? 0 : volume
 
     // Add to recently played (deduplicated, max 20)
     setRecentlyPlayed((prev) => {
@@ -314,9 +413,55 @@ export function MusicPlayerProvider({ children }) {
       return [track, ...filtered].slice(0, 20)
     })
 
-    const playPromise = audio.play()
-    if (playPromise && playPromise.catch) {
-      playPromise.catch(() => {})
+    // Smooth Crossfade: If music is already playing, fade down quickly, swap song, fade up
+    if (!audio.paused && audio.src && targetVolume > 0.05) {
+      const startVol = audio.volume
+      const steps = 5
+      let step = 0
+
+      fadeIntervalRef.current = setInterval(() => {
+        step++
+        audio.volume = Math.max(0, startVol * (1 - step / steps))
+
+        if (step >= steps) {
+          clearFadeInterval()
+          audio.src = track.url
+          audio.currentTime = 0
+          audio.volume = 0
+          const playPromise = audio.play()
+          if (playPromise?.catch) playPromise.catch(() => {})
+
+          // Smooth fade-in
+          let inStep = 0
+          const inSteps = 8
+          fadeIntervalRef.current = setInterval(() => {
+            inStep++
+            audio.volume = Math.min(targetVolume, (targetVolume * inStep) / inSteps)
+            if (inStep >= inSteps) {
+              clearFadeInterval()
+              audio.volume = targetVolume
+            }
+          }, 35)
+        }
+      }, 25)
+    } else {
+      audio.src = track.url
+      audio.currentTime = 0
+      audio.volume = 0
+      const playPromise = audio.play()
+      if (playPromise?.catch) playPromise.catch(() => {})
+
+      // Smooth subtle fade-in on initial play
+      let inStep = 0
+      const inSteps = 6
+      fadeIntervalRef.current = setInterval(() => {
+        inStep++
+        audio.volume = Math.min(targetVolume, (targetVolume * inStep) / inSteps)
+        if (inStep >= inSteps) {
+          clearFadeInterval()
+          audio.volume = targetVolume
+        }
+      }, 30)
     }
   }
 
@@ -324,20 +469,26 @@ export function MusicPlayerProvider({ children }) {
     const audio = audioRef.current
     if (!audio) return
 
+    clearFadeInterval()
+
     if (isPlaying) {
       audio.pause()
     } else {
       if (!audio.src && currentTrack?.url) {
         audio.src = currentTrack.url
       }
+      audio.volume = isMuted ? 0 : volume
       audio.play().catch(() => {})
     }
   }
 
   /**
    * Smart Mood-Based Next:
-   * Chooses next track matching the same mood/genre/artist.
-   * If queue has < 2 songs left, auto-fetches 5 similar songs from JioSaavn!
+   * Chaining logic:
+   * - Sad song (Choo Lo, Husn, Kahani Suno, Faasle) -> next sad song!
+   * - Reels viral (Sajni, O Maahi, Pehle Bhi Main) -> next reels viral song!
+   * - Romantic (Kesariya, Apna Bana Le, Shayad) -> next romantic song!
+   * Auto-fetches from JioSaavn matching this exact mood when queue is running low.
    */
   const handleSmartNext = async (isAuto = false) => {
     if (!queue || queue.length === 0) return
@@ -359,12 +510,12 @@ export function MusicPlayerProvider({ children }) {
       if (moodMatches.length > 0) {
         nextIdx = moodMatches[Math.floor(Math.random() * moodMatches.length)]
       } else {
-        // Fallback to any random track not current
         const otherIdxs = queue.map((_, i) => i).filter((i) => i !== currentIndex)
         nextIdx = otherIdxs.length > 0 ? otherIdxs[Math.floor(Math.random() * otherIdxs.length)] : 0
       }
     } else {
-      // Sequential smart mode: Look ahead for next song matching same mood
+      // Sequential smart mode:
+      // Priority 1: Look ahead in queue for next song with same mood
       for (let i = currentIndex + 1; i < queue.length; i++) {
         if (detectSongMood(queue[i]) === currentMood) {
           nextIdx = i
@@ -372,7 +523,17 @@ export function MusicPlayerProvider({ children }) {
         }
       }
 
-      // If no upcoming song matches mood, pick immediate next in queue
+      // Priority 2: If none ahead, look backwards in queue for any other song with same mood
+      if (nextIdx === -1) {
+        for (let i = 0; i < currentIndex; i++) {
+          if (detectSongMood(queue[i]) === currentMood) {
+            nextIdx = i
+            break
+          }
+        }
+      }
+
+      // Priority 3: Fallback to next track in queue
       if (nextIdx === -1) {
         nextIdx = (currentIndex + 1) % queue.length
       }
@@ -383,11 +544,22 @@ export function MusicPlayerProvider({ children }) {
       playTrack(nextTrack)
     }
 
-    // Auto-fetch mood-matching recommendations when queue is low
-    if (nextIdx >= queue.length - 2 && !fetchingRecommendationsRef.current && primaryArtist) {
+    // Auto-fetch mood-matching recommendations from JioSaavn when matching songs are low
+    const remainingMoodMatches = queue.slice(currentIndex + 1).filter((s) => detectSongMood(s) === currentMood).length
+    if (remainingMoodMatches <= 1 && !fetchingRecommendationsRef.current) {
       fetchingRecommendationsRef.current = true
       try {
-        const query = `${primaryArtist} ${currentMood === 'romantic' ? 'romantic' : ''} hits`
+        let query = `${primaryArtist} hits`
+        if (currentMood === 'sad') {
+          query = 'sad hindi songs heart touching acoustic'
+        } else if (currentMood === 'reels_viral') {
+          query = 'instagram reels viral hindi songs'
+        } else if (currentMood === 'lofi') {
+          query = 'hindi lofi chill relaxed beats'
+        } else if (currentMood === 'romantic') {
+          query = `${primaryArtist} romantic songs`
+        }
+
         const res = await fetch('https://jiosaavn-api-nine.vercel.app/api/search/songs?query=' + encodeURIComponent(query))
         if (res.ok) {
           const data = await res.json()
@@ -406,6 +578,7 @@ export function MusicPlayerProvider({ children }) {
                   image: imgUrl,
                   url: dlUrl,
                   theme: currentMood,
+                  badge: currentMood === 'sad' ? '🌙 2 AM Sad Reel' : currentMood === 'reels_viral' ? '🔥 Reels Trending' : '✨ Auto-Vibe',
                   duration: item.duration ? Math.floor(item.duration / 60) + ':' + (item.duration % 60 < 10 ? '0' : '') + (item.duration % 60) : '3:30'
                 }
               })
@@ -572,7 +745,9 @@ export function MusicPlayerProvider({ children }) {
     isLiked,
     toggleShuffle,
     toggleRepeat,
-    setQueue
+    setQueue,
+    pureSoundMode,
+    togglePureSoundMode
   }
 
 

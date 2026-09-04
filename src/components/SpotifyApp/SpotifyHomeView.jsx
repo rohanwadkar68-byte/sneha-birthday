@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { CURATED_SONGS, SPOTIFY_PLAYLISTS, DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
@@ -11,9 +11,84 @@ function getGreeting() {
   return 'Good evening'
 }
 
+const LIVE_TRENDS_STORAGE_KEY = 'sneha_spotify_live_trends_v2'
+
+const MOOD_PILLS = [
+  { id: 'all', label: 'All', icon: '✨' },
+  { id: 'sad', label: '🌙 2 AM Sad Reels', icon: '🌙' },
+  { id: 'reels_viral', label: '🔥 Instagram Viral', icon: '🔥' },
+  { id: 'romantic', label: '💖 Romantic', icon: '💖' },
+  { id: 'lofi', label: '☕ Cozy Lo-Fi', icon: '☕' },
+  { id: 'indie', label: '🎸 Indie & Acoustic', icon: '🎸' }
+]
+
 export default function SpotifyHomeView({ onSelectPlaylist, onOpenCreatePlaylist, onOpenAddToPlaylist }) {
   const { currentTrack, isPlaying, playTrack, togglePlay, recentlyPlayed, clearRecentlyPlayed, customPlaylists } = useMusicPlayer()
   const greeting = getGreeting()
+
+  const [selectedMood, setSelectedMood] = useState('all')
+  const [liveTrends, setLiveTrends] = useState(() => {
+    try {
+      const saved = localStorage.getItem(LIVE_TRENDS_STORAGE_KEY)
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (parsed.tracks && parsed.tracks.length > 0) return parsed.tracks
+      }
+    } catch {}
+    return []
+  })
+
+  // Dynamic live trend sync from JioSaavn Trending API (refreshes automatically)
+  useEffect(() => {
+    let isMounted = true
+    async function syncLiveTrends() {
+      try {
+        const saved = localStorage.getItem(LIVE_TRENDS_STORAGE_KEY)
+        if (saved) {
+          const parsed = JSON.parse(saved)
+          // If cached within 12 hours, keep using cache
+          if (parsed.timestamp && Date.now() - parsed.timestamp < 12 * 60 * 60 * 1000 && parsed.tracks?.length > 0) {
+            return
+          }
+        }
+
+        const res = await fetch('https://jiosaavn-api-nine.vercel.app/api/playlists?id=47599074')
+        if (!res.ok) return
+        const data = await res.json()
+        const songs = data?.data?.songs || []
+        if (songs.length > 0 && isMounted) {
+          const parsedTracks = songs.map((s) => {
+            const dlUrl = s.downloadUrl?.[s.downloadUrl.length - 1]?.url || s.downloadUrl?.[0]?.url || s.url
+            const imgUrl = s.image?.[s.image.length - 1]?.url || s.image?.[0]?.url || DEFAULT_ALBUM_COVER
+            const artistName = s.artists?.primary?.[0]?.name || s.primaryArtists || 'Artist'
+            return {
+              id: 'live_' + (s.id || Math.random()),
+              title: s.name || s.title || 'Trending Song',
+              artist: artistName,
+              image: imgUrl,
+              url: dlUrl,
+              theme: 'reels_viral',
+              badge: '🔥 Live Trend',
+              duration: s.duration ? Math.floor(s.duration / 60) + ':' + (s.duration % 60 < 10 ? '0' : '') + (s.duration % 60) : '3:15'
+            }
+          }).filter((t) => !!t.url).slice(0, 10)
+
+          if (parsedTracks.length > 0) {
+            setLiveTrends(parsedTracks)
+            localStorage.setItem(LIVE_TRENDS_STORAGE_KEY, JSON.stringify({
+              timestamp: Date.now(),
+              tracks: parsedTracks
+            }))
+          }
+        }
+      } catch (err) {
+        console.warn('Live trend sync skipped:', err)
+      }
+    }
+
+    syncLiveTrends()
+    return () => { isMounted = false }
+  }, [])
 
 
   const quickAccessItems = [
@@ -39,17 +114,58 @@ export default function SpotifyHomeView({ onSelectPlaylist, onOpenCreatePlaylist
 
   return (
     <div style={{ padding: '0 16px 80px', display: 'flex', flexDirection: 'column', gap: 32 }}>
-      {/* Dynamic Greeting */}
-      <div>
+      {/* Dynamic Greeting & Mood Filter Pills */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <h1 style={{
           fontSize: 'clamp(22px, 4vw, 32px)',
           fontWeight: 900,
           color: '#ffffff',
-          margin: '0 0 16px',
+          margin: 0,
           letterSpacing: '-0.03em'
         }}>
           {greeting}
         </h1>
+
+        {/* Mood Filter Pills: Instant 1-tap vibe switcher */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          overflowX: 'auto',
+          paddingBottom: 4,
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none',
+          WebkitOverflowScrolling: 'touch'
+        }}>
+          {MOOD_PILLS.map((pill) => {
+            const isSelected = selectedMood === pill.id
+            return (
+              <button
+                key={pill.id}
+                onClick={() => setSelectedMood(pill.id)}
+                style={{
+                  background: isSelected ? '#ffffff' : 'rgba(255, 255, 255, 0.08)',
+                  color: isSelected ? '#000000' : '#ffffff',
+                  border: isSelected ? '1px solid #ffffff' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: 999,
+                  padding: '7px 14px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  transition: 'all 0.15s ease',
+                  boxShadow: isSelected ? '0 2px 8px rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <span>{pill.icon}</span>
+                <span>{pill.label}</span>
+              </button>
+            )
+          })}
+        </div>
 
         {/* 6 Quick-Access Cards Grid (Responsive 2 columns on mobile, 3 columns on desktop) */}
         <div style={{
@@ -237,67 +353,156 @@ export default function SpotifyHomeView({ onSelectPlaylist, onOpenCreatePlaylist
         ))}
       </ShelfSection>
 
-      {/* SHELF 2: Featured Curated Playlists */}
-      <ShelfSection title="Featured Playlists">
-        {SPOTIFY_PLAYLISTS.map((pl) => (
-          <PlaylistCard
-            key={pl.id}
-            playlist={pl}
-            onClick={() => onSelectPlaylist && onSelectPlaylist(pl)}
-          />
-        ))}
-      </ShelfSection>
+      {/* SHELF: 🔥 Instagram Reels Viral Hits */}
+      {(selectedMood === 'all' || selectedMood === 'reels_viral') && (
+        <ShelfSection
+          title="🔥 Instagram Reels Viral Hits"
+          action={
+            <span style={{ fontSize: '11px', color: '#e1306c', fontWeight: 700 }}>
+              Trending Explore
+            </span>
+          }
+        >
+          {CURATED_SONGS.filter((s) => s.theme === 'reels_viral').map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, CURATED_SONGS)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
 
-      {/* SHELF 3: Romantic Hits */}
-      <ShelfSection title="Romantic Melodies">
-        {CURATED_SONGS.filter((s) => s.theme === 'romantic').map((song) => (
-          <SongSquareCard
-            key={song.id}
-            song={song}
-            isCurrent={currentTrack?.id === song.id}
-            isPlaying={isPlaying}
-            onOpenAddToPlaylist={onOpenAddToPlaylist}
-            onPlay={() => {
-              if (currentTrack?.id === song.id) togglePlay()
-              else playTrack(song, CURATED_SONGS)
-            }}
-          />
-        ))}
-      </ShelfSection>
+      {/* SHELF: 🌙 2 AM Broken Heart Reels */}
+      {(selectedMood === 'all' || selectedMood === 'sad') && (
+        <ShelfSection
+          title="🌙 2 AM Broken Heart Reels"
+          action={
+            <span style={{ fontSize: '11px', color: '#60a5fa', fontWeight: 700 }}>
+              Deep Soulful Indie
+            </span>
+          }
+        >
+          {CURATED_SONGS.filter((s) => s.theme === 'sad').map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, CURATED_SONGS)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
 
-      {/* SHELF 4: Pop & Indie */}
-      <ShelfSection title="Pop & Indie Favorites">
-        {CURATED_SONGS.filter((s) => s.theme === 'pop' || s.theme === 'indie').map((song) => (
-          <SongSquareCard
-            key={song.id}
-            song={song}
-            isCurrent={currentTrack?.id === song.id}
-            isPlaying={isPlaying}
-            onOpenAddToPlaylist={onOpenAddToPlaylist}
-            onPlay={() => {
-              if (currentTrack?.id === song.id) togglePlay()
-              else playTrack(song, CURATED_SONGS)
-            }}
-          />
-        ))}
-      </ShelfSection>
+      {/* SHELF: ⚡ Live Instagram & Spotify Charts (Auto-Synced from Internet) */}
+      {(selectedMood === 'all' || selectedMood === 'reels_viral') && liveTrends && liveTrends.length > 0 && (
+        <ShelfSection
+          title="⚡ Live Trends (Auto-Synced)"
+          action={
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#1ed760', display: 'inline-block', boxShadow: '0 0 8px #1ed760' }} />
+              <span style={{ fontSize: '11px', color: '#1ed760', fontWeight: 700 }}>
+                Live Updated
+              </span>
+            </div>
+          }
+        >
+          {liveTrends.map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, liveTrends)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
 
-      {/* SHELF 5: Lo-Fi */}
-      <ShelfSection title="Lo-Fi & Relax">
-        {CURATED_SONGS.filter((s) => s.theme === 'lofi').map((song) => (
-          <SongSquareCard
-            key={song.id}
-            song={song}
-            isCurrent={currentTrack?.id === song.id}
-            isPlaying={isPlaying}
-            onOpenAddToPlaylist={onOpenAddToPlaylist}
-            onPlay={() => {
-              if (currentTrack?.id === song.id) togglePlay()
-              else playTrack(song, CURATED_SONGS)
-            }}
-          />
-        ))}
-      </ShelfSection>
+      {/* SHELF: Featured Curated Playlists */}
+      {selectedMood === 'all' && (
+        <ShelfSection title="Featured Playlists">
+          {SPOTIFY_PLAYLISTS.map((pl) => (
+            <PlaylistCard
+              key={pl.id}
+              playlist={pl}
+              onClick={() => onSelectPlaylist && onSelectPlaylist(pl)}
+            />
+          ))}
+        </ShelfSection>
+      )}
+
+      {/* SHELF: Romantic Melodies */}
+      {(selectedMood === 'all' || selectedMood === 'romantic') && (
+        <ShelfSection title="Romantic Melodies">
+          {CURATED_SONGS.filter((s) => s.theme === 'romantic').map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, CURATED_SONGS)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
+
+      {/* SHELF: Pop & Indie */}
+      {(selectedMood === 'all' || selectedMood === 'indie') && (
+        <ShelfSection title="Pop & Indie Favorites">
+          {CURATED_SONGS.filter((s) => s.theme === 'pop' || s.theme === 'indie').map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, CURATED_SONGS)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
+
+      {/* SHELF: Lo-Fi */}
+      {(selectedMood === 'all' || selectedMood === 'lofi') && (
+        <ShelfSection title="Lo-Fi & Relax">
+          {CURATED_SONGS.filter((s) => s.theme === 'lofi').map((song) => (
+            <SongSquareCard
+              key={song.id}
+              song={song}
+              isCurrent={currentTrack?.id === song.id}
+              isPlaying={isPlaying}
+              onOpenAddToPlaylist={onOpenAddToPlaylist}
+              onPlay={() => {
+                if (currentTrack?.id === song.id) togglePlay()
+                else playTrack(song, CURATED_SONGS)
+              }}
+            />
+          ))}
+        </ShelfSection>
+      )}
 
     </div>
   )
@@ -482,6 +687,31 @@ function SongSquareCard({ song, isCurrent, isPlaying, onPlay, onOpenAddToPlaylis
           style={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', borderRadius: 4, marginBottom: 10, display: 'block' }}
           onError={(e) => { e.currentTarget.src = DEFAULT_ALBUM_COVER }}
         />
+        {/* Badge Chip */}
+        {song.badge && (
+          <div style={{
+            position: 'absolute',
+            top: 6,
+            left: 6,
+            background: (song.badge.includes('2 AM') || song.badge.includes('Sad') || song.badge.includes('Broken'))
+              ? 'rgba(37, 99, 235, 0.9)'
+              : (song.badge.includes('Reels') || song.badge.includes('Insta') || song.badge.includes('Trend'))
+              ? 'rgba(225, 48, 108, 0.9)'
+              : 'rgba(29, 185, 84, 0.9)',
+            backdropFilter: 'blur(4px)',
+            borderRadius: 4,
+            padding: '2px 6px',
+            fontSize: '9px',
+            fontWeight: 800,
+            color: '#ffffff',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.5)',
+            pointerEvents: 'none',
+            zIndex: 2,
+            whiteSpace: 'nowrap'
+          }}>
+            {song.badge}
+          </div>
+        )}
         {/* Quick Add to Playlist Button */}
         {onOpenAddToPlaylist && (
           <button

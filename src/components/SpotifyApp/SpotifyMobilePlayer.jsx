@@ -75,9 +75,23 @@ export default function SpotifyMobilePlayer({ onOpenFullNowPlaying }) {
             color: '#b3b3b3',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6
           }}>
-            {currentTrack.artist}
+            <span>{currentTrack.artist}</span>
+            <span style={{
+              fontSize: '9px',
+              fontWeight: 800,
+              color: '#1ed760',
+              background: 'rgba(30, 215, 96, 0.12)',
+              borderRadius: 3,
+              padding: '1px 4px',
+              letterSpacing: '0.02em'
+            }}>
+              ✨ Peace EQ
+            </span>
           </div>
         </div>
       </div>

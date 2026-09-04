@@ -221,29 +221,176 @@ Yeh saara aasmaan.`
     album: 'Music To Sleep Chill To',
     genre: 'Lo-Fi',
     theme: 'lofi',
+    badge: '☕ Relax Lo-Fi',
     image: 'https://c.saavncdn.com/054/Music-To-Put-You-In-A-Better-Mood-Lofi-Hip-Hop-Beats-to-Sleep-Chill-To-Unknown-2023-20250508183531-500x500.jpg',
     url: 'https://aac.saavncdn.com/054/d0421389e10fbca2fcd2a4f47f9e7038_320.mp4',
     duration: '2:50',
     lyrics: `(Soft gentle piano chords & lo-fi vinyl crackle...)
 Relaxing lo-fi study beats to unwind and chill.
 Search any song to play full music tracks.`
+  },
+  {
+    id: 'sajni',
+    title: 'Sajni',
+    artist: 'Arijit Singh, Ram Sampath',
+    album: 'Laapataa Ladies',
+    genre: 'Bollywood',
+    theme: 'reels_viral',
+    badge: '🔥 Reels Trending',
+    image: 'https://c.saavncdn.com/252/Laapataa-Ladies-Hindi-2024-20240213155601-500x500.jpg',
+    url: 'https://aac.saavncdn.com/252/f53c1a90a2f35d67490badb846d8c849_320.mp4',
+    duration: '2:50',
+    lyrics: `O sajni re
+Kaise kate din raat
+Kaise ho barsaat
+Tere bina, tere bina...
+
+O sajni re
+Naino se behta neer
+Jaise koi teer
+Tere bina, tere bina!`
+  },
+  {
+    id: 'choo_lo',
+    title: 'Choo Lo',
+    artist: 'The Local Train',
+    album: 'Aalas Ka Pedh',
+    genre: 'Indie Rock',
+    theme: 'sad',
+    badge: '🌙 2 AM Sad Reel',
+    image: 'https://c.saavncdn.com/111/Aalas-Ka-Pedh-Hindi-2015-500x500.jpg',
+    url: 'https://aac.saavncdn.com/111/09c5dba8ec03665a9a679e19338917a6_320.mp4',
+    duration: '3:53',
+    lyrics: `Khada hoon aaj bhi wahin
+Ki tera intezaar hai
+Choo lo jo mujhe tum kabhi
+Kho na jaaun main raat din
+
+Nazron mein tum ho base
+Khwabon mein tum hi to ho
+Jaane do baatein abhi
+Ruk jao yaara yahin!`
+  },
+  {
+    id: 'kahani_suno',
+    title: 'Kahani Suno 2.0',
+    artist: 'Kaifi Khalil',
+    album: 'Kahani Suno 2.0',
+    genre: 'Soul / Sad',
+    theme: 'sad',
+    badge: '💔 Viral Sad Reel',
+    image: 'https://c.saavncdn.com/371/Kahani-Suno-2-0-Slowed-and-Reverbed-Hindi-2023-20230222071946-500x500.jpg',
+    url: 'https://aac.saavncdn.com/371/d955e6c5bc587ea477a3e83dc361612d_320.mp4',
+    duration: '3:15',
+    lyrics: `Kahani suno, zubani suno
+Mujhe pyar hua tha, iqrar hua tha
+Kahani suno, zubani suno
+Mujhe pyar hua tha, iqrar hua tha
+
+Deewana hua, mastana hua
+Tere ishq mein aisa ghayal hua
+Kahin chain na aaye, nind na aaye
+Yeh dil bas tera naam pukare!`
+  },
+  {
+    id: 'o_maahi',
+    title: 'O Maahi',
+    artist: 'Pritam, Arijit Singh',
+    album: 'Dunki',
+    genre: 'Romantic',
+    theme: 'reels_viral',
+    badge: '🔥 Trending on Insta',
+    image: 'https://c.saavncdn.com/139/Dunki-Drop-5-O-Maahi-Hindi-2023-20231211171015-500x500.jpg',
+    url: 'https://aac.saavncdn.com/139/61036495c7ba45adf72a856b60f054fd_320.mp4',
+    duration: '3:53',
+    lyrics: `O maahi o maahi, o maahi o maahi
+Tere ishq mein sab kho baitha
+O maahi o maahi, o maahi o maahi
+Tere sang hi ab jeena marna
+
+Saanso ki dor chhoote to chhoote
+Tera haath na chhootne paaye
+Is dil ki bas itni khwahish
+Tu sada muskaaye!`
+  },
+  {
+    id: 'pehle_bhi_main',
+    title: 'Pehle Bhi Main',
+    artist: 'Vishal Mishra, Raj Shekhar',
+    album: 'Animal',
+    genre: 'Soul / Romantic',
+    theme: 'reels_viral',
+    badge: '🎬 Reels Hit',
+    image: 'https://c.saavncdn.com/092/ANIMAL-Hindi-2023-20231124191427-500x500.jpg',
+    url: 'https://aac.saavncdn.com/092/81b52beea90f186f27cf5c5eead972c8_320.mp4',
+    duration: '4:10',
+    lyrics: `Pehle bhi main tumse mila hoon
+Pehli dafaa hi milke laga
+Tune chhua zakhmon ko mere
+Marham sa tha mehsoos hua
+
+Kyun ab mujhe dar nahi lagta
+Kyun har ghadi bas tu dikhta
+Tere bina ab chal na sakunga
+Rasta tu hi manzil tu hi!`
+  },
+  {
+    id: 'faasle',
+    title: 'Faasle',
+    artist: 'Aditya Rikhari',
+    album: 'Faasle',
+    genre: 'Indie Sad',
+    theme: 'sad',
+    badge: '🌙 2 AM Sad Reel',
+    image: 'https://c.saavncdn.com/832/Faasle-Hindi-2022-20220624053140-500x500.jpg',
+    url: 'https://aac.saavncdn.com/832/7e9fe5a21e42c262d4e8c17b5a19808d_320.mp4',
+    duration: '3:04',
+    lyrics: `Faasle the darmiyaan
+Phir bhi paas the hum yahan
+Khamoshiyan kehti rahin
+Jo lab na keh paaye kahan
+
+Tu door hai par lagta nahi
+Yeh dard kabhi thamta nahi
+Faasle hain yeh kaisa imtihaan!`
   }
 ]
 
 export const SPOTIFY_PLAYLISTS = [
   {
+    id: 'insta_viral_reels',
+    title: '🔥 Instagram Reels Hits',
+    description: 'Trending tracks dominating your Instagram explore feed right now.',
+    cover: 'https://c.saavncdn.com/252/Laapataa-Ladies-Hindi-2024-20240213155601-500x500.jpg',
+    songIds: ['sajni', 'o_maahi', 'pehle_bhi_main', 'kesariya', 'apna_bana_le']
+  },
+  {
+    id: 'insta_sad_reels',
+    title: '🌙 2 AM Broken Heart Reels',
+    description: 'Deep emotional ballads and melancholic indie masterpieces for late nights.',
+    cover: 'https://c.saavncdn.com/111/Aalas-Ka-Pedh-Hindi-2015-500x500.jpg',
+    songIds: ['choo_lo', 'husn', 'kahani_suno', 'tu_hai_kahan', 'faasle', 'baarishein']
+  },
+  {
     id: 'top_hits',
     title: "Today's Top Hits",
     description: 'The biggest and most popular tracks right now.',
     cover: 'https://c.saavncdn.com/871/Brahmastra-Original-Motion-Picture-Soundtrack-Hindi-2022-20221006155213-500x500.jpg',
-    songIds: ['kesariya', 'tu_hai_kahan', 'apna_bana_le', 'taylor_lover', 'until_i_found_you']
+    songIds: ['sajni', 'kesariya', 'o_maahi', 'pehle_bhi_main', 'tu_hai_kahan']
   },
   {
     id: 'romantic',
     title: 'Romantic Melodies',
     description: 'Timeless romantic hits and heartfelt vocals.',
     cover: 'https://c.saavncdn.com/238/Romantic-Classics-Hits-Hindi-2026-20260529163838-500x500.jpg',
-    songIds: ['kesariya', 'apna_bana_le', 'shayad', 'raataan_lambiyan', 'pehla_nasha']
+    songIds: ['kesariya', 'apna_bana_le', 'sajni', 'o_maahi', 'shayad', 'raataan_lambiyan', 'pehla_nasha']
+  },
+  {
+    id: 'acoustic_indie',
+    title: 'Acoustic & Indie',
+    description: 'Stripped-down acoustic strings and raw emotion.',
+    cover: 'https://c.saavncdn.com/436/Husn-Hindi-2023-20231129054140-500x500.jpg',
+    songIds: ['husn', 'choo_lo', 'faasle', 'baarishein', 'tu_hai_kahan']
   },
   {
     id: 'chill_lofi',
@@ -251,15 +398,9 @@ export const SPOTIFY_PLAYLISTS = [
     description: 'Peaceful beats for relaxing and unwinding.',
     cover: 'https://c.saavncdn.com/054/Music-To-Put-You-In-A-Better-Mood-Lofi-Hip-Hop-Beats-to-Sleep-Chill-To-Unknown-2023-20250508183531-500x500.jpg',
     songIds: ['study_lofi', 'until_i_found_you', 'baarishein']
-  },
-  {
-    id: 'acoustic_indie',
-    title: 'Acoustic & Indie',
-    description: 'Stripped-down acoustic strings and raw emotion.',
-    cover: 'https://c.saavncdn.com/436/Husn-Hindi-2023-20231129054140-500x500.jpg',
-    songIds: ['husn', 'baarishein', 'tu_hai_kahan']
   }
 ]
+
 
 export const SEARCH_CHIPS = [
   'Arijit Singh',

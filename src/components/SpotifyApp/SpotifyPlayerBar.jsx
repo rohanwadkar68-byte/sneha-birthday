@@ -31,7 +31,9 @@ export default function SpotifyPlayerBar({ activeView, setActiveView, onOpenMobi
     toggleLike,
     isLiked,
     toggleShuffle,
-    toggleRepeat
+    toggleRepeat,
+    pureSoundMode,
+    togglePureSoundMode
   } = useMusicPlayer()
 
   const [isHoveringProgress, setIsHoveringProgress] = useState(false)
@@ -377,6 +379,29 @@ export default function SpotifyPlayerBar({ activeView, setActiveView, onOpenMobi
         width: '30%',
         minWidth: 180
       }}>
+        {/* Pure Peace Studio Sound Mode Toggle */}
+        <button
+          onClick={togglePureSoundMode}
+          style={{
+            background: pureSoundMode ? 'rgba(30, 215, 96, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+            border: pureSoundMode ? '1px solid rgba(30, 215, 96, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: 999,
+            padding: '4px 10px',
+            fontSize: '11px',
+            fontWeight: 800,
+            color: pureSoundMode ? '#1ed760' : '#888888',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            transition: 'all 0.15s ease'
+          }}
+          title={pureSoundMode ? 'Studio Peace Audio Active (Pure 320kbps Warmth & Soft Dynamics)' : 'Enable Studio Peace Audio'}
+        >
+          <span>✨</span>
+          <span style={{ fontSize: '10px', letterSpacing: '0.03em' }}>PEACE EQ</span>
+        </button>
+
         {/* Lyrics Button */}
         <button
           onClick={() => setActiveView(activeView === 'lyrics' ? 'home' : 'lyrics')}
