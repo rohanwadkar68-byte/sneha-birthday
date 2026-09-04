@@ -9,7 +9,8 @@ export default function TeddyForeverAssistant({
   onOpenArchive,
   onOpenChapter,
   onOpenCountdown,
-  onSurpriseMe
+  onSurpriseMe,
+  onOpenSpotify
 }) {
   const [isOpen, setIsOpen] = useState(false)
   const [bubbleText, setBubbleText] = useState('')
@@ -18,27 +19,31 @@ export default function TeddyForeverAssistant({
   const mode = getBirthdayMode(now)
   const age = calculateAge(now)
 
-  // Contextual messages per mode
+  // Contextual messages per mode with strong Spotify prompts
   const getContextualMessages = () => {
     if (mode === 'birthday') {
       return [
-        'HEY MOMMY!!! 🎂😭 Aaj aap officially ' + age + ' ki ho gayi hain!',
-        'Aaj ka pura din sirf aapka hai. Chaliye birthday celebrate karein! 🎉',
-        'Chaliye... is saal ka chapter unlock karte hain 🧸'
+        'HEY MOMMY!!! 🎂 Aaj aap officially Level ' + age + ' ki ho gayi hain!',
+        'Tab tak Spotify par celebratory songs suno na! 🎵🎉',
+        'Aaj ka pura din sirf aapka hai! Chaliye chapter unlock karein 🧸',
+        'Teddy ka Spotify Lounge on hai! Favorite gaana lagao 🎧'
       ]
     }
     if (mode === 'pre-birthday') {
       return [
-        'Aap phir countdown dekhne aa gayi? 👀',
-        'Birthday aa raha hai... Bas thoda aur wait, baccha. 😏',
-        'Main sab sambhal ke rakhta hoon 🧸'
+        'Tab tak songs suno na Mommy! 🎵 Maine pura Spotify banaya hai aapke liye!',
+        'Birthday countdown chal raha hai... Tab tak Teddy ke gaane sunte hain 🎧💖',
+        'Mera favorite gaana "Chidiya" suno na? Ya "Kesariya"? 🧸',
+        'Aap phir countdown dekhne aa gayi? 👀 Gaana bajau?',
+        'Teddy\'s Music Lounge mein saare romantic & lo-fi songs hain! 🎶'
       ]
     }
     // post-birthday
     return [
-      'Birthday khatam ho gaya ji 😤 Ab agle saal ka wait.',
-      'Main yahin hoon 🧸 Waise purana birthday dekhna hai?',
-      'Jab bhi mood kharab ho, yahan aakar baith jana 😌'
+      'Birthday khatam ho gaya toh kya hua? Tab tak songs sunte hain! 🎧',
+      'Teddy\'s Spotify Lounge hamesha aapke liye khula hai 🧸💖',
+      'Jab bhi mood kharab ho ya yaad aaye, yahan aakar gaane sun lena 😌🎵',
+      'Main yahin hoon 🧸 Waise purana birthday chapter dekhna hai?'
     ]
   }
 
@@ -52,7 +57,7 @@ export default function TeddyForeverAssistant({
       const randomMsg = msgs[Math.floor(Math.random() * msgs.length)]
       setBubbleText(randomMsg)
       setShowBubble(true)
-    }, 18000)
+    }, 14000)
 
     return () => clearInterval(bubbleTimer)
   }, [mode, age])
@@ -62,12 +67,22 @@ export default function TeddyForeverAssistant({
     setIsOpen(!isOpen)
   }
 
+  const handleBubbleClick = () => {
+    // If bubble asks to listen to songs, tapping directly opens Spotify!
+    if (bubbleText.includes('song') || bubbleText.includes('Spotify') || bubbleText.includes('gaane')) {
+      playSparkle()
+      onOpenSpotify && onOpenSpotify()
+    } else {
+      setShowBubble(false)
+    }
+  }
+
   return (
     <div style={{
       position: 'fixed',
-      bottom: 24,
+      bottom: 80, // slightly elevated above the mini player
       right: 20,
-      zIndex: 99999,
+      zIndex: 99995,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-end',
@@ -82,14 +97,14 @@ export default function TeddyForeverAssistant({
             exit={{ opacity: 0, scale: 0.8 }}
             style={{
               pointerEvents: 'auto',
-              background: 'rgba(255, 255, 255, 0.95)',
+              background: 'rgba(255, 255, 255, 0.96)',
               backdropFilter: 'blur(16px)',
               border: '2px solid #fda4af',
               borderRadius: 20,
               padding: '10px 16px',
-              maxWidth: 240,
+              maxWidth: 250,
               marginBottom: 10,
-              boxShadow: '0 8px 24px rgba(244, 63, 94, 0.2)',
+              boxShadow: '0 10px 30px rgba(244, 63, 94, 0.22)',
               fontSize: '0.84rem',
               fontWeight: 700,
               color: '#881337',
@@ -97,9 +112,21 @@ export default function TeddyForeverAssistant({
               cursor: 'pointer',
               position: 'relative'
             }}
-            onClick={() => setShowBubble(false)}
+            onClick={handleBubbleClick}
+            title="Click to interact"
           >
             {bubbleText}
+            <div style={{
+              fontSize: '0.7rem',
+              color: '#f43f5e',
+              marginTop: 4,
+              fontWeight: 800,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4
+            }}>
+              <span>🎧 Tap to open Spotify / Close</span>
+            </div>
             <div style={{
               position: 'absolute',
               bottom: -8,
@@ -129,22 +156,62 @@ export default function TeddyForeverAssistant({
               border: '2.5px solid #fda4af',
               borderRadius: 24,
               padding: '16px',
-              width: 250,
+              width: 260,
               marginBottom: 12,
-              boxShadow: '0 16px 40px rgba(0, 0, 0, 0.18)',
+              boxShadow: '0 18px 45px rgba(0, 0, 0, 0.2)',
               textAlign: 'center'
             }}
           >
             <div style={{
-              fontSize: '0.82rem',
-              fontWeight: 800,
+              fontSize: '0.84rem',
+              fontWeight: 900,
               color: '#e11d48',
-              marginBottom: 10
+              marginBottom: 10,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6
             }}>
-              Teddy Companion Menu
+              <span>🧸</span>
+              <span>Teddy's Companion Menu</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {/* Highlighted Spotify Lounge Button */}
+              <button
+                onClick={() => {
+                  playSparkle()
+                  setIsOpen(false)
+                  onOpenSpotify && onOpenSpotify()
+                }}
+                style={{
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: '#fff',
+                  padding: '10px 14px',
+                  borderRadius: 14,
+                  fontSize: '0.85rem',
+                  fontWeight: 900,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  justifyContent: 'center'
+                }}
+              >
+                <span>🎧</span>
+                <span>Sneha's Spotify Lounge</span>
+                <span style={{
+                  background: 'rgba(255,255,255,0.25)',
+                  fontSize: '0.62rem',
+                  padding: '1px 5px',
+                  borderRadius: 999
+                }}>
+                  NEW
+                </span>
+              </button>
+
               <button
                 onClick={() => {
                   playSparkle()

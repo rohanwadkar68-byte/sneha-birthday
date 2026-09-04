@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { calculateAge, getBirthdayMode, getISTDate, isBirthdayToday } from '../../utils/birthdayWorld.js'
+import { calculateAge, getBirthdayMode } from '../../utils/birthdayWorld.js'
 import BirthdayCountdown from './BirthdayCountdown.jsx'
 import BirthdayArchive from './BirthdayArchive.jsx'
 import TeddyForeverAssistant from './TeddyForeverAssistant.jsx'
 import Chapter2026Experience from '../../data/chapters/2026.jsx'
 import { BIRTHDAY_CHAPTERS } from '../../data/chapters/chapterRegistry.js'
-import { TEDDY_WEBM } from '../../utils/assets.js'
 import { playPop, playSparkle } from '../../utils/audio.js'
+import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
+import SpotifyMiniPlayer from '../SpotifyPlayer/SpotifyMiniPlayer.jsx'
+import SpotifyFullPlayer from '../SpotifyPlayer/SpotifyFullPlayer.jsx'
 
 export default function BirthdayShell() {
   const [currentRoute, setCurrentRoute] = useState(() => window.location.hash || '#/birthday')
@@ -16,16 +18,20 @@ export default function BirthdayShell() {
   
   const mode = getBirthdayMode(now)
   const age = calculateAge(now)
+  const { openFullPlayer, currentTrack, isPlaying, togglePlay } = useMusicPlayer()
 
-  // Listen to hash changes for direct URL access (/birthday/2026, /birthday/archive, etc.)
+  // Listen to hash changes for direct URL access (/birthday/2026, /birthday/archive, /birthday/music)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash || '#/birthday'
       setCurrentRoute(hash)
+      if (hash === '#/birthday/music' || hash === '#/spotify') {
+        openFullPlayer('home')
+      }
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
+  }, [openFullPlayer])
 
   // Midnight date watcher (Checks date transition every 10 seconds)
   useEffect(() => {
@@ -38,15 +44,22 @@ export default function BirthdayShell() {
   const navigateTo = (hash) => {
     window.location.hash = hash
     setCurrentRoute(hash)
+    if (hash === '#/birthday/music' || hash === '#/spotify') {
+      openFullPlayer('home')
+    }
   }
 
   // If user is currently playing Chapter 01 (2026)
   if (currentRoute === '#/birthday/2026' || currentRoute === '#/2026') {
     return (
-      <Chapter2026Experience
-        isMemoryMode={mode !== 'birthday'}
-        onBackToWorld={() => navigateTo('#/birthday')}
-      />
+      <>
+        <Chapter2026Experience
+          isMemoryMode={mode !== 'birthday'}
+          onBackToWorld={() => navigateTo('#/birthday')}
+        />
+        <SpotifyMiniPlayer />
+        <SpotifyFullPlayer />
+      </>
     )
   }
 
@@ -125,6 +138,8 @@ export default function BirthdayShell() {
             </button>
           </div>
         </motion.div>
+        <SpotifyMiniPlayer />
+        <SpotifyFullPlayer />
       </div>
     )
   }
@@ -138,21 +153,23 @@ export default function BirthdayShell() {
       overflowX: 'hidden',
       overflowY: 'auto',
       fontFamily: 'inherit',
-      paddingBottom: 90
+      paddingBottom: 110
     }}>
       {/* 👑 Top Permanent Shell Navbar */}
       <header style={{
         position: 'sticky',
         top: 0,
         zIndex: 999,
-        background: 'rgba(255, 255, 255, 0.88)',
+        background: 'rgba(255, 255, 255, 0.9)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1.5px solid rgba(254, 205, 211, 0.7)',
-        padding: '12px 20px',
+        padding: '10px 20px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        boxShadow: '0 4px 20px rgba(244, 63, 94, 0.08)'
+        boxShadow: '0 4px 20px rgba(244, 63, 94, 0.08)',
+        flexWrap: 'wrap',
+        gap: 10
       }}>
         {/* Left: Brand & Age */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -186,7 +203,32 @@ export default function BirthdayShell() {
         </div>
 
         {/* Right: Quick Navigation Tabs */}
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          {/* Spotify Lounge Button */}
+          <button
+            onClick={() => {
+              playSparkle()
+              openFullPlayer('home')
+            }}
+            style={{
+              border: 'none',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              color: '#fff',
+              padding: '6px 14px',
+              borderRadius: 999,
+              fontSize: '0.8rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+            }}
+          >
+            <span>🎧</span>
+            <span>Spotify Lounge</span>
+          </button>
+
           <button
             onClick={() => {
               playPop()
@@ -237,7 +279,7 @@ export default function BirthdayShell() {
       </header>
 
       {/* 🌟 Main Body Content */}
-      <main style={{ maxWidth: 840, margin: '0 auto', padding: '32px 16px' }}>
+      <main style={{ maxWidth: 860, margin: '0 auto', padding: '28px 16px' }}>
         {/* Mode Hero Banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -245,7 +287,7 @@ export default function BirthdayShell() {
           transition={{ duration: 0.5 }}
           style={{
             textAlign: 'center',
-            marginBottom: 32
+            marginBottom: 28
           }}
         >
           {mode === 'birthday' ? (
@@ -274,25 +316,42 @@ export default function BirthdayShell() {
               }}>
                 Aaj aap officially <b>Level {age}</b> ki ho gayi hain! Aaj ka pura din sirf aapka hai.
               </p>
-              <button
-                onClick={() => {
-                  playSparkle()
-                  navigateTo('#/birthday/2026')
-                }}
-                style={{
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #ff7597, #f43f5e)',
-                  color: '#fff',
-                  fontSize: '1.05rem',
-                  fontWeight: 900,
-                  padding: '14px 32px',
-                  borderRadius: 999,
-                  cursor: 'pointer',
-                  boxShadow: '0 8px 25px rgba(244, 63, 94, 0.4)'
-                }}
-              >
-                🎂 Birthday Surprise Kholo →
-              </button>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    playSparkle()
+                    navigateTo('#/birthday/2026')
+                  }}
+                  style={{
+                    border: 'none',
+                    background: 'linear-gradient(135deg, #ff7597, #f43f5e)',
+                    color: '#fff',
+                    fontSize: '1rem',
+                    fontWeight: 900,
+                    padding: '12px 28px',
+                    borderRadius: 999,
+                    cursor: 'pointer',
+                    boxShadow: '0 8px 25px rgba(244, 63, 94, 0.4)'
+                  }}
+                >
+                  🎂 Birthday Surprise Kholo →
+                </button>
+                <button
+                  onClick={() => openFullPlayer('home')}
+                  style={{
+                    border: '2px solid #10b981',
+                    background: '#ecfdf5',
+                    color: '#065f46',
+                    fontSize: '1rem',
+                    fontWeight: 800,
+                    padding: '12px 24px',
+                    borderRadius: 999,
+                    cursor: 'pointer'
+                  }}
+                >
+                  🎧 Party Songs Suno
+                </button>
+              </div>
             </div>
           ) : (
             <div>
@@ -313,7 +372,7 @@ export default function BirthdayShell() {
                 maxWidth: 520,
                 lineHeight: 1.5
               }}>
-                Ye website hamesha zinda rahegi. Har saal ek naya chapter unlock hoga, aur purani yaadein hamesha yahin sambhali rahengi.
+                Ye website hamesha zinda rahegi. Har saal ek naya chapter unlock hoga, aur tab tak yahan gaane suno aur yaadein tazi karo!
               </p>
             </div>
           )}
@@ -322,8 +381,174 @@ export default function BirthdayShell() {
           <BirthdayCountdown onOpenBirthday={() => navigateTo('#/birthday/2026')} />
         </motion.div>
 
+        {/* 🎧 SPECIAL FEATURE CARD: SNEHA'S SPOTIFY LOUNGE */}
+        <motion.section
+          whileHover={{ y: -3 }}
+          style={{
+            background: 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)',
+            border: '2px solid #10b981',
+            borderRadius: 28,
+            padding: '24px 22px',
+            color: '#fff',
+            boxShadow: '0 16px 45px rgba(16, 185, 129, 0.25)',
+            marginBottom: 32,
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Subtle background glow effect */}
+          <div style={{
+            position: 'absolute',
+            top: -40,
+            right: -40,
+            width: 160,
+            height: 160,
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%)',
+            pointerEvents: 'none'
+          }} />
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 16
+          }}>
+            <div style={{ maxWidth: 500 }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                background: 'rgba(16, 185, 129, 0.2)',
+                border: '1px solid #10b981',
+                color: '#34d399',
+                fontSize: '0.74rem',
+                fontWeight: 800,
+                padding: '3px 10px',
+                borderRadius: 999,
+                marginBottom: 10
+              }}>
+                <span>🎧</span>
+                <span>TEDDY SAYS: "TAB TAK SONGS SUNO NA MOMMY!"</span>
+              </div>
+              <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', fontWeight: 900, color: '#ecfdf5' }}>
+                Sneha's Spotify Music Lounge 🎵
+              </h2>
+              <p style={{ margin: '0 0 16px', fontSize: '0.9rem', color: '#a7f3d0', lineHeight: 1.5 }}>
+                Birthday aane tak bore mat ho! Pura Spotify player ready hai with <b>Romantic Hits</b>, <b>Teddy's Vilen Collection</b>, <b>Late Night Lo-Fi</b>, <b>Karaoke Lyrics</b>, and <b>Live Song Search</b>!
+              </p>
+
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    playSparkle()
+                    openFullPlayer('home')
+                  }}
+                  style={{
+                    border: 'none',
+                    background: '#10b981',
+                    color: '#064e3b',
+                    fontWeight: 900,
+                    fontSize: '0.88rem',
+                    padding: '10px 22px',
+                    borderRadius: 999,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6
+                  }}
+                >
+                  <span>▶</span>
+                  <span>Open Spotify Player</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    playPop()
+                    openFullPlayer('lyrics')
+                  }}
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '0.85rem',
+                    padding: '10px 18px',
+                    borderRadius: 999,
+                    cursor: 'pointer'
+                  }}
+                >
+                  📜 Karaoke Lyrics
+                </button>
+
+                <button
+                  onClick={() => {
+                    playPop()
+                    openFullPlayer('search')
+                  }}
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: '0.85rem',
+                    padding: '10px 18px',
+                    borderRadius: 999,
+                    cursor: 'pointer'
+                  }}
+                >
+                  🔍 Search Any Song
+                </button>
+              </div>
+            </div>
+
+            {/* Right: Spinning Track Badge */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: 20,
+              padding: '14px 18px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              minWidth: 200
+            }}>
+              <motion.div
+                animate={{ rotate: isPlaying ? 360 : 0 }}
+                transition={{ repeat: Infinity, duration: 8, ease: 'linear' }}
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid #34d399'
+                }}
+              >
+                <img
+                  src={currentTrack?.image || 'assets/3d-emoji/sparkling_heart.png'}
+                  alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
+                />
+              </motion.div>
+              <div>
+                <div style={{ fontSize: '0.72rem', color: '#6ee7b7', fontWeight: 800 }}>
+                  {isPlaying ? 'PLAYING NOW' : 'TAP TO PLAY'}
+                </div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#fff', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {currentTrack?.title || 'Cozy Lo-Fi'}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>
+                  {currentTrack?.artist || 'Sneha Mix'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
         {/* 📚 Chapter Showcase Cards */}
-        <section style={{ marginTop: 36 }}>
+        <section style={{ marginTop: 24 }}>
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -509,7 +734,12 @@ export default function BirthdayShell() {
         onOpenChapter={(yr) => navigateTo('#/birthday/' + yr)}
         onOpenCountdown={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         onSurpriseMe={() => navigateTo('#/birthday/2026')}
+        onOpenSpotify={() => openFullPlayer('home')}
       />
+
+      {/* 🎧 Persistent Spotify Mini-Player Bar & Full Player Modal */}
+      <SpotifyMiniPlayer />
+      <SpotifyFullPlayer />
     </div>
   )
 }
