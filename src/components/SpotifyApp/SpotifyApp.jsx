@@ -9,6 +9,7 @@ import SpotifyPlaylistView from './SpotifyPlaylistView.jsx'
 import SpotifyLyricsView from './SpotifyLyricsView.jsx'
 import SpotifyQueueView from './SpotifyQueueView.jsx'
 import SpotifyPlayerBar from './SpotifyPlayerBar.jsx'
+import SpotifyMobilePlayer from './SpotifyMobilePlayer.jsx'
 
 export default function SpotifyApp({ onBackToWorld }) {
   const [activeView, setActiveView] = useState('home') // home | search | playlist | lyrics | queue
@@ -25,22 +26,6 @@ export default function SpotifyApp({ onBackToWorld }) {
     return () => window.removeEventListener('resize', onResize)
   }, [])
 
-  // Dynamic Spotify top ambient background color based on active view & track
-  const getAmbientGradient = () => {
-    if (activeView === 'lyrics') {
-      return 'linear-gradient(to bottom, #381224 0%, #121212 450px)'
-    }
-    if (activeView === 'playlist') {
-      return activePlaylist.id === 'liked'
-        ? 'linear-gradient(to bottom, #2b1154 0%, #121212 360px)'
-        : 'linear-gradient(to bottom, #1d273a 0%, #121212 360px)'
-    }
-    if (activeView === 'search') {
-      return 'linear-gradient(to bottom, #1c1c1c 0%, #121212 250px)'
-    }
-    return 'linear-gradient(to bottom, #153323 0%, #121212 360px)'
-  }
-
   const handleSelectPlaylist = (pl) => {
     setActivePlaylist(pl)
     setActiveView('playlist')
@@ -48,26 +33,26 @@ export default function SpotifyApp({ onBackToWorld }) {
 
   return (
     <div style={{
+      position: 'fixed',
+      inset: 0,
       width: '100vw',
-      height: '100vh',
+      height: '100%',
       background: '#000000',
       color: '#ffffff',
       fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      position: 'fixed',
-      inset: 0,
       zIndex: 999999
     }}>
-      {/* MAIN DESKTOP / TABLET WORKSPACE */}
+      {/* MAIN CONTAINER */}
       <div style={{
         flex: 1,
         display: 'flex',
         overflow: 'hidden',
         position: 'relative'
       }}>
-        {/* LEFT SIDEBAR (Hidden on small mobile) */}
+        {/* DESKTOP SIDEBAR */}
         {!isMobile && (
           <SpotifySidebar
             activeView={activeView}
@@ -76,11 +61,13 @@ export default function SpotifyApp({ onBackToWorld }) {
           />
         )}
 
-        {/* MAIN SCROLLABLE CONTENT CONTAINER */}
+        {/* MAIN SCROLLABLE CONTENT */}
         <div style={{
           flex: 1,
           background: '#121212',
-          backgroundImage: getAmbientGradient(),
+          backgroundImage: activeView === 'lyrics'
+            ? 'linear-gradient(to bottom, #2b1154 0%, #121212 450px)'
+            : 'linear-gradient(to bottom, #1d2228 0%, #121212 300px)',
           borderRadius: !isMobile ? 8 : 0,
           margin: !isMobile ? '8px 8px 8px 0' : 0,
           overflowY: 'auto',
@@ -88,9 +75,10 @@ export default function SpotifyApp({ onBackToWorld }) {
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
+          paddingBottom: isMobile ? 124 : 16,
           scrollbarWidth: 'thin'
         }}>
-          {/* Top Bar with Search & World Exit */}
+          {/* Top Bar */}
           <SpotifyTopBar
             activeView={activeView}
             setActiveView={setActiveView}
@@ -123,131 +111,158 @@ export default function SpotifyApp({ onBackToWorld }) {
         </div>
       </div>
 
-      {/* MOBILE BOTTOM NAVIGATION (Visible only on mobile < 768px) */}
+      {/* DESKTOP BOTTOM PLAYER (Visible only >= 768px) */}
+      {!isMobile && (
+        <SpotifyPlayerBar
+          activeView={activeView}
+          setActiveView={setActiveView}
+        />
+      )}
+
+      {/* MOBILE FIXED BOTTOM DOCK (Mini Player + Bottom Navigation) */}
       {isMobile && (
         <div style={{
-          height: 56,
-          background: '#121212',
-          borderTop: '1px solid #282828',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 100,
+          pointerEvents: 'none',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          zIndex: 110,
-          userSelect: 'none'
+          flexDirection: 'column'
         }}>
-          {/* Home */}
-          <button
-            onClick={() => setActiveView('home')}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              color: activeView === 'home' ? '#ffffff' : '#b3b3b3',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer'
-            }}
-          >
-            <span>🏠</span>
-            <span>Home</span>
-          </button>
+          {/* Mini Player */}
+          <div style={{ pointerEvents: 'auto' }}>
+            <SpotifyMobilePlayer
+              onOpenFullNowPlaying={() => setMobileNowPlayingOpen(true)}
+            />
+          </div>
 
-          {/* Search */}
-          <button
-            onClick={() => setActiveView('search')}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              color: activeView === 'search' ? '#ffffff' : '#b3b3b3',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer'
-            }}
-          >
-            <span>🔍</span>
-            <span>Search</span>
-          </button>
+          {/* Bottom Navigation Bar */}
+          <div style={{
+            height: 56,
+            background: 'rgba(18, 18, 18, 0.98)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            backdropFilter: 'blur(20px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            pointerEvents: 'auto',
+            userSelect: 'none'
+          }}>
+            {/* Home */}
+            <button
+              onClick={() => setActiveView('home')}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                color: activeView === 'home' ? '#ffffff' : '#b3b3b3',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '11px',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33z"/>
+              </svg>
+              <span>Home</span>
+            </button>
 
-          {/* Your Library */}
-          <button
-            onClick={() => {
-              setActivePlaylist({ id: 'liked', title: 'Liked Songs' })
-              setActiveView('playlist')
-            }}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              color: activeView === 'playlist' ? '#ffffff' : '#b3b3b3',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer'
-            }}
-          >
-            <span>📚</span>
-            <span>Your Library</span>
-          </button>
+            {/* Search */}
+            <button
+              onClick={() => setActiveView('search')}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                color: activeView === 'search' ? '#ffffff' : '#b3b3b3',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '11px',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28z"/>
+              </svg>
+              <span>Search</span>
+            </button>
 
-          {/* Return to World */}
-          <button
-            onClick={onBackToWorld}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              color: '#1ed760',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 4,
-              fontSize: '11px',
-              fontWeight: 800,
-              cursor: 'pointer'
-            }}
-          >
-            <span>🧸</span>
-            <span>World</span>
-          </button>
+            {/* Your Library */}
+            <button
+              onClick={() => {
+                setActivePlaylist({ id: 'liked', title: 'Liked Songs' })
+                setActiveView('playlist')
+              }}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                color: activeView === 'playlist' ? '#ffffff' : '#b3b3b3',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '11px',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866zM16 4.732l4 2.31V20h-4V4.732zM8 3a1 1 0 0 0-1 1v16a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1z"/>
+              </svg>
+              <span>Your Library</span>
+            </button>
+
+            {/* Back to World */}
+            <button
+              onClick={onBackToWorld}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                color: '#1ed760',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: '11px',
+                fontWeight: 800,
+                cursor: 'pointer'
+              }}
+            >
+              <span style={{ fontSize: '15px' }}>↩</span>
+              <span>World</span>
+            </button>
+          </div>
         </div>
       )}
 
-      {/* BOTTOM PERSISTENT SPOTIFY NOW PLAYING BAR */}
-      <SpotifyPlayerBar
-        activeView={activeView}
-        setActiveView={setActiveView}
-        onOpenMobileNowPlaying={() => setMobileNowPlayingOpen(true)}
-      />
-
-      {/* MOBILE FULL SCREEN NOW PLAYING MODAL */}
+      {/* MOBILE FULL-SCREEN NOW PLAYING OVERLAY */}
       <AnimatePresence>
         {isMobile && mobileNowPlayingOpen && currentTrack && (
           <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+            transition={{ type: 'spring', damping: 26, stiffness: 240 }}
             style={{
               position: 'fixed',
               inset: 0,
               zIndex: 9999999,
-              background: 'linear-gradient(to bottom, #2b1154 0%, #121212 70%)',
+              background: 'linear-gradient(to bottom, #2b1154 0%, #121212 65%)',
               display: 'flex',
               flexDirection: 'column',
-              padding: '24px 20px',
+              padding: '20px 24px 32px',
               color: '#ffffff'
             }}
           >
-            {/* Top Close Chevron */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+            {/* Top Bar with Down Chevron */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
               <button
                 onClick={() => setMobileNowPlayingOpen(false)}
                 style={{
@@ -260,43 +275,51 @@ export default function SpotifyApp({ onBackToWorld }) {
               >
                 ⌄
               </button>
-              <div style={{ fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                PLAYING FOR SNEHA
-              </div>
+              <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#b3b3b3' }}>
+                PLAYING FROM PLAYLIST
+              </span>
               <div style={{ width: 24 }} />
             </div>
 
-            {/* Giant Album Art */}
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+            {/* Album Cover */}
+            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
               <img
                 src={currentTrack.image}
                 alt=""
                 style={{
-                  width: '84vw',
-                  maxWidth: 320,
+                  width: '75vw',
+                  maxWidth: 290,
                   aspectRatio: '1/1',
                   borderRadius: 8,
                   objectFit: 'cover',
-                  boxShadow: '0 16px 50px rgba(0,0,0,0.6)'
+                  boxShadow: '0 16px 40px rgba(0,0,0,0.6)'
                 }}
                 onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
               />
             </div>
 
-            {/* Track Info + Like */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <div>
-                <h2 style={{ fontSize: '22px', fontWeight: 900, margin: '0 0 4px', color: '#ffffff' }}>
+            {/* Song Title & Like */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+              <div style={{ minWidth: 0, flex: 1, paddingRight: 10 }}>
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: 900,
+                  margin: '0 0 4px',
+                  color: '#ffffff',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
                   {currentTrack.title}
                 </h2>
-                <div style={{ fontSize: '15px', color: '#b3b3b3', fontWeight: 600 }}>
+                <div style={{ fontSize: '14px', color: '#b3b3b3', fontWeight: 500 }}>
                   {currentTrack.artist}
                 </div>
               </div>
 
               <button
                 onClick={() => toggleLike(currentTrack.id)}
-                style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}
+                style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 4 }}
               >
                 {isLiked(currentTrack.id) ? (
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="#1ed760">
@@ -310,8 +333,8 @@ export default function SpotifyApp({ onBackToWorld }) {
               </button>
             </div>
 
-            {/* Scrubber Slider */}
-            <div style={{ marginBottom: 24 }}>
+            {/* Scrubber */}
+            <div style={{ marginBottom: 20 }}>
               <input
                 type="range"
                 min={0}
@@ -320,14 +343,14 @@ export default function SpotifyApp({ onBackToWorld }) {
                 onChange={(e) => seekTo(Number(e.target.value))}
                 style={{ width: '100%', accentColor: '#1ed760', cursor: 'pointer' }}
               />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#b3b3b3', marginTop: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#b3b3b3', marginTop: 4 }}>
                 <span>{Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60) < 10 ? '0' : ''}{Math.floor(currentTime % 60)}</span>
                 <span>{Math.floor(duration / 60)}:{Math.floor(duration % 60) < 10 ? '0' : ''}{Math.floor(duration % 60)}</span>
               </div>
             </div>
 
-            {/* Play Controls Row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: 28 }}>
+            {/* Play Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: 24 }}>
               <button
                 onClick={prevTrack}
                 style={{ border: 'none', background: 'transparent', color: '#ffffff', cursor: 'pointer', fontSize: '24px' }}
@@ -338,13 +361,13 @@ export default function SpotifyApp({ onBackToWorld }) {
               <button
                 onClick={togglePlay}
                 style={{
-                  width: 64,
-                  height: 64,
+                  width: 60,
+                  height: 60,
                   borderRadius: '50%',
                   background: '#ffffff',
                   color: '#000000',
                   border: 'none',
-                  fontSize: '26px',
+                  fontSize: '22px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -362,7 +385,7 @@ export default function SpotifyApp({ onBackToWorld }) {
               </button>
             </div>
 
-            {/* Quick Swipe-Up Lyrics Pill */}
+            {/* Karaoke Lyrics Button */}
             <button
               onClick={() => {
                 setMobileNowPlayingOpen(false)
@@ -373,14 +396,14 @@ export default function SpotifyApp({ onBackToWorld }) {
                 background: 'rgba(255,255,255,0.1)',
                 color: '#ffffff',
                 padding: '12px',
-                borderRadius: 16,
+                borderRadius: 12,
                 fontWeight: 800,
-                fontSize: '14px',
+                fontSize: '13px',
                 cursor: 'pointer',
                 textAlign: 'center'
               }}
             >
-              📜 View Full Karaoke Lyrics
+              Lyrics
             </button>
           </motion.div>
         )}

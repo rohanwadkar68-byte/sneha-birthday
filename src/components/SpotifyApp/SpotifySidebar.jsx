@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
 import { SPOTIFY_PLAYLISTS } from '../../data/musicLibrary.js'
 
@@ -7,7 +6,7 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
 
   return (
     <aside style={{
-      width: 280,
+      width: 260,
       background: '#000000',
       display: 'flex',
       flexDirection: 'column',
@@ -17,7 +16,7 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
       height: '100%',
       userSelect: 'none'
     }}>
-      {/* TOP CONTAINER: Logo & Main Navigation */}
+      {/* TOP: Brand & Primary Links */}
       <div style={{
         background: '#121212',
         borderRadius: 8,
@@ -31,26 +30,13 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
           <svg width="28" height="28" viewBox="0 0 24 24" fill="#1ed760">
             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.217.357-.681.472-1.038.254-2.846-1.74-6.429-2.133-10.648-1.17-.409.094-.816-.164-.91-.572-.094-.408.163-.815.572-.91 4.624-1.057 8.577-.611 11.77 1.341.356.218.471.682.254 1.057zm1.469-3.267c-.274.444-.858.586-1.302.312-3.257-2.002-8.223-2.583-12.076-1.413-.501.152-1.033-.135-1.185-.636-.152-.501.135-1.033.636-1.185 4.408-1.338 9.882-.693 13.615 1.621.444.275.586.859.312 1.301zm.127-3.411c-3.906-2.319-10.347-2.533-14.073-1.401-.6.182-1.237-.162-1.419-.762-.182-.6.162-1.237.762-1.419 4.279-1.299 11.393-1.043 15.892 1.628.539.32.715 1.02.396 1.558-.32.539-1.02.715-1.558.396z"/>
           </svg>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontSize: '18px', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.02em' }}>
-              Spotify
-            </span>
-            <span style={{
-              background: '#1ed760',
-              color: '#000000',
-              fontSize: '9px',
-              fontWeight: 900,
-              padding: '1px 5px',
-              borderRadius: 4
-            }}>
-              SNEHA
-            </span>
-          </div>
+          <span style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em' }}>
+            Spotify
+          </span>
         </div>
 
         {/* Links */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {/* Home Link */}
           <div
             onClick={() => setActiveView('home')}
             style={{
@@ -76,7 +62,6 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
             <span>Home</span>
           </div>
 
-          {/* Search Link */}
           <div
             onClick={() => setActiveView('search')}
             style={{
@@ -104,7 +89,7 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
         </div>
       </div>
 
-      {/* BOTTOM CONTAINER: Your Library & Playlists */}
+      {/* BOTTOM: Your Library */}
       <div style={{
         background: '#121212',
         borderRadius: 8,
@@ -113,12 +98,11 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
         flexDirection: 'column',
         overflow: 'hidden'
       }}>
-        {/* Library Header */}
+        {/* Library Title */}
         <div style={{
-          padding: '16px 20px 8px',
+          padding: '16px 20px 10px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
           color: '#b3b3b3'
         }}>
           <div
@@ -131,39 +115,13 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
             }}
             onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff' }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#b3b3b3' }}
-            onClick={() => setActiveView('liked')}
+            onClick={() => setActiveView('playlist')}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1.5-.866zM16 4.732l4 2.31V20h-4V4.732zM8 3a1 1 0 0 0-1 1v16a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1z"/>
             </svg>
             <span style={{ fontSize: '14px', fontWeight: 700 }}>Your Library</span>
           </div>
-        </div>
-
-        {/* Filter Pills */}
-        <div style={{ padding: '0 16px 12px', display: 'flex', gap: 8 }}>
-          <span style={{
-            background: '#232323',
-            color: '#ffffff',
-            fontSize: '12px',
-            fontWeight: 600,
-            padding: '4px 12px',
-            borderRadius: 999,
-            cursor: 'pointer'
-          }}>
-            Playlists
-          </span>
-          <span style={{
-            background: '#232323',
-            color: '#ffffff',
-            fontSize: '12px',
-            fontWeight: 600,
-            padding: '4px 12px',
-            borderRadius: 999,
-            cursor: 'pointer'
-          }}>
-            By Rohan & Teddy
-          </span>
         </div>
 
         {/* Playlists Scroll Area */}
@@ -189,18 +147,17 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
               padding: '8px 10px',
               borderRadius: 6,
               cursor: 'pointer',
-              background: activeView === 'playlist' ? '#282828' : 'transparent',
+              background: activeView === 'playlist' ? '#242424' : 'transparent',
               transition: 'background 0.2s'
             }}
             onMouseEnter={(e) => { if (activeView !== 'playlist') e.currentTarget.style.background = '#1a1a1a' }}
             onMouseLeave={(e) => { if (activeView !== 'playlist') e.currentTarget.style.background = 'transparent' }}
           >
-            {/* Iconic Gradient Purple Box with White Heart */}
             <div style={{
               width: 48,
               height: 48,
               borderRadius: 4,
-              background: 'linear-gradient(135deg, #450af5, #c4efd9)',
+              background: 'linear-gradient(135deg, #450af5, #8e8ee5)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -222,14 +179,13 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
               }}>
                 Liked Songs
               </div>
-              <div style={{ fontSize: '12px', color: '#b3b3b3', display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ color: '#1ed760' }}>📌</span>
-                <span>Playlist • {likedIds.length} songs</span>
+              <div style={{ fontSize: '12px', color: '#b3b3b3' }}>
+                Playlist • {likedIds.length} songs
               </div>
             </div>
           </div>
 
-          {/* Curated Playlists Items */}
+          {/* Curated Playlists */}
           {SPOTIFY_PLAYLISTS.map((pl) => (
             <div
               key={pl.id}
@@ -268,7 +224,7 @@ export default function SpotifySidebar({ activeView, setActiveView, onSelectPlay
                   {pl.title}
                 </div>
                 <div style={{ fontSize: '12px', color: '#b3b3b3' }}>
-                  Playlist • Sneha Mix
+                  Playlist • Spotify
                 </div>
               </div>
             </div>

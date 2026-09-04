@@ -1,34 +1,24 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react'
-import { CURATED_SONGS, SPOTIFY_THEMES } from '../data/musicLibrary.js'
+import { CURATED_SONGS } from '../data/musicLibrary.js'
 
 const MusicPlayerContext = createContext(null)
 
-const LIKED_STORAGE_KEY = 'sneha_spotify_liked_v1'
-const THEME_STORAGE_KEY = 'sneha_spotify_theme_v1'
+const LIKED_STORAGE_KEY = 'sneha_spotify_liked_v2'
 
 export function MusicPlayerProvider({ children }) {
-  // Theme state
-  const [themeId, setThemeId] = useState(() => {
-    try {
-      return localStorage.getItem(THEME_STORAGE_KEY) || 'rose'
-    } catch {
-      return 'rose'
-    }
-  })
-
   // Liked songs state
   const [likedIds, setLikedIds] = useState(() => {
     try {
       const saved = localStorage.getItem(LIKED_STORAGE_KEY)
-      return saved ? JSON.parse(saved) : ['vilen_chidiya', 'kesariya', 'husn']
+      return saved ? JSON.parse(saved) : ['kesariya', 'tu_hai_kahan', 'apna_bana_le']
     } catch {
-      return ['vilen_chidiya', 'kesariya', 'husn']
+      return ['kesariya', 'tu_hai_kahan', 'apna_bana_le']
     }
   })
 
   // Full player open state
   const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('home') // home | search | liked | lyrics | queue
+  const [activeTab, setActiveTab] = useState('home')
 
   // Playback state
   const [queue, setQueue] = useState(CURATED_SONGS)
@@ -104,15 +94,6 @@ export function MusicPlayerProvider({ children }) {
       console.warn(e)
     }
   }, [likedIds])
-
-  // Save theme
-  useEffect(() => {
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, themeId)
-    } catch (e) {
-      console.warn(e)
-    }
-  }, [themeId])
 
   // Load and play a specific track
   const playTrack = (track, customQueue = null) => {
@@ -258,14 +239,7 @@ export function MusicPlayerProvider({ children }) {
 
   const closeFullPlayer = () => setIsFullPlayerOpen(false)
 
-  const currentTheme = SPOTIFY_THEMES[themeId] || SPOTIFY_THEMES.rose
-
   const value = {
-    // Theme
-    themeId,
-    setThemeId,
-    currentTheme,
-    // State
     currentTrack,
     isPlaying,
     currentTime,
@@ -279,7 +253,6 @@ export function MusicPlayerProvider({ children }) {
     likedIds,
     isFullPlayerOpen,
     activeTab,
-    // Actions
     playTrack,
     togglePlay,
     nextTrack: () => handleNext(false),

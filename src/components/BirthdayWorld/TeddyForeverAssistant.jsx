@@ -19,35 +19,29 @@ export default function TeddyForeverAssistant({
   const mode = getBirthdayMode(now)
   const age = calculateAge(now)
 
-  // Contextual messages per mode with strong Spotify prompts
   const getContextualMessages = () => {
     if (mode === 'birthday') {
       return [
-        'HEY MOMMY!!! 🎂 Aaj aap officially Level ' + age + ' ki ho gayi hain!',
-        'Tab tak Spotify par celebratory songs suno na! 🎵🎉',
-        'Aaj ka pura din sirf aapka hai! Chaliye chapter unlock karein 🧸',
-        'Teddy ka Spotify Lounge on hai! Favorite gaana lagao 🎧'
+        'Happy Birthday! Aaj aap officially Level ' + age + ' ki ho gayi hain!',
+        'Spotify par party songs suno aur celebrate karo!',
+        'Chaliye is saal ka chapter unlock karte hain.'
       ]
     }
     if (mode === 'pre-birthday') {
       return [
-        'Tab tak songs suno na Mommy! 🎵 Maine pura Spotify banaya hai aapke liye!',
-        'Birthday countdown chal raha hai... Tab tak Teddy ke gaane sunte hain 🎧💖',
-        'Mera favorite gaana "Chidiya" suno na? Ya "Kesariya"? 🧸',
-        'Aap phir countdown dekhne aa gayi? 👀 Gaana bajau?',
-        'Teddy\'s Music Lounge mein saare romantic & lo-fi songs hain! 🎶'
+        'Tab tak songs sun lo! Spotify player ready hai.',
+        'Birthday countdown chal raha hai... Tab tak gaane sunte hain.',
+        'Aap phir countdown dekhne aa gayi? Gaana lagau?',
+        'Spotify par jo marzi gaana search karke sun sakti ho.'
       ]
     }
-    // post-birthday
     return [
-      'Birthday khatam ho gaya toh kya hua? Tab tak songs sunte hain! 🎧',
-      'Teddy\'s Spotify Lounge hamesha aapke liye khula hai 🧸💖',
-      'Jab bhi mood kharab ho ya yaad aaye, yahan aakar gaane sun lena 😌🎵',
-      'Main yahin hoon 🧸 Waise purana birthday chapter dekhna hai?'
+      'Birthday khatam ho gaya toh kya hua? Songs suno aur relax karo.',
+      'Spotify lounge hamesha khula hai aapke liye.',
+      'Purana birthday chapter replay karna hai?'
     ]
   }
 
-  // Set initial and rotating bubble message
   useEffect(() => {
     const msgs = getContextualMessages()
     setBubbleText(msgs[0])
@@ -57,7 +51,7 @@ export default function TeddyForeverAssistant({
       const randomMsg = msgs[Math.floor(Math.random() * msgs.length)]
       setBubbleText(randomMsg)
       setShowBubble(true)
-    }, 14000)
+    }, 15000)
 
     return () => clearInterval(bubbleTimer)
   }, [mode, age])
@@ -68,7 +62,6 @@ export default function TeddyForeverAssistant({
   }
 
   const handleBubbleClick = () => {
-    // If bubble asks to listen to songs, tapping directly opens Spotify!
     if (bubbleText.includes('song') || bubbleText.includes('Spotify') || bubbleText.includes('gaane')) {
       playSparkle()
       onOpenSpotify && onOpenSpotify()
@@ -80,7 +73,7 @@ export default function TeddyForeverAssistant({
   return (
     <div style={{
       position: 'fixed',
-      bottom: 80, // slightly elevated above the mini player
+      bottom: 24,
       right: 20,
       zIndex: 99995,
       display: 'flex',
@@ -97,35 +90,31 @@ export default function TeddyForeverAssistant({
             exit={{ opacity: 0, scale: 0.8 }}
             style={{
               pointerEvents: 'auto',
-              background: 'rgba(255, 255, 255, 0.96)',
+              background: 'rgba(255, 255, 255, 0.98)',
               backdropFilter: 'blur(16px)',
               border: '2px solid #fda4af',
               borderRadius: 20,
               padding: '10px 16px',
-              maxWidth: 250,
+              maxWidth: 240,
               marginBottom: 10,
-              boxShadow: '0 10px 30px rgba(244, 63, 94, 0.22)',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
               fontSize: '0.84rem',
               fontWeight: 700,
-              color: '#881337',
+              color: '#1e293b',
               lineHeight: 1.4,
               cursor: 'pointer',
               position: 'relative'
             }}
             onClick={handleBubbleClick}
-            title="Click to interact"
           >
             {bubbleText}
             <div style={{
               fontSize: '0.7rem',
-              color: '#f43f5e',
+              color: '#059669',
               marginTop: 4,
-              fontWeight: 800,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
+              fontWeight: 700
             }}>
-              <span>🎧 Tap to open Spotify / Close</span>
+              Tap to open Spotify / Close
             </div>
             <div style={{
               position: 'absolute',
@@ -151,33 +140,27 @@ export default function TeddyForeverAssistant({
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             style={{
               pointerEvents: 'auto',
-              background: 'rgba(255, 255, 255, 0.98)',
-              backdropFilter: 'blur(20px)',
-              border: '2.5px solid #fda4af',
+              background: '#ffffff',
+              border: '2px solid #fda4af',
               borderRadius: 24,
               padding: '16px',
-              width: 260,
+              width: 250,
               marginBottom: 12,
-              boxShadow: '0 18px 45px rgba(0, 0, 0, 0.2)',
+              boxShadow: '0 18px 45px rgba(0, 0, 0, 0.18)',
               textAlign: 'center'
             }}
           >
             <div style={{
               fontSize: '0.84rem',
-              fontWeight: 900,
-              color: '#e11d48',
-              marginBottom: 10,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6
+              fontWeight: 800,
+              color: '#be185d',
+              marginBottom: 10
             }}>
-              <span>🧸</span>
-              <span>Teddy's Companion Menu</span>
+              Quick Menu
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {/* Highlighted Spotify Lounge Button */}
+              {/* Spotify Web Button */}
               <button
                 onClick={() => {
                   playSparkle()
@@ -186,30 +169,23 @@ export default function TeddyForeverAssistant({
                 }}
                 style={{
                   border: 'none',
-                  background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                  color: '#fff',
+                  background: '#000000',
+                  color: '#ffffff',
                   padding: '10px 14px',
                   borderRadius: 14,
-                  fontSize: '0.85rem',
-                  fontWeight: 900,
+                  fontSize: '0.84rem',
+                  fontWeight: 800,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(16, 185, 129, 0.35)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
                   justifyContent: 'center'
                 }}
               >
-                <span>🎧</span>
-                <span>Sneha's Spotify Lounge</span>
-                <span style={{
-                  background: 'rgba(255,255,255,0.25)',
-                  fontSize: '0.62rem',
-                  padding: '1px 5px',
-                  borderRadius: 999
-                }}>
-                  NEW
-                </span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1ed760">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.217.357-.681.472-1.038.254-2.846-1.74-6.429-2.133-10.648-1.17-.409.094-.816-.164-.91-.572-.094-.408.163-.815.572-.91 4.624-1.057 8.577-.611 11.77 1.341.356.218.471.682.254 1.057zm1.469-3.267c-.274.444-.858.586-1.302.312-3.257-2.002-8.223-2.583-12.076-1.413-.501.152-1.033-.135-1.185-.636-.152-.501.135-1.033.636-1.185 4.408-1.338 9.882-.693 13.615 1.621.444.275.586.859.312 1.301zm.127-3.411c-3.906-2.319-10.347-2.533-14.073-1.401-.6.182-1.237-.162-1.419-.762-.182-.6.162-1.237.762-1.419 4.279-1.299 11.393-1.043 15.892 1.628.539.32.715 1.02.396 1.558-.32.539-1.02.715-1.558.396z"/>
+                </svg>
+                <span>Spotify Web Player</span>
               </button>
 
               <button
@@ -227,7 +203,6 @@ export default function TeddyForeverAssistant({
                   fontSize: '0.82rem',
                   fontWeight: 800,
                   cursor: 'pointer',
-                  boxShadow: '0 4px 12px rgba(244, 63, 94, 0.25)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
@@ -287,31 +262,6 @@ export default function TeddyForeverAssistant({
                 <span>⏳</span>
                 <span>Live Countdown</span>
               </button>
-
-              <button
-                onClick={() => {
-                  playSparkle()
-                  setIsOpen(false)
-                  onSurpriseMe && onSurpriseMe()
-                }}
-                style={{
-                  border: 'none',
-                  background: 'linear-gradient(135deg, #fdf2f8, #fce7f3)',
-                  color: '#be185d',
-                  padding: '9px 14px',
-                  borderRadius: 14,
-                  fontSize: '0.82rem',
-                  fontWeight: 800,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8,
-                  justifyContent: 'center'
-                }}
-              >
-                <span>✨</span>
-                <span>Surprise Memory</span>
-              </button>
             </div>
           </motion.div>
         )}
@@ -327,8 +277,8 @@ export default function TeddyForeverAssistant({
           border: '3px solid #fda4af',
           background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(12px)',
-          width: 68,
-          height: 68,
+          width: 64,
+          height: 64,
           borderRadius: '50%',
           cursor: 'pointer',
           boxShadow: '0 8px 25px rgba(244, 63, 94, 0.35)',
@@ -338,7 +288,7 @@ export default function TeddyForeverAssistant({
           position: 'relative',
           overflow: 'hidden'
         }}
-        title="Teddy Companion"
+        title="Assistant"
       >
         <video
           src={TEDDY_WEBM.love[0]}
@@ -346,21 +296,8 @@ export default function TeddyForeverAssistant({
           loop
           muted
           playsInline
-          style={{ width: 56, height: 56, objectFit: 'contain' }}
+          style={{ width: 52, height: 52, objectFit: 'contain' }}
         />
-        <span style={{
-          position: 'absolute',
-          bottom: 2,
-          right: 2,
-          background: '#e11d48',
-          color: '#fff',
-          fontSize: '0.55rem',
-          fontWeight: 900,
-          padding: '1px 5px',
-          borderRadius: 999
-        }}>
-          AI
-        </span>
       </motion.button>
     </div>
   )
