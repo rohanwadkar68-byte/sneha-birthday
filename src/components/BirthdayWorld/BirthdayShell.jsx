@@ -1,3 +1,4 @@
+import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { calculateAge, getBirthdayMode } from '../../utils/birthdayWorld.js'

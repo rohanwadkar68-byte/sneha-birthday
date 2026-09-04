@@ -1,3 +1,4 @@
+import { DEFAULT_ALBUM_COVER } from '../data/musicLibrary.js'
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { playSparkle, changeBGM, getCurrentBGMTitle } from '../utils/audio.js'

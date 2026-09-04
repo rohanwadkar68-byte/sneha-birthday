@@ -1,3 +1,4 @@
+import { DEFAULT_ALBUM_COVER } from '../../data/musicLibrary.js'
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'

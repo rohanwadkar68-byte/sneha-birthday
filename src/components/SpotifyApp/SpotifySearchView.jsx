@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
-import { CURATED_SONGS } from '../../data/musicLibrary.js'
+import { DEFAULT_ALBUM_COVER, CURATED_SONGS } from '../../data/musicLibrary.js'
 
 function decodeHtml(html) {
   if (!html) return ''
