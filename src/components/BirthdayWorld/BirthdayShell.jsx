@@ -8,30 +8,30 @@ import Chapter2026Experience from '../../data/chapters/2026.jsx'
 import { BIRTHDAY_CHAPTERS } from '../../data/chapters/chapterRegistry.js'
 import { playPop, playSparkle } from '../../utils/audio.js'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
-import SpotifyMiniPlayer from '../SpotifyPlayer/SpotifyMiniPlayer.jsx'
-import SpotifyFullPlayer from '../SpotifyPlayer/SpotifyFullPlayer.jsx'
+import SpotifyApp from '../SpotifyApp/SpotifyApp.jsx'
 
 export default function BirthdayShell() {
   const [currentRoute, setCurrentRoute] = useState(() => window.location.hash || '#/birthday')
   const [archiveModalOpen, setArchiveModalOpen] = useState(false)
+  const [isSpotifyOpen, setIsSpotifyOpen] = useState(() => window.location.hash === '#/spotify')
   const [now, setNow] = useState(() => new Date())
   
   const mode = getBirthdayMode(now)
   const age = calculateAge(now)
-  const { openFullPlayer, currentTrack, isPlaying, togglePlay } = useMusicPlayer()
+  const { currentTrack, isPlaying, togglePlay } = useMusicPlayer()
 
-  // Listen to hash changes for direct URL access (/birthday/2026, /birthday/archive, /birthday/music)
+  // Listen to hash changes for direct URL access (/birthday/2026, /birthday/archive, /spotify)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash || '#/birthday'
       setCurrentRoute(hash)
-      if (hash === '#/birthday/music' || hash === '#/spotify') {
-        openFullPlayer('home')
+      if (hash === '#/spotify') {
+        setIsSpotifyOpen(true)
       }
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [openFullPlayer])
+  }, [])
 
   // Midnight date watcher (Checks date transition every 10 seconds)
   useEffect(() => {
@@ -44,22 +44,36 @@ export default function BirthdayShell() {
   const navigateTo = (hash) => {
     window.location.hash = hash
     setCurrentRoute(hash)
-    if (hash === '#/birthday/music' || hash === '#/spotify') {
-      openFullPlayer('home')
+    if (hash === '#/spotify') {
+      setIsSpotifyOpen(true)
     }
+  }
+
+  const openSpotify = () => {
+    playSparkle()
+    window.location.hash = '#/spotify'
+    setIsSpotifyOpen(true)
+  }
+
+  const closeSpotify = () => {
+    setIsSpotifyOpen(false)
+    if (window.location.hash === '#/spotify') {
+      window.location.hash = '#/birthday'
+    }
+  }
+
+  // 🎧 If authentic Spotify App is opened
+  if (isSpotifyOpen) {
+    return <SpotifyApp onBackToWorld={closeSpotify} />
   }
 
   // If user is currently playing Chapter 01 (2026)
   if (currentRoute === '#/birthday/2026' || currentRoute === '#/2026') {
     return (
-      <>
-        <Chapter2026Experience
-          isMemoryMode={mode !== 'birthday'}
-          onBackToWorld={() => navigateTo('#/birthday')}
-        />
-        <SpotifyMiniPlayer />
-        <SpotifyFullPlayer />
-      </>
+      <Chapter2026Experience
+        isMemoryMode={mode !== 'birthday'}
+        onBackToWorld={() => navigateTo('#/birthday')}
+      />
     )
   }
 
@@ -138,8 +152,6 @@ export default function BirthdayShell() {
             </button>
           </div>
         </motion.div>
-        <SpotifyMiniPlayer />
-        <SpotifyFullPlayer />
       </div>
     )
   }
@@ -160,10 +172,10 @@ export default function BirthdayShell() {
         position: 'sticky',
         top: 0,
         zIndex: 999,
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'rgba(255, 255, 255, 0.92)',
         backdropFilter: 'blur(20px)',
         borderBottom: '1.5px solid rgba(254, 205, 211, 0.7)',
-        padding: '10px 20px',
+        padding: '12px 20px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -204,29 +216,41 @@ export default function BirthdayShell() {
 
         {/* Right: Quick Navigation Tabs */}
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-          {/* Spotify Lounge Button */}
+          {/* Authentic Spotify Pill Button */}
           <button
-            onClick={() => {
-              playSparkle()
-              openFullPlayer('home')
-            }}
+            onClick={openSpotify}
             style={{
               border: 'none',
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              color: '#fff',
-              padding: '6px 14px',
+              background: '#000000',
+              color: '#ffffff',
+              padding: '7px 16px',
               borderRadius: 999,
-              fontSize: '0.8rem',
+              fontSize: '0.82rem',
               fontWeight: 800,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)'
+              gap: 8,
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)',
+              transition: 'transform 0.15s'
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
           >
-            <span>🎧</span>
-            <span>Spotify Lounge</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1ed760">
+              <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.217.357-.681.472-1.038.254-2.846-1.74-6.429-2.133-10.648-1.17-.409.094-.816-.164-.91-.572-.094-.408.163-.815.572-.91 4.624-1.057 8.577-.611 11.77 1.341.356.218.471.682.254 1.057zm1.469-3.267c-.274.444-.858.586-1.302.312-3.257-2.002-8.223-2.583-12.076-1.413-.501.152-1.033-.135-1.185-.636-.152-.501.135-1.033.636-1.185 4.408-1.338 9.882-.693 13.615 1.621.444.275.586.859.312 1.301zm.127-3.411c-3.906-2.319-10.347-2.533-14.073-1.401-.6.182-1.237-.162-1.419-.762-.182-.6.162-1.237.762-1.419 4.279-1.299 11.393-1.043 15.892 1.628.539.32.715 1.02.396 1.558-.32.539-1.02.715-1.558.396z"/>
+            </svg>
+            <span>Spotify Web</span>
+            <span style={{
+              background: '#1ed760',
+              color: '#000000',
+              fontSize: '0.62rem',
+              fontWeight: 900,
+              padding: '1px 5px',
+              borderRadius: 999
+            }}>
+              PRO
+            </span>
           </button>
 
           <button
@@ -279,7 +303,7 @@ export default function BirthdayShell() {
       </header>
 
       {/* 🌟 Main Body Content */}
-      <main style={{ maxWidth: 860, margin: '0 auto', padding: '28px 16px' }}>
+      <main style={{ maxWidth: 880, margin: '0 auto', padding: '28px 16px' }}>
         {/* Mode Hero Banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -337,19 +361,24 @@ export default function BirthdayShell() {
                   🎂 Birthday Surprise Kholo →
                 </button>
                 <button
-                  onClick={() => openFullPlayer('home')}
+                  onClick={openSpotify}
                   style={{
-                    border: '2px solid #10b981',
-                    background: '#ecfdf5',
-                    color: '#065f46',
+                    border: 'none',
+                    background: '#000000',
+                    color: '#1ed760',
                     fontSize: '1rem',
                     fontWeight: 800,
                     padding: '12px 24px',
                     borderRadius: 999,
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.3)'
                   }}
                 >
-                  🎧 Party Songs Suno
+                  <span>🎧</span>
+                  <span>Spotify Party Music</span>
                 </button>
               </div>
             </div>
@@ -372,7 +401,7 @@ export default function BirthdayShell() {
                 maxWidth: 520,
                 lineHeight: 1.5
               }}>
-                Ye website hamesha zinda rahegi. Har saal ek naya chapter unlock hoga, aur tab tak yahan gaane suno aur yaadein tazi karo!
+                Ye website hamesha zinda rahegi. Har saal ek naya chapter unlock hoga, aur tab tak Spotify par gaane suno aur yaadein tazi karo!
               </p>
             </div>
           )}
@@ -381,148 +410,120 @@ export default function BirthdayShell() {
           <BirthdayCountdown onOpenBirthday={() => navigateTo('#/birthday/2026')} />
         </motion.div>
 
-        {/* 🎧 SPECIAL FEATURE CARD: SNEHA'S SPOTIFY LOUNGE */}
+        {/* 🎧 AUTHENTIC SPOTIFY FEATURE CARD ON WORLD HOME */}
         <motion.section
           whileHover={{ y: -3 }}
           style={{
-            background: 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)',
-            border: '2px solid #10b981',
-            borderRadius: 28,
-            padding: '24px 22px',
-            color: '#fff',
-            boxShadow: '0 16px 45px rgba(16, 185, 129, 0.25)',
+            background: '#000000',
+            border: '2px solid #1ed760',
+            borderRadius: 24,
+            padding: '24px',
+            color: '#ffffff',
+            boxShadow: '0 16px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(30, 215, 96, 0.2)',
             marginBottom: 32,
             position: 'relative',
             overflow: 'hidden'
           }}
         >
-          {/* Subtle background glow effect */}
-          <div style={{
-            position: 'absolute',
-            top: -40,
-            right: -40,
-            width: 160,
-            height: 160,
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%)',
-            pointerEvents: 'none'
-          }} />
-
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: 16
+            gap: 20
           }}>
-            <div style={{ maxWidth: 500 }}>
+            <div style={{ maxWidth: 520 }}>
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 6,
-                background: 'rgba(16, 185, 129, 0.2)',
-                border: '1px solid #10b981',
-                color: '#34d399',
-                fontSize: '0.74rem',
+                gap: 8,
+                background: '#121212',
+                border: '1px solid #1ed760',
+                padding: '4px 12px',
+                borderRadius: 9999,
+                fontSize: '12px',
                 fontWeight: 800,
-                padding: '3px 10px',
-                borderRadius: 999,
-                marginBottom: 10
+                color: '#1ed760',
+                marginBottom: 12
               }}>
-                <span>🎧</span>
-                <span>TEDDY SAYS: "TAB TAK SONGS SUNO NA MOMMY!"</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1ed760">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.309c-.217.357-.681.472-1.038.254-2.846-1.74-6.429-2.133-10.648-1.17-.409.094-.816-.164-.91-.572-.094-.408.163-.815.572-.91 4.624-1.057 8.577-.611 11.77 1.341.356.218.471.682.254 1.057zm1.469-3.267c-.274.444-.858.586-1.302.312-3.257-2.002-8.223-2.583-12.076-1.413-.501.152-1.033-.135-1.185-.636-.152-.501.135-1.033.636-1.185 4.408-1.338 9.882-.693 13.615 1.621.444.275.586.859.312 1.301zm.127-3.411c-3.906-2.319-10.347-2.533-14.073-1.401-.6.182-1.237-.162-1.419-.762-.182-.6.162-1.237.762-1.419 4.279-1.299 11.393-1.043 15.892 1.628.539.32.715 1.02.396 1.558-.32.539-1.02.715-1.558.396z"/>
+                </svg>
+                <span>SPOTIFY WEB • SNEHA EDITION</span>
               </div>
-              <h2 style={{ margin: '0 0 8px', fontSize: '1.5rem', fontWeight: 900, color: '#ecfdf5' }}>
-                Sneha's Spotify Music Lounge 🎵
+
+              <h2 style={{
+                margin: '0 0 10px',
+                fontSize: '28px',
+                fontWeight: 900,
+                color: '#ffffff',
+                letterSpacing: '-0.02em'
+              }}>
+                Tab Tak Gaane Suno Na Mommy! 🎧
               </h2>
-              <p style={{ margin: '0 0 16px', fontSize: '0.9rem', color: '#a7f3d0', lineHeight: 1.5 }}>
-                Birthday aane tak bore mat ho! Pura Spotify player ready hai with <b>Romantic Hits</b>, <b>Teddy's Vilen Collection</b>, <b>Late Night Lo-Fi</b>, <b>Karaoke Lyrics</b>, and <b>Live Song Search</b>!
+
+              <p style={{
+                margin: '0 0 20px',
+                fontSize: '14px',
+                color: '#b3b3b3',
+                lineHeight: 1.6
+              }}>
+                Birthday aane tak bore mat ho! Pura authentic Spotify Web Player ready hai with <b>Romantic Mixes</b>, <b>Teddy's Vilen Vault</b>, <b>Late Night Lo-Fi</b>, <b>Karaoke Lyrics</b>, and <b>Live Song Search</b>!
               </p>
 
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <button
-                  onClick={() => {
-                    playSparkle()
-                    openFullPlayer('home')
-                  }}
-                  style={{
-                    border: 'none',
-                    background: '#10b981',
-                    color: '#064e3b',
-                    fontWeight: 900,
-                    fontSize: '0.88rem',
-                    padding: '10px 22px',
-                    borderRadius: 999,
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(16, 185, 129, 0.4)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 6
-                  }}
-                >
-                  <span>▶</span>
-                  <span>Open Spotify Player</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    playPop()
-                    openFullPlayer('lyrics')
-                  }}
-                  style={{
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
-                    fontWeight: 700,
-                    fontSize: '0.85rem',
-                    padding: '10px 18px',
-                    borderRadius: 999,
-                    cursor: 'pointer'
-                  }}
-                >
-                  📜 Karaoke Lyrics
-                </button>
-
-                <button
-                  onClick={() => {
-                    playPop()
-                    openFullPlayer('search')
-                  }}
-                  style={{
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
-                    fontWeight: 700,
-                    fontSize: '0.85rem',
-                    padding: '10px 18px',
-                    borderRadius: 999,
-                    cursor: 'pointer'
-                  }}
-                >
-                  🔍 Search Any Song
-                </button>
-              </div>
+              <button
+                onClick={openSpotify}
+                style={{
+                  border: 'none',
+                  background: '#1ed760',
+                  color: '#000000',
+                  fontWeight: 900,
+                  fontSize: '15px',
+                  padding: '12px 28px',
+                  borderRadius: 9999,
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 18px rgba(30, 215, 96, 0.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  transition: 'transform 0.15s'
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.04)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+              >
+                <span>▶</span>
+                <span>Launch Spotify Web App</span>
+              </button>
             </div>
 
-            {/* Right: Spinning Track Badge */}
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: 20,
-              padding: '14px 18px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              minWidth: 200
-            }}>
+            {/* Currently Playing / Preview Card */}
+            <div
+              onClick={openSpotify}
+              style={{
+                background: '#181818',
+                border: '1px solid #282828',
+                borderRadius: 16,
+                padding: '16px 20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 14,
+                cursor: 'pointer',
+                minWidth: 220,
+                transition: 'background 0.2s'
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#222222' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#181818' }}
+            >
               <motion.div
                 animate={{ rotate: isPlaying ? 360 : 0 }}
                 transition={{ repeat: Infinity, duration: 8, ease: 'linear' }}
                 style={{
-                  width: 48,
-                  height: 48,
+                  width: 52,
+                  height: 52,
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  border: '2px solid #34d399'
+                  border: '2px solid #1ed760',
+                  flexShrink: 0
                 }}
               >
                 <img
@@ -532,15 +533,23 @@ export default function BirthdayShell() {
                   onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
                 />
               </motion.div>
-              <div>
-                <div style={{ fontSize: '0.72rem', color: '#6ee7b7', fontWeight: 800 }}>
-                  {isPlaying ? 'PLAYING NOW' : 'TAP TO PLAY'}
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '11px', color: '#1ed760', fontWeight: 800, textTransform: 'uppercase' }}>
+                  {isPlaying ? 'NOW PLAYING' : 'CLICK TO LISTEN'}
                 </div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#fff', maxWidth: 140, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {currentTrack?.title || 'Cozy Lo-Fi'}
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: 800,
+                  color: '#ffffff',
+                  maxWidth: 140,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  {currentTrack?.title || 'Chidiya'}
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#a7f3d0' }}>
-                  {currentTrack?.artist || 'Sneha Mix'}
+                <div style={{ fontSize: '12px', color: '#b3b3b3' }}>
+                  {currentTrack?.artist || 'Vilen'}
                 </div>
               </div>
             </div>
@@ -734,12 +743,8 @@ export default function BirthdayShell() {
         onOpenChapter={(yr) => navigateTo('#/birthday/' + yr)}
         onOpenCountdown={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         onSurpriseMe={() => navigateTo('#/birthday/2026')}
-        onOpenSpotify={() => openFullPlayer('home')}
+        onOpenSpotify={openSpotify}
       />
-
-      {/* 🎧 Persistent Spotify Mini-Player Bar & Full Player Modal */}
-      <SpotifyMiniPlayer />
-      <SpotifyFullPlayer />
     </div>
   )
 }
