@@ -12,6 +12,7 @@ import SpotifyQueueView from './SpotifyQueueView.jsx'
 import SpotifyPlayerBar from './SpotifyPlayerBar.jsx'
 import SpotifyMobilePlayer from './SpotifyMobilePlayer.jsx'
 import SpotifyErrorBoundary from './SpotifyErrorBoundary.jsx'
+import EqualizerBars from './EqualizerBars.jsx'
 
 export default function SpotifyApp({ onBackToWorld }) {
   const [activeView, setActiveView] = useState('home') // home | search | playlist | lyrics | queue
@@ -142,8 +143,10 @@ export default function SpotifyApp({ onBackToWorld }) {
         <SpotifyPlayerBar
           activeView={activeView}
           setActiveView={setActiveView}
+          onOpenMobileNowPlaying={() => setMobileNowPlayingOpen(true)}
         />
       )}
+
 
       {/* MOBILE FIXED BOTTOM DOCK (Mini Player + Bottom Navigation) */}
       {isMobile && (
@@ -271,7 +274,8 @@ export default function SpotifyApp({ onBackToWorld }) {
       {/* MOBILE FULL-SCREEN NOW PLAYING OVERLAY */}
       <AnimatePresence>
         {isMobile && mobileNowPlayingOpen && currentTrack && (
-          <motion.div
+          <SpotifyErrorBoundary onReset={() => setMobileNowPlayingOpen(false)}>
+            <motion.div
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -435,8 +439,9 @@ export default function SpotifyApp({ onBackToWorld }) {
               Lyrics
             </button>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
+        </SpotifyErrorBoundary>
+      )}
+    </AnimatePresence>
+  </div>
+)
 }
