@@ -5,8 +5,26 @@ const MusicPlayerContext = createContext(null)
 
 const LIKED_STORAGE_KEY = 'sneha_spotify_liked_v2'
 
+function detectSongMood(track) {
+  if (!track) return 'romantic'
+  if (track.theme) return track.theme
+
+  const text = ((track.title || '') + ' ' + (track.artist || '') + ' ' + (track.genre || '')).toLowerCase()
+  if (text.includes('lofi') || text.includes('chill') || text.includes('relax') || text.includes('midnight')) return 'lofi'
+  if (text.includes('taylor') || text.includes('pop') || text.includes('english') || text.includes('stephen')) return 'pop'
+  if (text.includes('anuv') || text.includes('indie') || text.includes('acoustic') || text.includes('prateek')) return 'indie'
+  if (text.includes('punjabi') || text.includes('dhillon') || text.includes('sidhu') || text.includes('party')) return 'punjabi'
+  return 'romantic'
+}
+
+function decodeHtml(html) {
+  if (!html) return ''
+  const txt = document.createElement('textarea')
+  txt.innerHTML = html
+  return txt.value
+}
+
 export function MusicPlayerProvider({ children }) {
-  // Liked songs state
   const [likedIds, setLikedIds] = useState(() => {
     try {
       const saved = localStorage.getItem(LIKED_STORAGE_KEY)
@@ -16,11 +34,6 @@ export function MusicPlayerProvider({ children }) {
     }
   })
 
-  // Full player open state
-  const [isFullPlayerOpen, setIsFullPlayerOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('home')
-
-  // Playback state
   const [queue, setQueue] = useState(CURATED_SONGS)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [currentTrack, setCurrentTrack] = useState(CURATED_SONGS[0])
@@ -33,8 +46,9 @@ export function MusicPlayerProvider({ children }) {
   const [repeatMode, setRepeatMode] = useState('all') // off | all | one
 
   const audioRef = useRef(null)
+  const fetchingRecommendationsRef = useRef(false)
 
-  // Initialize Audio instance once
+  // Initialize HTML5 Audio instance
   useEffect(() => {
     if (typeof window === 'undefined') return
 
@@ -78,15 +92,14 @@ export function MusicPlayerProvider({ children }) {
         audio.currentTime = 0
         audio.play().catch(() => {})
       } else {
-        handleNext(true)
+        handleSmartNext(true)
       }
     }
 
     audio.addEventListener('ended', onEnded)
     return () => audio.removeEventListener('ended', onEnded)
-  }, [repeatMode, queue, currentIndex, isShuffle])
+  }, [repeatMode, queue, currentIndex, isShuffle, currentTrack])
 
-  // Save liked songs
   useEffect(() => {
     try {
       localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify(likedIds))
@@ -95,7 +108,6 @@ export function MusicPlayerProvider({ children }) {
     }
   }, [likedIds])
 
-  // Load and play a specific track
   const playTrack = (track, customQueue = null) => {
     if (!track || !track.url) return
     const audio = audioRef.current
@@ -122,7 +134,7 @@ export function MusicPlayerProvider({ children }) {
 
     const playPromise = audio.play()
     if (playPromise && playPromise.catch) {
-      playPromise.catch((err) => console.log('Playback notice:', err))
+      playPromise.catch(() => {})
     }
   }
 
@@ -140,21 +152,84 @@ export function MusicPlayerProvider({ children }) {
     }
   }
 
-  const handleNext = (isAuto = false) => {
+  /**
+   * Smart Mood-Based Next:
+   * Chooses next track matching the same mood/genre/artist.
+   * If queue has < 2 songs left, auto-fetches 5 similar songs from JioSaavn!
+   */
+  const handleSmartNext = async (isAuto = false) => {
     if (!queue || queue.length === 0) return
 
+    const currentMood = detectSongMood(currentTrack)
+    const primaryArtist = (currentTrack?.artist || '').split(',')[0].trim()
+
+    // 1. If repeat is off and it's auto-end at the very last song
+    if (repeatMode === 'off' && currentIndex >= queue.length - 1 && isAuto) {
+      setIsPlaying(false)
+      return
+    }
+
+    // 2. If shuffle is enabled or choosing next mood track
     let nextIdx = currentIndex + 1
 
     if (isShuffle) {
-      nextIdx = Math.floor(Math.random() * queue.length)
-      if (queue.length > 1 && nextIdx === currentIndex) {
-        nextIdx = (currentIndex + 1) % queue.length
+      // Pick random song from queue that shares the same mood
+      const sameMoodIndices = []
+      queue.forEach((song, idx) => {
+        if (idx !== currentIndex && detectSongMood(song) === currentMood) {
+          sameMoodIndices.push(idx)
+        }
+      })
+
+      if (sameMoodIndices.length > 0) {
+        nextIdx = sameMoodIndices[Math.floor(Math.random() * sameMoodIndices.length)]
+      } else {
+        nextIdx = Math.floor(Math.random() * queue.length)
       }
-    } else if (nextIdx >= queue.length) {
-      if (repeatMode === 'off' && isAuto) {
-        setIsPlaying(false)
-        return
+    }
+
+    // 3. If upcoming queue is ending (<= 2 songs remaining), auto-fetch mood-matching songs!
+    if (nextIdx >= queue.length - 2 && !fetchingRecommendationsRef.current && primaryArtist) {
+      fetchingRecommendationsRef.current = true
+      try {
+        const query = `${primaryArtist} ${currentMood === 'romantic' ? 'romantic' : ''} hits`
+        const res = await fetch('https://jiosaavn-api-nine.vercel.app/api/search/songs?query=' + encodeURIComponent(query))
+        if (res.ok) {
+          const data = await res.json()
+          const items = data?.data?.results || []
+          if (items.length > 0) {
+            const existingIds = new Set(queue.map((s) => s.id))
+            const newTracks = items
+              .map((item) => {
+                const dlUrl = item.downloadUrl?.[item.downloadUrl.length - 1]?.url || item.downloadUrl?.[0]?.url || item.url
+                const imgUrl = item.image?.[item.image.length - 1]?.url || item.image?.[0]?.url || 'assets/3d-emoji/sparkling_heart.png'
+                const artistName = item.artists?.primary?.[0]?.name || item.primaryArtists || 'Artist'
+                return {
+                  id: item.id || String(Math.random()),
+                  title: decodeHtml(item.name || item.title || 'Song'),
+                  artist: decodeHtml(artistName),
+                  image: imgUrl,
+                  url: dlUrl,
+                  theme: currentMood,
+                  duration: item.duration ? Math.floor(item.duration / 60) + ':' + (item.duration % 60 < 10 ? '0' : '') + (item.duration % 60) : '3:30'
+                }
+              })
+              .filter((t) => !!t.url && !existingIds.has(t.id))
+              .slice(0, 5)
+
+            if (newTracks.length > 0) {
+              setQueue((prev) => [...prev, ...newTracks])
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Smart mood recommendation fetch error:', err)
+      } finally {
+        fetchingRecommendationsRef.current = false
       }
+    }
+
+    if (nextIdx >= queue.length) {
       nextIdx = 0
     }
 
@@ -232,13 +307,6 @@ export function MusicPlayerProvider({ children }) {
     })
   }
 
-  const openFullPlayer = (tab = 'home') => {
-    setActiveTab(tab)
-    setIsFullPlayerOpen(true)
-  }
-
-  const closeFullPlayer = () => setIsFullPlayerOpen(false)
-
   const value = {
     currentTrack,
     isPlaying,
@@ -251,11 +319,9 @@ export function MusicPlayerProvider({ children }) {
     isShuffle,
     repeatMode,
     likedIds,
-    isFullPlayerOpen,
-    activeTab,
     playTrack,
     togglePlay,
-    nextTrack: () => handleNext(false),
+    nextTrack: () => handleSmartNext(false),
     prevTrack: handlePrev,
     seekTo,
     changeVolume,
@@ -264,9 +330,6 @@ export function MusicPlayerProvider({ children }) {
     isLiked,
     toggleShuffle,
     toggleRepeat,
-    openFullPlayer,
-    closeFullPlayer,
-    setActiveTab,
     setQueue
   }
 

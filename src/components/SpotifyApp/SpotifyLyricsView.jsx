@@ -1,150 +1,210 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useMusicPlayer } from '../../context/MusicPlayerContext.jsx'
+import { fetchLyricsForTrack } from '../../utils/lyricsService.js'
 
 export default function SpotifyLyricsView() {
-  const { currentTrack, isPlaying, currentTime, duration, seekTo } = useMusicPlayer()
+  const { currentTrack, isPlaying, currentTime, seekTo } = useMusicPlayer()
+  const [lyricsData, setLyricsData] = useState(null)
+  const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
-  const lyricsContainerRef = useRef(null)
+  const containerRef = useRef(null)
 
-  if (!currentTrack) {
-    return (
-      <div style={{ textAlign: 'center', padding: '100px 20px', color: '#b3b3b3' }}>
-        No track playing right now.
-      </div>
-    )
+  // Fetch live lyrics when currentTrack changes
+  useEffect(() => {
+    if (!currentTrack) {
+      setLyricsData(null)
+      return
+    }
+
+    let isMounted = true
+    setLoading(true)
+
+    fetchLyricsForTrack(currentTrack).then((data) => {
+      if (isMounted) {
+        setLyricsData(data)
+        setLoading(false)
+      }
+    }).catch(() => {
+      if (isMounted) setLoading(false)
+    })
+
+    return () => {
+      isMounted = false
+    }
+  }, [currentTrack?.id, currentTrack?.title])
+
+  const lines = lyricsData?.lines || []
+
+  // Determine active line index based on timestamps
+  let activeIndex = -1
+  if (lines.length > 0) {
+    for (let i = 0; i < lines.length; i++) {
+      if (currentTime >= lines[i].time) {
+        activeIndex = i
+      } else {
+        break
+      }
+    }
   }
 
-  const lines = currentTrack.lyrics
-    ? currentTrack.lyrics.split('\n').filter((l) => l.trim().length > 0)
-    : []
-
-  const progressRatio = duration > 0 ? currentTime / duration : 0
-  const activeLineIndex = lines.length > 0 ? Math.min(Math.floor(progressRatio * lines.length), lines.length - 1) : 0
-
-  // Auto-scroll active line into center
+  // Smooth auto-scroll active line into view
   useEffect(() => {
-    if (!lyricsContainerRef.current) return
-    const activeEl = lyricsContainerRef.current.querySelector('[data-active="true"]')
+    if (!containerRef.current || activeIndex < 0) return
+    const activeEl = containerRef.current.querySelector(`[data-line-idx="${activeIndex}"]`)
     if (activeEl) {
       activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
-  }, [activeLineIndex])
+  }, [activeIndex])
 
   const handleCopy = () => {
-    if (!currentTrack.lyrics) return
-    navigator.clipboard?.writeText(currentTrack.lyrics)
+    if (!lyricsData?.rawPlain) return
+    navigator.clipboard?.writeText(lyricsData.rawPlain)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
+  if (!currentTrack) {
+    return (
+      <div style={{ textAlign: 'center', padding: '80px 20px', color: '#b3b3b3' }}>
+        No track is playing right now.
+      </div>
+    )
+  }
+
   return (
     <div style={{
-      minHeight: '100%',
-      padding: '0 32px 120px',
+      padding: '0 20px 120px',
       position: 'relative',
-      userSelect: 'none'
+      userSelect: 'none',
+      maxWidth: 820
     }}>
-      {/* Top Floating Controls */}
+      {/* Top Track Header & Copy Option */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingBottom: 24,
-        marginBottom: 20
+        paddingBottom: 20,
+        marginBottom: 24,
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        flexWrap: 'wrap',
+        gap: 12
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <img
             src={currentTrack.image}
             alt=""
-            style={{ width: 48, height: 48, borderRadius: 4, objectFit: 'cover' }}
+            style={{ width: 52, height: 52, borderRadius: 4, objectFit: 'cover', flexShrink: 0 }}
             onError={(e) => { e.currentTarget.src = 'assets/3d-emoji/sparkling_heart.png' }}
           />
           <div>
             <div style={{ fontSize: '18px', fontWeight: 800, color: '#ffffff' }}>
               {currentTrack.title}
             </div>
-            <div style={{ fontSize: '13px', color: '#b3b3b3', fontWeight: 600 }}>
-              {currentTrack.artist} • Karaoke Lyrics
+            <div style={{ fontSize: '13px', color: '#b3b3b3', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span>{currentTrack.artist}</span>
+              {lyricsData?.synced && (
+                <span style={{
+                  background: '#1ed760',
+                  color: '#000000',
+                  fontSize: '9px',
+                  fontWeight: 900,
+                  padding: '1px 5px',
+                  borderRadius: 3
+                }}>
+                  SYNCED
+                </span>
+              )}
             </div>
           </div>
         </div>
 
-        {lines.length > 0 && (
+        {lyricsData?.rawPlain && (
           <button
             onClick={handleCopy}
             style={{
               border: '1px solid rgba(255, 255, 255, 0.2)',
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.08)',
               color: '#ffffff',
-              padding: '8px 18px',
+              padding: '6px 14px',
               borderRadius: 9999,
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 700,
               cursor: 'pointer',
               transition: 'background 0.2s'
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.16)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)' }}
           >
-            {copied ? 'Copied! ✨' : 'Copy Lyrics 📋'}
+            {copied ? 'Copied' : 'Copy Lyrics'}
           </button>
         )}
       </div>
 
-      {/* Giant Spotify Lyrics Body */}
-      <div
-        ref={lyricsContainerRef}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 28,
-          maxWidth: 720
-        }}
-      >
-        {lines.length > 0 ? (
-          lines.map((line, idx) => {
-            const isCurrent = idx === activeLineIndex && isPlaying
-            const isPast = idx < activeLineIndex
+      {/* Loading state */}
+      {loading && (
+        <div style={{ padding: '60px 0', textAlign: 'center', color: '#b3b3b3' }}>
+          <div style={{ fontSize: '28px', marginBottom: 10 }}>🎶</div>
+          <div style={{ fontSize: '14px', fontWeight: 600 }}>Loading lyrics for {currentTrack.title}...</div>
+        </div>
+      )}
+
+      {/* Real-time Synced Lyrics Container */}
+      {!loading && lines.length > 0 && (
+        <div
+          ref={containerRef}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 26,
+            paddingBottom: 40
+          }}
+        >
+          {lines.map((item, idx) => {
+            const isCurrent = idx === activeIndex && isPlaying
+            const isPast = idx < activeIndex
 
             return (
               <motion.div
                 key={idx}
-                data-active={isCurrent ? 'true' : 'false'}
-                onClick={() => {
-                  if (duration > 0 && lines.length > 0) {
-                    seekTo((idx / lines.length) * duration)
-                  }
-                }}
+                data-line-idx={idx}
+                onClick={() => seekTo(item.time)}
                 style={{
-                  fontSize: 'clamp(24px, 3.8vw, 36px)',
-                  fontWeight: 900,
-                  color: isCurrent ? '#ffffff' : isPast ? 'rgba(255, 255, 255, 0.65)' : 'rgba(255, 255, 255, 0.28)',
+                  fontSize: 'clamp(20px, 4vw, 32px)',
+                  fontWeight: isCurrent ? 900 : 700,
+                  color: isCurrent
+                    ? '#ffffff'
+                    : isPast
+                    ? 'rgba(255, 255, 255, 0.65)'
+                    : 'rgba(255, 255, 255, 0.28)',
                   lineHeight: 1.35,
                   letterSpacing: '-0.02em',
                   cursor: 'pointer',
                   transformOrigin: 'left center',
-                  transform: isCurrent ? 'scale(1.03)' : 'scale(1)',
+                  transform: isCurrent ? 'scale(1.02)' : 'scale(1)',
                   transition: 'color 0.2s, transform 0.2s',
-                  textShadow: isCurrent ? '0 0 30px rgba(255,255,255,0.4)' : 'none'
+                  textShadow: isCurrent ? '0 0 24px rgba(255,255,255,0.35)' : 'none'
                 }}
               >
-                {line}
+                {item.text}
               </motion.div>
             )
-          })
-        ) : (
-          <div style={{ padding: '60px 0', color: '#b3b3b3' }}>
-            <div style={{ fontSize: '48px', marginBottom: 16 }}>🎵</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#ffffff', marginBottom: 8 }}>
-              Sing along with Sneha
-            </div>
-            <p style={{ fontSize: '15px', maxWidth: 440, lineHeight: 1.6, margin: 0 }}>
-              Is gaane ki dhun sunte huye dil se gaao! Saare romantic vibes aur yaadein aapke saath hain. 🧸💖
-            </p>
+          })}
+        </div>
+      )}
+
+      {/* No lyrics fallback */}
+      {!loading && lines.length === 0 && (
+        <div style={{ padding: '60px 0', color: '#b3b3b3' }}>
+          <div style={{ fontSize: '36px', marginBottom: 12 }}>🎶</div>
+          <div style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', marginBottom: 6 }}>
+            Looks like we don't have the lyrics for this song yet.
           </div>
-        )}
-      </div>
+          <p style={{ fontSize: '14px', maxWidth: 440, lineHeight: 1.5, margin: 0 }}>
+            Enjoy the melody! You can search any other song to sing along with real-time synced lyrics.
+          </p>
+        </div>
+      )}
     </div>
   )
 }

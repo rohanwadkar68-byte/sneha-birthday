@@ -10,7 +10,7 @@
   --gold: #f59e0b;
   --ink: #381e30;
   --ink-soft: #704e65;
-  --font-ui: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-ui: 'Plus Jakarta Sans', 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-serif: 'Playfair Display', serif;
   --font-hand: 'Caveat', cursive;
   --shadow-soft: 0 14px 38px rgba(225, 29, 72, 0.14);
@@ -40,6 +40,9 @@ body {
   -webkit-user-select: none;
   touch-action: manipulation;
   letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* 🌸 Korean Aesthetic Soft Liquid Pastel Aurora Mesh */
