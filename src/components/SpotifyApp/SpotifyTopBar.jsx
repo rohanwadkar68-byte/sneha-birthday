@@ -99,27 +99,29 @@ export default function SpotifyTopBar({
 
       {/* RIGHT: Return to World Button */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <button
-          onClick={onBackToWorld}
-          style={{
-            border: '1px solid rgba(255,255,255,0.2)',
-            background: 'rgba(255,255,255,0.08)',
-            color: '#ffffff',
-            padding: '6px 12px',
-            borderRadius: 9999,
-            fontSize: '12px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            whiteSpace: 'nowrap'
-          }}
-          title="Return to Birthday World"
-        >
-          <span>←</span>
-          <span>Back to World</span>
-        </button>
+        {onBackToWorld && (
+          <button
+            onClick={onBackToWorld}
+            style={{
+              border: '1px solid rgba(255,255,255,0.2)',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#ffffff',
+              padding: '6px 12px',
+              borderRadius: 9999,
+              fontSize: '12px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              whiteSpace: 'nowrap'
+            }}
+            title="Return to Previous World"
+          >
+            <span>←</span>
+            <span>Back to World</span>
+          </button>
+        )}
 
         <div style={{
           width: 28,
